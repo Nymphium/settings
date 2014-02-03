@@ -1,0 +1,18 @@
+#!/bin/bash
+sudo killall -r wpa_supplicant
+echo "ctrl_interface=/var/run/wpa_supplicant GROUP=wheel" > /etc/wpa_supplicant/wpa_supplicant.conf
+
+sudo ip link set wlp6s0 up
+
+ID=$1
+PASS=$2
+
+if [ ${#PASS} -lt 1 ]; then
+	sudo iw wlp6s0 connect $ID
+elif [ ${#PASS} -lt 8 ]; then
+	sudo iw wlp6s0 connect ${ID} 0:${PASS}
+else
+	sudo wpa_passphrase ${ID} ${PASS} /etc/wpa_supplicant/wpa_supplicant.conf >> /etc/wpa_supplicant/wpa_supplicant.conf
+	sudo wpa_supplicant -B -Dwext -iwlp6s0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+	sudo dhcpcd wlp6s0
+fi

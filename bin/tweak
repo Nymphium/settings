@@ -1,0 +1,43 @@
+#!/bin/bash
+
+
+while test $# -gt 0; do
+	case "$1" in
+		-v)
+			vim $HOME/.vimrc
+			exit 0
+			;;
+		-z)
+			vim $HOME/.zshrc
+			exit 0
+			;;
+		-t)
+			vim $HOME/.tmux.conf
+			exit 0
+			;;
+		--tweak)
+			vim /usr/local/bin/tweak
+			exit 0
+			;;
+		-x)
+			vim $HOME/.xinitrc
+			exit 0
+			;;
+		*)
+			echo "tweak usage...
+   -v configure .vimrc
+   -z configure .zshrc
+   -t configure .tmux.conf
+   -x configure .xinitrc
+  --tweak configure this script($(which tweak))"
+			exit 0
+			;;
+	esac
+done
+
+echo "tweak usage...
+   -v configure .vimrc
+   -z configure .zshrc
+   -t configure .tmux.conf
+   -x configure .xinitrc
+  --tweak configure this script($(which tweak))"
