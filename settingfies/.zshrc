@@ -3,7 +3,7 @@ ZSH_THEME="robbyrussell"
 EDITOR="vim"
 # COMPLETION_WAITING_DOTS="true"
 
-export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.0.0:/home/beshowjo/.gem/ruby/2.0.0/bin:/home/beshowjo/.gem/ruby/2.0.0/doc
+export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc
 
 plugins=(git)
 
@@ -48,24 +48,28 @@ fi
 alias S='sudo'
 alias C='cat'
 alias V='vim'
-alias l='ls -Fal'
+alias l='ls -Fal; pwd'
+alias reboot='sudo reboot'
+alias poweroff='sudo poweroff'
+alias shutdown='sudo poweroff'
 alias rmf='sudo rm -rf'
 alias chmod='sudo chmod'
 alias modc='sudo chmod 755'
 alias xterm='xterm -bd black -bg black -cr green -fg green +u8 +ulc +ls zsh'
 alias ps='ps aux'
 alias day='date +%R && cal'
-alias eq='alsamixer -D equal'
-alias alsamixer='alsamixer -g'
 alias libreoffice='libreoffice --nologo'
 alias -g G=' | grepnew'
 compdef _grep grepnew
+
 
 # network
 alias wifisearch='sudo killall -r iwlwifi; sudo ip link set wlp6s0 up; sudo iw dev wlp6s0 scan'
 alias chrome='google-chrome-stable'
 alias pacman='sudo pacman'
-alias renew='yaourt -Syua --devel --noconfirm'
+alias pacs='sudo pacman -S --noconfirm'
+alias yaous='yaourt -S --noconfirm'
+alias renew='sudo pacman -Sc --noconfirm && sudo yaourt -Syua --devel --noconfirm && sudo pacman-optimize'
 alias P='ping 8.8.8.8 -c 3'
 
 # compile
@@ -79,7 +83,6 @@ alias japanize='export LANG=ja_JP.UTF-8'
 alias lmap='xmodmap $HOME/.xmodmap'
 
 # tmux config
-alias tmuxn='tmux source-file ~/.tmux.conf'
+alias tmuxn='tmux source-file $HOME/.tmux.conf'
 alias tmuxd='tmux detach'
 alias tmuxa='tmux attach'
-

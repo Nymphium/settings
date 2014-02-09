@@ -22,7 +22,8 @@ keycode  45 = k K Up
 keycode  46 = l L Right
 keycode  49 = Escape NoSymbol Escape NoSymbol
 keycode  65 = Return space Return space
-keycode  66 = Eisu_toggle NoSymbol Caps_Lock
+clear lock
+keycode  66 = Muhenkan Caps_Lock Henkan
 keycode 100 = BackSpace BackSpace Delete BackSpace
 keycode 101 = Home NoSymbol End
 keycode 102 = Mode_switch
