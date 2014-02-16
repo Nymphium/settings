@@ -14,7 +14,6 @@ fi
 [ -d $HOME/.oh-my-zsh/plugins/zsh-completions/src ] && fpath=($HOME/.oh-my-zsh/plugins/zsh-completions/src $fpath)
 
 source $ZSH/oh-my-zsh.sh
-source $ZSH/oh-my-zsh.sh
 source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Attache tmux
@@ -50,7 +49,7 @@ alias C='cat'
 alias V='vim'
 alias l='ls -Fal; pwd'
 alias reboot='sudo reboot'
-alias poweroff='sudo poweroff'
+alias poweroff='systemctl poweroff -i'
 alias shutdown='sudo poweroff'
 alias rmf='sudo rm -rf'
 alias chmod='sudo chmod'
