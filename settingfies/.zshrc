@@ -3,13 +3,13 @@ ZSH_THEME="robbyrussell"
 EDITOR="vim"
 # COMPLETION_WAITING_DOTS="true"
 
-export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc
+export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc:/home/beshowjo/works/ruby
 
 plugins=(git)
 
-if [[ -d /usr/local/share/zsh-completions ]]; then
-	fpath=($fpath /usr/local/share/zsh-completions)
-fi
+# if [[ -d /usr/local/share/zsh-completions ]]; then
+	# fpath=($fpath:/usr/local/share/zsh-completions)
+# fi
 
 [ -d $HOME/.oh-my-zsh/plugins/zsh-completions/src ] && fpath=($HOME/.oh-my-zsh/plugins/zsh-completions/src $fpath)
 
@@ -22,14 +22,14 @@ if ( ! test $TMUX ) && ( ! expr $TERM : "^screen" > /dev/null ) && which tmux > 
 		session=`tmux list-sessions | grep -e '^[0-9].*]$' | head -n 1 | sed -e 's/^\([0-9]\+\).*$/\1/'`
 		if [ -n "$session" ]; then
 			echo "Attache tmux session $session."
-			tmux attach-session -t $session
+			 tmux attach-session -t $session
 		else
 			echo "Session has been already attached."
-			tmux list-sessions
+			 tmux list-sessions
 		fi
 	else
 		echo "Create new tmux session."
-		tmux
+		 tmux
 	fi
 fi
 
@@ -47,7 +47,6 @@ fi
 alias S='sudo'
 alias C='cat'
 alias V='vim'
-alias l='ls -Fal; pwd'
 alias reboot='sudo reboot'
 alias poweroff='systemctl poweroff -i'
 alias shutdown='sudo poweroff'
@@ -58,8 +57,7 @@ alias xterm='xterm -bd black -bg black -cr green -fg green +u8 +ulc +ls zsh'
 alias ps='ps aux'
 alias day='date +%R && cal'
 alias libreoffice='libreoffice --nologo'
-alias -g G=' | grepnew'
-compdef _grep grepnew
+alias -g G=' | grep'
 
 
 # network
@@ -75,11 +73,13 @@ alias P='ping 8.8.8.8 -c 3'
 alias platex='platex -kanji=utf8'
 alias gcc='gcc -Wall -lm -std=c99 -O3'
 alias gpp='g++'
+alias R='ruby'
 
 # other
 alias englize='export LANG=en_US.UTF-8'
 alias japanize='export LANG=ja_JP.UTF-8'
 alias lmap='xmodmap $HOME/.xmodmap'
+alias suspend='pm-suspend'
 
 # tmux config
 alias tmuxn='tmux source-file $HOME/.tmux.conf'
