@@ -22,11 +22,11 @@ if [ $DISPLAY ]; then
 
 	xcompmgr &
 	xset r rate 190 20
-	guake &
+	exec guake &
 	xmodmap /home/beshowjo/.xmodmap
 	xbindkeys
 
-	exec openbox-session | xbacklight -set 45%= #| amixer -c 1 set Headphone 70 | amixer -c 1 set Headphone unmute | amixer -c 1 set Master 87 | amixer -c 1 set PCM 255
+	exec openbox-session | xbacklight -set 45%=
 
 else
 	setterm -blank 0
