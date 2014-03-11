@@ -34,7 +34,7 @@ if [ $DISPLAY ]; then
 	xmodmap /home/beshowjo/.xmodmap
 	xbindkeys
 
-	exec openbox-session | xbacklight -set 45%= | _vol Master Headphone Speaker
+	exec openbox-session | xbacklight -set 45%= | _vol Master Headphone Speaker && unset _vol 
 else
 	setterm -blank 0
 fi
