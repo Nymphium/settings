@@ -2,11 +2,11 @@
 
 _vol(){
 	for i in $@; do
-		amixer -c 0 set $i 100%=
+		exec amixer -c 0 set $i 100%=
 	done
 	unset i
 
-	amixer -c 0 set Master mute
+	exec amixer -c 0 set Master mute
 }
 	
 
