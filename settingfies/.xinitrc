@@ -6,7 +6,7 @@ _vol(){
 	done
 	unset i
 
-	amixer -c 0 set Master mute
+	amixer -c 0 set Master mute > /dev/null
 }
 
 
