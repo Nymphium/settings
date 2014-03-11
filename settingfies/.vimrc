@@ -54,9 +54,9 @@ nmap <ESC>s <ESC>:w<CR>
 nmap <ESC>s<ESC>s <ESC>:x<CR>
 nmap V <Nop>
 nmap V <C-v>
-nmap <C-w> <Nop>
+nmap <ESC>w <Nop>
 nmap <ESC>c <Nop>
-nmap <ESC>k <Nop>
+nmap <ESC>K <Nop>
 
 vnoremap v $h
 vnoremap L <Nop>
@@ -91,8 +91,8 @@ nnoremap <ESC>k <C-u>
 nnoremap <ESC>s <Nop>
 nnoremap <ESC>s <ESC>:w<CR>
 nnoremap <ESC>s<ESC>s <ESC>:x<CR>
-nnoremap <C-w> <Nop>
-nnoremap <C-W><C-W> <ESC>:q!<CR>
+nnoremap <ESC>w <Nop>
+nnoremap <ESC>w<ESC>w <ESC>:q!<CR>
 nnoremap <silent> <F3> :setlocal relativenumber!<CR>
 nnoremap I <Nop>
 nnoremap II <ESC>gg=G
@@ -106,6 +106,7 @@ nnoremap wk <ESC><C-w>-<C-w>-<C-w>-<C-w>-<C-w>-
 nnoremap <return> <ESC>i<return><ESC>
 nnoremap <TAB> >>
 nnoremap <S-Tab> <<
+nnoremap <ESC><CR> O<ESC>
 
 inoremap <ESC>v <Nop>
 inoremap <ESC>v <ESC>"*pa
@@ -300,19 +301,14 @@ if has('vim_starting')
 	filetype indent on
 endif
 
-NeoBundle "gmarik/vundle"
-NeoBundle "rails.vim"
+NeoBundle "git://github.com/vim-scripts/rdark"
+
 NeoBundle 'osyo-manga/vim-over'
-NeoBundle "tpope/vim-fugitive"
-NeoBundle "git://github.com/vim-scripts/Align"
 NeoBundle "git://github.com/Shougo/neocomplete.vim"
 NeoBundle "git://github.com/othree/eregex.vim"
 NeoBundle "git://github.com/scrooloose/nerdcommenter"
-NeoBundle "git://github.com/vim-scripts/rdark"
 NeoBundle "git://github.com/Shougo/neosnippet"
 NeoBundle "othree/html5.vim"
-NeoBundle "https://github.com/h1mesuke/vim-alignta"
-NeoBundle "https://github.com/scrooloose/syntastic"
 
 "" ----plugins' settings & plugins' keymaps----{
 	 "" ergex {
@@ -416,8 +412,8 @@ NeoBundle "https://github.com/scrooloose/syntastic"
 	"" }
 
 	"" vim-over {
-		nnoremap <silent> %% :OverCommandLine<CR>%s/
-		nnoremap <silent> %P y:OverCommandLine<CR>%s!<C-r>=substitute(@0, '!', '\\!','g')<CR>!!gI<Left><Left><Left>
+		nnoremap <silent> %% :OverCommandLine<CR>%S/
+		nnoremap <silent> %P y:OverCommandLine<CR>%S!<C-r>=substitute(@0, '!', '\\!','g')<CR>!!gI<Left><Left><Left>
 	"" }
 
 	"" }

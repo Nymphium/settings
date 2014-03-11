@@ -5,6 +5,7 @@ _vol(){
 		amixer -c 0 set $i 100%= > /dev/null
 	done
 	unset i
+
 	amixer -c 0 set Master mute
 }
 
@@ -18,20 +19,12 @@ fi
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
-
-if [ -d $HOME/.privatekeys ]; then
-	source .privatekeys
-fi
-
 if [ $DISPLAY ]; then
 	nitrogen --restore &
 
-	GTK_IM_MODULE=ibus
-	export GTK_IM_MODULE
-	QT_IM_MODULE=ibus
-	export QT_IM_MODULE
-	XMODIFIERS=@im=ibus
-	export XMODIFIERS
+	export GTK_IM_MODULE=ibus
+	export QT_IM_MODULE=ibus
+	export XMODIFIERS=@im=ibus
 	ibus-daemon --xim -d
 
 	exec xcompmgr &
