@@ -24,7 +24,8 @@ set nobackup
 set noswapfile
 set backspace=indent,eol,start
 set list
-set listchars=tab:»-,trail:.,extends:»,precedes:«,nbsp:%,eol:↲
+" set listchars=tab:»-,trail:.,extends:»,precedes:«,nbsp:%,eol:↲
+set listchars=tab:>_,trail:.,extends:>,precedes:<,nbsp:%,eol:<
 set wrap
 set number
 set autoindent
@@ -37,13 +38,15 @@ set wildmode=list,full
 set cursorcolumn
 set cursorline
 set t_Co=256
-set relativenumber
+" set relativenumber
 set lazyredraw
 set statusline+=%r
 set shell=zsh
 
+execute pathogen#infect()
+
 "" KeyMappings
-nmap <silent> <ESC>e <ESC>:nohlsearch<CR>
+nmap <silent> <ESC> <ESC>:nohlsearch<CR>
 nmap <ESC>t<ESC>l <ESC>:tabn
 nmap <ESC>t<ESC>h <ESC>:tabp
 nmap e <Nop>
@@ -118,7 +121,7 @@ inoremap <ESC>j <Down>
 inoremap <ESC>k <Up>
 inoremap <ESC>h <Left>
 inoremap <ESC>l <Right>
-inoremap <silent> <ESC>e <ESC><ESC>:nohlsearch<CR>
+inoremap <silent> <ESC>e <ESC>:nohlsearch<CR>
 inoremap <ESC>s <Nop>
 inoremap <ESC>s <ESC>:w<CR>i
 inoremap <ESC>u <ESC>ui
@@ -132,11 +135,11 @@ inoremap <ESC>L <End>
 inoremap <ESC>H <Home>
 inoremap <C-w> <Nop>
 inoremap <C-w><C-w> <ESC><ESC>:q!<CR>
-inoremap { {}<LEFT>
-inoremap [ []<LEFT>
-inoremap ( ()<LEFT>
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
+" inoremap { {}<LEFT>
+" inoremap [ []<LEFT>
+" inoremap ( ()<LEFT>
+" inoremap " ""<LEFT>
+" inoremap ' ''<LEFT>
 inoremap <ESC>f <ESC><ESC>/
 inoremap <ESC>a <ESC>:saveas <Space>
 "" inoremap <S-Tab> <ESC>>><<<<i
@@ -294,33 +297,44 @@ endfunction
 "" }
 
 "" -----NeoBundle----- {
-if has('vim_starting')
-	set runtimepath+=~/.vim/bundle/neobundle.vim
-	call neobundle#rc('~/.vim/bundle')
-	filetype plugin on
-	filetype indent on
-endif
+	if has('vim_starting')
+		set runtimepath+=~/.vim/bundle/neobundle.vim
+		call neobundle#rc('~/.vim/bundle')
+		filetype plugin on
+		filetype indent on
+	endif
 
-NeoBundle "git://github.com/vim-scripts/rdark"
+	NeoBundle "vim-scripts/rdark"
 
-NeoBundle 'osyo-manga/vim-over'
-NeoBundle "git://github.com/Shougo/neocomplete.vim"
-NeoBundle "git://github.com/othree/eregex.vim"
-NeoBundle "git://github.com/scrooloose/nerdcommenter"
-NeoBundle "git://github.com/Shougo/neosnippet"
-NeoBundle "othree/html5.vim"
+	NeoBundle 'osyo-manga/vim-over'
+	NeoBundle "Shougo/neocomplete.vim"
+	NeoBundle "othree/eregex.vim"
+	NeoBundle "scrooloose/nerdcommenter"
+	NeoBundle "Shougo/neosnippet"
+	NeoBundle "othree/html5.vim"
+	NeoBundle "Townk/vim-autoclose"
+	NeoBundle "thinca/vim-quickrun"
+"" }
 
-"" ----plugins' settings & plugins' keymaps----{
-	 "" ergex {
+"" ----plugins' settings & keymaps----{
+	 "" eregex {
 		 nmap <ESC>f <Nop>
 		 nmap <ESC>f <ESC>:M/
 	"" }
 
 	"" NERDCommenter {
+		"" the number of space adding when commenting
 		let NERDSpaceDelims = 1
+		"" Disable default keymaps
+		" let g:NERDCreateDefaultMappings = 0
 		nmap <ESC>c <Nop>
 		nmap <ESC>c <Plug>NERDCommenterToggle
 		vmap <ESC>c <Plug>NERDCommenterToggle
+		" nmap <ESC>x <Nop>
+		" vmap <ESC>x <Plug>NERDComComment
+		" vmap <ESC>x <Plug>NERDComToggleComment
+		" vmap <ESC>z <Nop>
+		" vmap <ESC>z <Plug>NERDComUncommentLine
 	""}
 
 
@@ -415,10 +429,7 @@ NeoBundle "othree/html5.vim"
 		nnoremap <silent> %% :OverCommandLine<CR>%S/
 		nnoremap <silent> %P y:OverCommandLine<CR>%S!<C-r>=substitute(@0, '!', '\\!','g')<CR>!!gI<Left><Left><Left>
 	"" }
-
-	"" }
-"" }
-
+  "" }
 
 "" ----color setting---- {
 	colorscheme rdark

@@ -1,13 +1,11 @@
 #!/bin/sh
 
-_vol(){
-	for i in $@; do
-		amixer -c 0 set $i 100%= > /dev/null
-	done
-	unset i
-
-	amixer -c 0 set Master mute
-}
+# _vol(){
+	# for i in $@; do
+		# exec amixer -c 0 set $i 100%=
+	# done
+	# unset i
+# }
 
 
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
@@ -34,7 +32,9 @@ if [ $DISPLAY ]; then
 	xmodmap /home/beshowjo/.xmodmap
 	xbindkeys
 
-	exec openbox-session | xbacklight -set 45%= | _vol Master Headphone Speaker
+	amixer -c 0 set Master mute
+
+	exec openbox-session | xbacklight -set 45%= #| _vol Master Headphone Speaker | amixer -c 0 set Master mute | unset _vol
 else
 	setterm -blank 0
 fi

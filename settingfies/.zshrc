@@ -62,6 +62,7 @@ alias visudo='sudo VISUAL=vim visudo'
 alias suspend='sudo systemctl suspend'
 alias eq='alsamixer -D equal'
 alias alsamixer='alsamixer -gc 0'
+alias ag='ag --hidden -S --stats'
 
 ## network
 alias wifisearch='sudo killall -r iwlwifi; sudo ip link set wlp6s0 up; sudo iw dev wlp6s0 scan'
