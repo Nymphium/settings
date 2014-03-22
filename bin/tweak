@@ -1,43 +1,79 @@
 #!/bin/bash
 
+usage(){
+	echo "tweak usage...
+	-v      configure .vimrc
+	-z      configure .zshrc
+	-t      configure .tmux.conf
+	-x      configure .xinitrc
+	-xm     configure .xmodmap
+	--tweak  configure this script($(which tweak))"
+}
+
+_open(){
+	if [ -e $HOME/$file ]; then
+		vim $HOME/$file
+	else
+		echo No such file $file
+	fi
+}
+
 
 while test $# -gt 0; do
 	case "$1" in
-		-v)
-			vim $HOME/.vimrc
+		-v|v)
+			file=.vimrc
+
+			_open
+
 			exit 0
+
 			;;
-		-z)
-			vim $HOME/.zshrc
+		-z|z)
+			file=.zshrc
+
+			_open
+
 			exit 0
+
 			;;
-		-t)
-			vim $HOME/.tmux.conf
+		-t|t)
+			file=.tmux.conf
+
+			_open
+
 			exit 0
+
 			;;
 		--tweak)
-			vim /usr/local/bin/tweak
+			sudo vim $(which tweak)
+
 			exit 0
+
 			;;
-		-x)
-			vim $HOME/.xinitrc
+		-x|x)
+			file=.xinitrc
+
+			_open
+
 			exit 0
+
+			;;
+		-xm|xm)
+			file=.xmodmap
+
+			_open
+
+			exit 0
+
 			;;
 		*)
-			echo "tweak usage...
-   -v configure .vimrc
-   -z configure .zshrc
-   -t configure .tmux.conf
-   -x configure .xinitrc
-  --tweak configure this script($(which tweak))"
+			usage
+
 			exit 0
+
 			;;
 	esac
 done
 
-echo "tweak usage...
-   -v configure .vimrc
-   -z configure .zshrc
-   -t configure .tmux.conf
-   -x configure .xinitrc
-  --tweak configure this script($(which tweak))"
+usage

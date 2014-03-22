@@ -1,4 +1,4 @@
 #!/bin/bash
 
-ps ax | grep -v grep | grep -v killing | grep $1
+pgrep -lf $1
 sudo killall -ir $1
