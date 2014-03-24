@@ -1,0 +1,6 @@
+#compdef alsaequal-mgr
+
+_arguments \
+'1:commands:(save load)' \
+':file:_files -W /home/beshowjo/.config/statemgr/alsaequal' \
+# '*::args:_normal'
