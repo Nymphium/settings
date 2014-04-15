@@ -4,7 +4,7 @@ EDITOR="vim"
 DISABLE_AUTO_TITLE=true
 # COMPLETION_WAITING_DOTS="true"
 
-export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc:/home/beshowjo/works/ruby
+export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc:/home/beshowjo/works/ruby:/usr/lib/ccache/bin
 
 plugins=(git)
 
@@ -18,7 +18,7 @@ source $ZSH/oh-my-zsh.sh
 source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Attache tmux
-if [ -z "$TMUX" ]; then
+if [ -z "$TMUX" ] && [ $#DISPLAY -gt 0 ]; then
 	tmux
 fi
 
@@ -47,17 +47,18 @@ unset _PRV_FILE
 alias S='sudo'
 alias C='cat'
 alias V='vim'
-alias reboot='sudo reboot'
+alias reboot='systemctl reboot -i'
 alias poweroff='systemctl poweroff -i'
 alias shutdown='sudo poweroff'
 alias rmf='sudo rm -rf'
+alias cpr='cp -r'
 alias chmod='sudo chmod'
 alias modc='sudo chmod 755'
 alias xterm='xterm -bd black -bg black -cr green -fg green +u8 +ulc +ls zsh'
 alias ps='ps aux'
 alias day='date +%R && cal'
 alias libreoffice='libreoffice --nologo'
-alias -g G=' | grep'
+alias -g G=' | grep -iE'
 alias visudo='sudo VISUAL=vim visudo'
 alias suspend='sudo systemctl suspend'
 alias eq='alsamixer -D equal'
@@ -70,12 +71,13 @@ alias chrome='google-chrome-stable'
 alias pacman='sudo pacman'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
+alias pkgsearch='yaourt -Ss'
 alias renew='sudo pacman -Sc --noconfirm && sudo yaourt -Syua --devel --noconfirm && sudo pacman-optimize; sudo updatedb'
 alias P='ping 8.8.8.8 -c 3'
 
 ## compile
 alias platex='platex -kanji=utf8'
-alias gcc='gcc -Wall -lm -std=c99 -O3'
+alias gcc='gcc -Wall -lm -std=c99 -O3 -march=core-avx-i'
 alias gpp='g++'
 alias R='ruby'
 

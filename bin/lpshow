@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sed -ie "s/､/, /g" ${1%.*}.tex
+sed -ie "s/｡/./g" ${1%.*}.tex
+
+platex ${1%.*}.tex
+dvipdfmx ${1%.*}.dvi
+evince ${1%.*}.pdf

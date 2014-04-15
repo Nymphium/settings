@@ -58,7 +58,7 @@ nmap <ESC>s<ESC>s <ESC>:x<CR>
 nmap V <Nop>
 nmap V <C-v>
 nmap <ESC>w <Nop>
-nmap <ESC>c <Nop>
+nmap <ESC>C <Nop>
 nmap <ESC>K <Nop>
 
 vnoremap v $h
@@ -70,8 +70,20 @@ vnoremap <ESC>j <C-d>
 vnoremap <ESC>k <C-u>
 vnoremap <TAB> >
 vnoremap <S-Tab> <
-"" toggle /*comment*/ (unfinished)
-vnoremap <silent> <ESC>z "qdi/**/<left><left><ESC><ESC>"qp
+"" add /*comment*/
+vnoremap <silent> <ESC>z "qdi/**/<Left><Left><ESC><ESC>"qp
+
+vnoremap <silent> " "qdi""<Left><ESC><ESC>"qp
+vnoremap <silent> ' "qdi''<Left><ESC><ESC>"qp
+vnoremap ( <Nop>
+vnoremap <silent> ( "qdi()<Left><ESC><ESC>"qp
+vnoremap { <Nop>
+vnoremap <silent> { "qdi{}<Left><ESC><ESC>"qp
+vnoremap [ <Nop>
+vnoremap <silent> [ "qdi[]<Left><ESC><ESC>"qp
+vnoremap < <Nop>
+vnoremap <silent> < "qdi<><Left><ESC><ESC>"qp
+
 
 nnoremap <BS> X
 nnoremap <ESC>1 <C-x>
@@ -109,7 +121,8 @@ nnoremap wk <ESC><C-w>-<C-w>-<C-w>-<C-w>-<C-w>-
 nnoremap <return> <ESC>i<return><ESC>
 nnoremap <TAB> >>
 nnoremap <S-Tab> <<
-nnoremap <ESC><CR> O<ESC>
+nnoremap <ESC>o <Nop>
+nnoremap <ESC>o o<ESC>
 
 inoremap <ESC>v <Nop>
 inoremap <ESC>v <ESC>"*pa
@@ -121,12 +134,12 @@ inoremap <ESC>j <Down>
 inoremap <ESC>k <Up>
 inoremap <ESC>h <Left>
 inoremap <ESC>l <Right>
-inoremap <silent> <ESC>e <ESC>:nohlsearch<CR>
 inoremap <ESC>s <Nop>
 inoremap <ESC>s <ESC>:w<CR>i
 inoremap <ESC>u <ESC>ui
 inoremap <ESC>p <ESC>pi
 inoremap <ESC>d <ESC>ddi
+inoremap <silent> <ESC>e <ESC>:nohlsearch<CR>
 inoremap L <Nop>
 inoremap L L
 inoremap H <Nop>
@@ -135,17 +148,17 @@ inoremap <ESC>L <End>
 inoremap <ESC>H <Home>
 inoremap <C-w> <Nop>
 inoremap <C-w><C-w> <ESC><ESC>:q!<CR>
-" inoremap { {}<LEFT>
-" inoremap [ []<LEFT>
-" inoremap ( ()<LEFT>
-" inoremap " ""<LEFT>
-" inoremap ' ''<LEFT>
+" inoremap { {}<Left>
+" inoremap [ []<Left>
+" inoremap ( ()<Left>
+" inoremap " ""<Left>
+" inoremap ' ''<Left>
 inoremap <ESC>f <ESC><ESC>/
 inoremap <ESC>a <ESC>:saveas <Space>
-"" inoremap <S-Tab> <ESC>>><<<<i
+" inoremap <S-Tab> <ESC>>><<<<i
 inoremap <C-q> <ESC>:q!<CR>
 
-"" You can edit binary by run: %vim -b filename
+"" edit binary by run: %vim -b filename
 augroup BinaryXXD
 	autocmd!
 	autocmd BufReadPre *.bin let &binary = 1
@@ -327,9 +340,9 @@ endfunction
 		let NERDSpaceDelims = 1
 		"" Disable default keymaps
 		" let g:NERDCreateDefaultMappings = 0
-		nmap <ESC>c <Nop>
-		nmap <ESC>c <Plug>NERDCommenterToggle
-		vmap <ESC>c <Plug>NERDCommenterToggle
+		nmap <ESC>C <Nop>
+		nmap <ESC>C <Plug>NERDCommenterToggle
+		vmap <ESC>C <Plug>NERDCommenterToggle
 		" nmap <ESC>x <Nop>
 		" vmap <ESC>x <Plug>NERDComComment
 		" vmap <ESC>x <Plug>NERDComToggleComment
@@ -362,8 +375,8 @@ endfunction
 		endif
 		let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-		inoremap <ESC>c <Nop>
-		inoremap <expr><ESC>c neocomplete#undo_completion()
+		inoremap <ESC>C <Nop>
+		inoremap <expr><ESC>C neocomplete#undo_completion()
 		inoremap <expr><C-l> neocomplete#complete_common_string()
 
 		"" <CR>: close popup and save indent.

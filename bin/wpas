@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ip link set %i up | killall -r wpa_supplicant | wpa_supplicant -B  -i%i -c /etc/wpa_supplicant/wpa_supplicant.conf && dhcpcd wlp6s0

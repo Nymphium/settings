@@ -1,23 +1,34 @@
 #!/bin/bash
 
-sudo killall -r wpa_supplicant
 
-if [ $#1 -lt 1 ]; then
+if [ -z $1 ]; then
 	echo "please put ID"
+
 	exit
+else
+	sudo nice -n0 killall -r wpa_supplicant
 fi
 
-sudo ip link set wlp6s0 up
+
+#confirm wireless Network Interface is UP or DOWN
+IF_UP=`nice -n1 ip link | awk NR==5 | sed -e "s/.*\(UP\),.*/\1/" | sed -e "s/\s//g"`
+
+if [ $IF_UP != UP ]; then
+	sudo ip link set wlp6s0 up
+fi
+
 
 ID=$1
 PASS=$2
 
-if [ ${#PASS} -lt 1 ]; then # if no password
+if [ -z ${#PASS} ]; then # if no password
 	sudo iw wlp6s0 connect $ID
 elif [ ${#PASS} -lt 8 ]; then # if password-length < 8
 	sudo iw wlp6s0 connect ${ID} key 0:${PASS}
 else
 	echo "ctrl_interface=/var/run/wpa_supplicant GROUP=wheel" > /etc/wpa_supplicant/wpa_supplicant.conf
+
 	sudo wpa_passphrase ${ID} ${PASS} /etc/wpa_supplicant/wpa_supplicant.conf >> /etc/wpa_supplicant/wpa_supplicant.conf
-	sudo wpa_supplicant -B -Dwext -iwlp6s0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+
+	sudo wpa_supplicant -B -iwlp6s0 -c /etc/wpa_supplicant/wpa_supplicant.conf
 fi
