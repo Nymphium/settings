@@ -3,59 +3,62 @@ runtime! archlinux.vim
 filetype plugin indent on
 syntax on
 
+set fileencodings=utf-8,iso-2022-jp,sjis,euc-jp
+set fileformats=unix,dos,mac
+
+set nobackup
+set noswapfile
+
 set grepprg=grep\ -nH\ $*
-set clipboard+=unnamed
-set clipboard+=autoselect
 set nocompatible
-set fileencodings=iso-2022-jp,sjis,euc-jp,utf-8
-set fileformats=unix,dos
 set history=2000
+
 set ignorecase
 set smartcase
 set hlsearch
 set incsearch
+
 set showmatch
 set matchtime=1
+
 set showcmd
+
 set shiftwidth=4
 set tabstop=4
+set autoindent
+set wrap
+
 set scrolloff=20
-set nobackup
-set noswapfile
 set backspace=indent,eol,start
 set list
 " set listchars=tab:»-,trail:.,extends:»,precedes:«,nbsp:%,eol:↲
 set listchars=tab:>_,trail:.,extends:>,precedes:<,nbsp:%,eol:<
-set wrap
 set number
-set autoindent
-set ruler
 set matchpairs& matchpairs+=<:>
-set fileformats=unix,dos,mac
-set ambiwidth=double
+set ambw=double
 set wildmenu
-set wildmode=list,full
 set cursorcolumn
 set cursorline
 set t_Co=256
-" set relativenumber
 set lazyredraw
-set statusline+=%r
+set relativenumber
 set shell=zsh
+set clipboard=unnamedplus,autoselect
+set timeoutlen=180
+set display=uhex
 
-execute pathogen#infect()
+"" StatusLine settings
+set statusline=%m%h%w\L%l\/%L\ [Edit:\"%t\"\|Type:\"%Y\"\|%{'Enc:\"'.(&fenc!=''?&fenc:&enc).'\"]'}
+set laststatus=2
 
 "" KeyMappings
 nmap <silent> <ESC> <ESC>:nohlsearch<CR>
-nmap <ESC>t<ESC>l <ESC>:tabn
-nmap <ESC>t<ESC>h <ESC>:tabp
-nmap e <Nop>
-nmap <ESC>a <Nop>
-nmap <ESC>a <ESC>:saveas <Space>
+nmap <ESC>a <ESC>:saveas 
 nmap <ESC>s <Nop>
-nmap <ESC>s <ESC>:w<CR>
-nmap <ESC>s<ESC>s <ESC>:x<CR>
-nmap V <Nop>
+nmap <ESC>s <ESC>:w!<CR>
+nmap <ESC>s<ESC>s <ESC>:wq!<CR>
+nmap <ESC>w <Nop>
+nmap <ESC>w<ESC>w <ESC>:q!<CR>
 nmap V <C-v>
 nmap <ESC>w <Nop>
 nmap <ESC>C <Nop>
@@ -64,26 +67,15 @@ nmap <ESC>K <Nop>
 vnoremap v $h
 vnoremap L <Nop>
 vnoremap H <Nop>
+vnoremap W b
 vnoremap <ESC>L $
 vnoremap <ESC>H ^
 vnoremap <ESC>j <C-d>
 vnoremap <ESC>k <C-u>
 vnoremap <TAB> >
 vnoremap <S-Tab> <
-"" add /*comment*/
 vnoremap <silent> <ESC>z "qdi/**/<Left><Left><ESC><ESC>"qp
-
-vnoremap <silent> " "qdi""<Left><ESC><ESC>"qp
-vnoremap <silent> ' "qdi''<Left><ESC><ESC>"qp
-vnoremap ( <Nop>
-vnoremap <silent> ( "qdi()<Left><ESC><ESC>"qp
-vnoremap { <Nop>
-vnoremap <silent> { "qdi{}<Left><ESC><ESC>"qp
-vnoremap [ <Nop>
-vnoremap <silent> [ "qdi[]<Left><ESC><ESC>"qp
-vnoremap < <Nop>
-vnoremap <silent> < "qdi<><Left><ESC><ESC>"qp
-
+vnoremap i I
 
 nnoremap <BS> X
 nnoremap <ESC>1 <C-x>
@@ -103,11 +95,6 @@ nnoremap <ESC>L $
 nnoremap <ESC>H ^
 nnoremap <ESC>j <C-d>
 nnoremap <ESC>k <C-u>
-nnoremap <ESC>s <Nop>
-nnoremap <ESC>s <ESC>:w<CR>
-nnoremap <ESC>s<ESC>s <ESC>:x<CR>
-nnoremap <ESC>w <Nop>
-nnoremap <ESC>w<ESC>w <ESC>:q!<CR>
 nnoremap <silent> <F3> :setlocal relativenumber!<CR>
 nnoremap I <Nop>
 nnoremap II <ESC>gg=G
@@ -148,14 +135,9 @@ inoremap <ESC>L <End>
 inoremap <ESC>H <Home>
 inoremap <C-w> <Nop>
 inoremap <C-w><C-w> <ESC><ESC>:q!<CR>
-" inoremap { {}<Left>
-" inoremap [ []<Left>
-" inoremap ( ()<Left>
-" inoremap " ""<Left>
-" inoremap ' ''<Left>
 inoremap <ESC>f <ESC><ESC>/
 inoremap <ESC>a <ESC>:saveas <Space>
-" inoremap <S-Tab> <ESC>>><<<<i
+inoremap <S-Tab> <ESC><ESC><<i
 inoremap <C-q> <ESC>:q!<CR>
 
 "" edit binary by run: %vim -b filename
@@ -183,7 +165,7 @@ function! s:mkdir(dir, force)
 	endif
 endfunction
 
-"" autoconfirm character-code
+"" autoconfirm character-code {
 if &encoding !=# 'utf-8'
 	set encoding=japan
 	set fileencoding=japan
@@ -233,9 +215,9 @@ endif
 function! s:SID_PREFIX()
 	return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
 endfunction
+"" }
 
 "" highlight Zenkaku-space {
-
 function! ZenkakuSpace()
 	highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
 endfunction
@@ -251,34 +233,8 @@ if has('syntax')
 endif
 "" }
 
-"" Set tabline.{
-function! s:my_tabline()
-	let s = ''
-	for i in range(1, tabpagenr('$'))
-		let bufnrs = tabpagebuflist(i)
-		"" first window, first appears
-		let bufnr = bufnrs[tabpagewinnr(i) - 1]
-		"" display 0-origin tabpagenr.
-		let no = i
-		let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
-		let title = fnamemodify(bufname(bufnr), ':t')
-		let title = '' . title . ' |'
-		let s .= '%'.i.'T'
-		let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
-		let s .= no . '- ' . title
-		let s .= mod
-		let s .= '%#TabLineFill# '
-	endfor
-	let s .= '%#TabLineFill#%T%=%#TabLine#'
-	return s
-endfunction
-
-let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
-set showtabline=2
-"" }
-
 "" insertmode highlight {
-let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
+let g:hi_insert = 'highlight StatusLine cterm=reverse,bold ctermfg=4 ctermbg=3'
 
 if has('syntax')
 	augroup InsertHook
@@ -327,6 +283,9 @@ endfunction
 	NeoBundle "othree/html5.vim"
 	NeoBundle "Townk/vim-autoclose"
 	NeoBundle "thinca/vim-quickrun"
+	NeoBundle "tpope/vim-surround"
+	NeoBundle 'Markdown'
+	NeoBundle 'suan/vim-instant-markdown'
 "" }
 
 "" ----plugins' settings & keymaps----{
@@ -442,7 +401,16 @@ endfunction
 		nnoremap <silent> %% :OverCommandLine<CR>%S/
 		nnoremap <silent> %P y:OverCommandLine<CR>%S!<C-r>=substitute(@0, '!', '\\!','g')<CR>!!gI<Left><Left><Left>
 	"" }
-  "" }
+
+	"" surround {
+		xmap " <Plug>VSurround"
+		xmap ' <Plug>VSurround'
+		xmap ( <Plug>VSurround)
+		xmap { <Plug>VSurround}
+		xmap < <Plug>VSurround>
+		xmap [ <Plug>VSurround]
+	"" }
+"" }
 
 "" ----color setting---- {
 	colorscheme rdark
@@ -451,12 +419,9 @@ endfunction
 	hi Comment ctermfg=LightCyan cterm=italic
 	hi SpecialKey term=underline ctermfg=darkgray guifg=#1a1a1a
 	hi LineNr cterm=none ctermfg=white ctermbg=234
-
-	"" colorselect GBA(GUI, relying xfce...??)
-	noremap <silent> <F5> <ESC>:ColorSelect<CR>
-
+	hi statusline term=NONE cterm=NONE ctermfg=Blue ctermbg=White
 "" }
 
-"" ----ikill lasting comment function when starting a new line---- {
+"" ----kill lasting comment function when starting a new line---- {
 autocmd Filetype * set formatoptions-=ro
 "" }

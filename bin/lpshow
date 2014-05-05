@@ -1,8 +1,17 @@
 #!/bin/bash
 
-sed -ie "s/､/, /g" ${1%.*}.tex
-sed -ie "s/｡/./g" ${1%.*}.tex
+if [ -z $1 ]; then
+	echo "Yo Yo"
+	exit
+fi
 
-platex ${1%.*}.tex
-dvipdfmx ${1%.*}.dvi
-evince ${1%.*}.pdf
+F=${1%.*}
+
+sed -ie "s/､/, /g" ${F}.tex
+sed -ie "s/｡/./g" ${F}.tex
+
+platex ${F}.tex
+dvipdfmx ${F}.dvi
+rm `ls | grep -Ev ${F}\.\(tex$\)\|\(pdf$\) | grep ${F}`
+
+evince ${F}.pdf

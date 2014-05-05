@@ -1,13 +1,5 @@
 #!/bin/sh
 
-# _vol(){
-	# for i in $@; do
-		# exec amixer -c 0 set $i 100%=
-	# done
-	# unset i
-# }
-
-
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
 	for f in /etc/X11/xinit/xinitrc.d/*; do
 		[ -x "$f" ] && . "$f"
@@ -18,6 +10,8 @@ fi
 export XDG_CONFIG_HOME="$HOME/.config"
 
 if [ $DISPLAY ]; then
+	xgamma -rgamma 0.8 -bgamma 0.75 -ggamma 0.8
+
 	nitrogen --restore &
 
 	export GTK_IM_MODULE=ibus
@@ -34,7 +28,7 @@ if [ $DISPLAY ]; then
 
 	amixer -c 0 set Master mute
 
-	exec openbox-session | xbacklight -set 45%= #| _vol Master Headphone Speaker | amixer -c 0 set Master mute | unset _vol
+	exec openbox-session | xbacklight -set 45%=
 else
 	setterm -blank 0
 fi
