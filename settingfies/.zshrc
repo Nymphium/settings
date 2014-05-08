@@ -4,9 +4,9 @@ EDITOR="vim"
 DISABLE_AUTO_TITLE=true
 # COMPLETION_WAITING_DOTS="true"
 
-export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc:/home/beshowjo/works/ruby:/usr/lib/ccache/bin
+export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc:/home/beshowjo/works/ruby:/usr/lib/ccache/bin:/home/beshowjo/.gem/ruby/2.1.0/gems:/usr/lib/ruby/gems/2.1.0
 
-plugins=(git)
+plugins=(git ruby gem history)
 
 if [[ -d /usr/local/share/zsh-completions ]]; then
 	fpath=($fpath /usr/local/share/zsh-completions)
@@ -55,7 +55,7 @@ alias cpr='cp -r'
 alias chmod='sudo chmod'
 alias modc='sudo chmod 755'
 alias xterm='xterm -bd black -bg black -cr green -fg green +u8 +ulc +ls zsh'
-alias ps='ps auxfv'
+alias ps='ps auxfhce'
 alias day='date +%R && cal'
 alias libreoffice='libreoffice --nologo'
 alias -g G=' | grep -iE'

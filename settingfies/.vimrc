@@ -33,18 +33,18 @@ set backspace=indent,eol,start
 set list
 " set listchars=tab:»-,trail:.,extends:»,precedes:«,nbsp:%,eol:↲
 set listchars=tab:>_,trail:.,extends:>,precedes:<,nbsp:%,eol:<
-set number
 set matchpairs& matchpairs+=<:>
 set ambw=double
 set wildmenu
+set number
+set relativenumber
 set cursorcolumn
 set cursorline
 set t_Co=256
 set lazyredraw
-set relativenumber
 set shell=zsh
 set clipboard=unnamedplus,autoselect
-set timeoutlen=180
+set timeoutlen=250
 set display=uhex
 
 "" StatusLine settings

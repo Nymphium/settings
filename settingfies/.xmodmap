@@ -21,10 +21,14 @@ keycode  43 = h H Left
 keycode  44 = j J Down
 keycode  45 = k K Up
 keycode  46 = l L Right
+keycode  54 = c C XF86Copy
+keycode  55 = v V XF86Paste
 keycode  49 = Escape NoSymbol Escape NoSymbol
 keycode  65 = Return space Return space
 clear lock
 keycode  66 = Muhenkan Caps_Lock Henkan
 keycode 100 = BackSpace BackSpace Delete BackSpace
 keycode 101 = Home NoSymbol End
+clear mod5
 keycode 102 = Mode_switch
+add mod5 = Mode_switch ISO_Level3_Shift
