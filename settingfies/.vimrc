@@ -48,7 +48,7 @@ set timeoutlen=250
 set display=uhex
 
 "" StatusLine settings
-set statusline=%m%h%w\L%l\/%L\ [Edit:\"%t\"\|Type:\"%Y\"\|%{'Enc:\"'.(&fenc!=''?&fenc:&enc).'\"]'}
+set statusline=[Edit:\"%t%m\"\ \|\ Type:\"%Y\"\ \|\ %{'Enc:\"'.(&fenc!=''?&fenc:&enc).'\"]'}\ %h%w\L%l\/%L
 set laststatus=2
 
 "" KeyMappings
@@ -402,6 +402,11 @@ endfunction
 		nnoremap <silent> %P y:OverCommandLine<CR>%S!<C-r>=substitute(@0, '!', '\\!','g')<CR>!!gI<Left><Left><Left>
 	"" }
 
+	"" vim-quickrun {
+		let g:quickrun_config = {}
+		let g:quickrun_config['tex'] = {'command' : 'lpshow'}
+	"" }
+
 	"" surround {
 		xmap " <Plug>VSurround"
 		xmap ' <Plug>VSurround'
@@ -419,7 +424,7 @@ endfunction
 	hi Comment ctermfg=LightCyan cterm=italic
 	hi SpecialKey term=underline ctermfg=darkgray guifg=#1a1a1a
 	hi LineNr cterm=none ctermfg=white ctermbg=234
-	hi statusline term=NONE cterm=NONE ctermfg=Blue ctermbg=White
+	hi statusline term=NONE cterm=NONE ctermfg=Black ctermbg=White
 "" }
 
 "" ----kill lasting comment function when starting a new line---- {
