@@ -2,16 +2,44 @@
 
 if [ -z $1 ]; then
 	echo "Yo Yo"
+
 	exit
 fi
 
 F=${1%.*}
 
-sed -ie "s/､/, /g" ${F}.tex
-sed -ie "s/｡/./g" ${F}.tex
+if [ -e ${F}.tex ]; then
+	echo start converion of ${F}.tex to ${F}.pdf
+else
+	echo "No such file or directory: ${F}"
 
-platex ${F}.tex
-dvipdfmx ${F}.dvi
-rm `ls | grep -Ev ${F}\.\(tex$\)\|\(pdf$\) | grep ${F}`
+	exit
+fi
 
-evince ${F}.pdf
+NAME_RANDOMIZE=${F}-`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1 | sort | uniq`
+
+cp ${F}.tex ${NAME_RANDOMIZE}.tex
+
+sed -ie "s/､/、/g" ${NAME_RANDOMIZE}.tex
+
+sed -ie "s/｡/。/g" ${NAME_RANDOMIZE}.tex
+
+platex -kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex > /dev/null
+
+if [ -e ${NAME_RANDOMIZE}.dvi ]; then
+	platex -kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex > /dev/null
+else
+	echo "platex error occured. failed..."
+	
+	rm ${NAME_RANDOMIZE}*
+
+	exit
+fi
+
+dvipdfmx ${NAME_RANDOMIZE}.dvi > /dev/null
+
+cp ${NAME_RANDOMIZE}.pdf ${F}.pdf
+
+rm ${NAME_RANDOMIZE}.*
+
+evince ${F}.pdf &
