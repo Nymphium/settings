@@ -68,6 +68,8 @@ vnoremap v $h
 vnoremap L <Nop>
 vnoremap H <Nop>
 vnoremap W b
+vnoremap E <Nop>
+vnoremap E e
 vnoremap <ESC>L $
 vnoremap <ESC>H ^
 vnoremap <ESC>j <C-d>
