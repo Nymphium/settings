@@ -28,7 +28,7 @@ set tabstop=4
 set autoindent
 set wrap
 
-set scrolloff=20
+set scrolloff=10
 set backspace=indent,eol,start
 set list
 " set listchars=tab:»-,trail:.,extends:»,precedes:«,nbsp:%,eol:↲
@@ -276,7 +276,6 @@ endfunction
 	endif
 
 	NeoBundle "vim-scripts/rdark"
-
 	NeoBundle 'osyo-manga/vim-over'
 	NeoBundle "Shougo/neocomplete.vim"
 	NeoBundle "othree/eregex.vim"
@@ -288,6 +287,9 @@ endfunction
 	NeoBundle "tpope/vim-surround"
 	NeoBundle 'Markdown'
 	NeoBundle 'suan/vim-instant-markdown'
+	NeoBundle 'tpope/vim-endwise'
+	NeoBundle 'tpope/vim-pathogen'
+	NeoBundle 'scrooloose/syntastic'
 "" }
 
 "" ----plugins' settings & keymaps----{
@@ -299,18 +301,11 @@ endfunction
 	"" NERDCommenter {
 		"" the number of space adding when commenting
 		let NERDSpaceDelims = 1
-		"" Disable default keymaps
-		" let g:NERDCreateDefaultMappings = 0
 		nmap <ESC>C <Nop>
 		nmap <ESC>C <Plug>NERDCommenterToggle
+		vmap <ESC>C <Nop>
 		vmap <ESC>C <Plug>NERDCommenterToggle
-		" nmap <ESC>x <Nop>
-		" vmap <ESC>x <Plug>NERDComComment
-		" vmap <ESC>x <Plug>NERDComToggleComment
-		" vmap <ESC>z <Nop>
-		" vmap <ESC>z <Plug>NERDComUncommentLine
-	""}
-
+""}
 
 	"" neocomplete {
 		"" Disable AutoComplPop.
@@ -355,28 +350,12 @@ endfunction
 		inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 		inoremap <expr><C-y> neocomplete#close_popup()
 		inoremap <expr><ESC>z neocomplete#cancel_popup()
-		"" Close popup by <Space>.
-		"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
 		"" For cursor moving in insert mode(Not recommended)
 		inoremap <expr><ESC>h neocomplete#close_popup() . "\<Left>"
 		inoremap <expr><ESC>l neocomplete#close_popup() . "\<Right>"
 		inoremap <expr><ESC>k neocomplete#close_popup() . "\<Up>"
 		inoremap <expr><ESC>j neocomplete#close_popup() . "\<Down>"
-		"" Or set this.
-		"" let g:neocomplete#enable_cursor_hold_i = 1
-		"" Or set this.
-		"" let g:neocomplete#enable_insert_char_pre = 1
-
-
-		"" AutoComplPop like behavior.
-		"" let g:neocomplete#enable_auto_select = 1
-
-		"" Shell like behavior(not recommended).
-		"" set completeopt+=longest
-		"" let g:neocomplete#enable_auto_select = 1
-		"" let g:neocomplete#disable_auto_complete = 1
-		"" inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 		"" Enable omni completion.
 		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -393,10 +372,6 @@ endfunction
 		let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 		let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 		let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-		"" For perlomni.vim setting.
-		"" https://github.com/c9s/perlomni.vim
-		let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 	"" }
 
 	"" vim-over {
@@ -416,6 +391,15 @@ endfunction
 		xmap { <Plug>VSurround}
 		xmap < <Plug>VSurround>
 		xmap [ <Plug>VSurround]
+	"" }
+
+	"" vim-pathogen {
+		call pathogen#infect()
+	"" }
+
+	"" syntastic {
+		let g:syntastic_enable_signs=1
+		let g:syntastic_auto_loc_list=2
 	"" }
 "" }
 

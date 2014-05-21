@@ -25,6 +25,8 @@ fi
 
 export PS1=\[%{$fg_bold[red]%}%n\ %{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
 
+export TERM=xterm-256color
+
 setopt HIST_IGNORE_ALL_DUPS
 setopt hist_verify
 setopt hist_expand
@@ -55,7 +57,6 @@ alias rmf='sudo rm -rf'
 alias cpr='cp -r'
 alias chmod='sudo chmod'
 alias modc='sudo chmod 755'
-alias xterm='xterm -bd black -bg black -cr green -fg green +u8 +ulc +ls zsh'
 alias ps='ps auxfh'
 alias day='date +%R && cal'
 alias libreoffice='libreoffice --nologo'
@@ -65,6 +66,7 @@ alias suspend='sudo systemctl suspend'
 alias eq='alsamixer -D equal'
 alias alsamixer='alsamixer -gc 0'
 alias ag='ag --hidden -S --stats'
+alias ....='cd ../../../..'
 
 ## network
 alias wifisearch='sudo killall -r iwlwifi; sudo ip link set wlp6s0 up; sudo iw dev wlp6s0 scan'
@@ -73,7 +75,7 @@ alias pacman='sudo pacman'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
 alias pkgsearch='yaourt -Ss'
-alias renew='sudo pacman -Sc --noconfirm && sudo yaourt -Syua --devel --noconfirm && sudo pacman-optimize; sudo updatedb'
+alias renew='sudo pacman -Sc --noconfirm && sudo yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
 alias P='ping 8.8.8.8 -c 3'
 
 ## compile
