@@ -1,3 +1,5 @@
+# vim:filetype=sh
+
 ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="robbyrussell"
 EDITOR="vim"
@@ -70,7 +72,6 @@ alias ....='cd ../../../..'
 
 ## network
 alias wifisearch='sudo killall -r iwlwifi; sudo ip link set wlp6s0 up; sudo iw dev wlp6s0 scan'
-alias chrome='google-chrome-stable'
 alias pacman='sudo pacman'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
