@@ -1,0 +1,4 @@
+awk: cmd. line:awk: cmd. line:1: warning: escape sequence `\/' treated as plain `/'
+1: warning: escape sequence `\/' treated as plain `/'
+sh: 0s//.*///g: No such file or directory
+sh: 0s//.*///g: No such file or directory
