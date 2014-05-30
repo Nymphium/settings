@@ -3,7 +3,7 @@ runtime! archlinux.vim
 filetype plugin indent on
 syntax on
 
-set fileencodings=utf-8,iso-2022-jp,sjis,euc-jp
+set fileencodings=utf-8
 set fileformats=unix,dos,mac
 
 set nobackup
@@ -19,7 +19,7 @@ set hlsearch
 set incsearch
 
 set showmatch
-set matchtime=1
+set matchtime=2
 
 set showcmd
 
@@ -40,6 +40,9 @@ set number
 set relativenumber
 set cursorcolumn
 set cursorline
+if &term =~ '256color'
+	set t_ut=
+endif
 set t_Co=256
 set lazyredraw
 set shell=zsh
@@ -166,58 +169,6 @@ function! s:mkdir(dir, force)
 		call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
 	endif
 endfunction
-
-"" autoconfirm character-code {
-if &encoding !=# 'utf-8'
-	set encoding=japan
-	set fileencoding=japan
-endif
-if has('iconv')
-	let s:enc_euc = 'euc-jp'
-	let s:enc_jis = 'iso-2022-jp'
-	if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
-		let s:enc_euc = 'eucjp-ms'
-		let s:enc_jis = 'iso-2022-jp-3'
-	elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-		let s:enc_euc = 'euc-jisx0213'
-		let s:enc_jis = 'iso-2022-jp-3'
-	endif
-	if &encoding ==# 'utf-8'
-		let s:fileencodings_default = &fileencodings
-		let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
-		let &fileencodings = &fileencodings .','. s:fileencodings_default
-		unlet s:fileencodings_default
-	else
-		let &fileencodings = &fileencodings .','. s:enc_jis
-		set fileencodings+=utf-8,ucs-2le,ucs-2
-		if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
-			set fileencodings+=cp932
-			set fileencodings-=euc-jp
-			set fileencodings-=euc-jisx0213
-			set fileencodings-=eucjp-ms
-			let &encoding = s:enc_euc
-			let &fileencoding = s:enc_euc
-		else
-			let &fileencodings = &fileencodings .','. s:enc_euc
-		endif
-	endif
-	unlet s:enc_euc
-	unlet s:enc_jis
-endif
-
-if has('autocmd')
-	function! AU_ReCheck_FENC()
-		if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
-			let &fileencoding=&encoding
-		endif
-	endfunction
-	autocmd BufReadPost * call AU_ReCheck_FENC()
-endif
-
-function! s:SID_PREFIX()
-	return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-endfunction
-"" }
 
 "" highlight Zenkaku-space {
 function! ZenkakuSpace()
@@ -407,12 +358,18 @@ endfunction
 	colorscheme rdark
 	" colorscheme jellybeans
 	" colorscheme xoria256
-	hi cursorline term=reverse cterm=none ctermbg=232
-	hi cursorcolumn ctermbg=232
-	hi Comment ctermfg=LightCyan cterm=italic
-	hi SpecialKey term=underline ctermfg=darkgray guifg=#1a1a1a
-	hi LineNr cterm=none ctermfg=white ctermbg=234
-	hi statusline term=none cterm=none ctermfg=black ctermbg=white
+	hi CursorLine cterm=none,bold ctermbg=234
+	hi CursorColumn cterm=bold ctermbg=234
+	hi Comment ctermfg=255 ctermbg=237
+	hi SpecialKey ctermfg=240
+	hi LineNr cterm=bold ctermfg=246 ctermbg=232
+	hi StatusLine ctermfg=0 ctermbg=255 cterm=bold
+	hi Special cterm=bold ctermfg=204
+	hi PreProc cterm=bold
+	hi Type cterm=bold ctermfg=47
+	hi String cterm=bold ctermfg=206
+	hi Statement cterm=bold
+	hi Constant cterm=bold
 "" }
 
 "" ----kill lasting comment function when starting a new line---- {

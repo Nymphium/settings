@@ -17,17 +17,16 @@ fi
 
 [ -d $HOME/.oh-my-zsh/plugins/zsh-completions/src ] && fpath=($HOME/.oh-my-zsh/plugins/zsh-completions/src $fpath)
 
+if [ ! $TMUX ]; then
+	tmux -2
+fi
+
+export TERM="screen-256color"
+
 source $ZSH/oh-my-zsh.sh
 source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Attache tmux
-if [ -z "$TMUX" ] && [ $#DISPLAY -gt 0 ]; then
-	tmux
-fi
-
 export PS1=\[%{$fg_bold[red]%}%n\ %{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
-
-export TERM=xterm-256color
 
 setopt HIST_IGNORE_ALL_DUPS
 setopt hist_verify
@@ -35,11 +34,6 @@ setopt hist_expand
 
 autoload -U compinit
 compinit -u
-
-# zstyle ':completion:*' verbose yes
-# zstyle ':completion:*' format '%B%d%b'
-# zstyle ':completion:*:warnings' format 'No matches for: %d'
-# zstyle ':completion:*' group-name ''
 
 # load many dotfiles
 _PRV_FILE=$HOME/.privatekeys
@@ -69,6 +63,7 @@ alias eq='alsamixer -D equal'
 alias alsamixer='alsamixer -gc 0'
 alias ag='ag --hidden -S --stats'
 alias ....='cd ../../../..'
+alias dmesg='dmesg -H -L -e -P -k -d'
 
 ## network
 alias wifisearch='sudo killall -r iwlwifi; sudo ip link set wlp6s0 up; sudo iw dev wlp6s0 scan'
@@ -91,6 +86,6 @@ alias japanize='export LANG=ja_JP.UTF-8'
 alias lmap='xmodmap $HOME/.xmodmap'
 
 ## tmux config
-alias tmuxn='tmux source-file $HOME/.tmux.conf'
+alias tmuxn='tmux -2 source-file $HOME/.tmux.conf'
 alias tmuxd='tmux detach'
-alias tmuxa='tmux attach'
+alias tmuxa='tmux -2 attach'
