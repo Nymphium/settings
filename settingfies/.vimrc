@@ -28,7 +28,7 @@ set tabstop=4
 set autoindent
 set wrap
 
-set scrolloff=10
+set scrolloff=20
 set backspace=indent,eol,start
 set list
 " set listchars=tab:»-,trail:.,extends:»,precedes:«,nbsp:%,eol:↲
@@ -358,8 +358,8 @@ endfunction
 	colorscheme rdark
 	" colorscheme jellybeans
 	" colorscheme xoria256
-	hi CursorLine cterm=none,bold ctermbg=234
-	hi CursorColumn cterm=bold ctermbg=234
+	hi CursorLine cterm=bold ctermbg=234
+	hi CursorColumn ctermbg=234
 	hi Comment ctermfg=255 ctermbg=237
 	hi SpecialKey ctermfg=240
 	hi LineNr cterm=bold ctermfg=246 ctermbg=232

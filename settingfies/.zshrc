@@ -71,7 +71,7 @@ alias pacman='sudo pacman'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
 alias pkgsearch='yaourt -Ss'
-alias renew='sudo pacman -Sc --noconfirm && sudo yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
+alias renew='gem update 2>&1 /dev/null & sudo pacman -Sc --noconfirm && sudo yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
 alias P='ping 8.8.8.8 -c 3'
 
 ## compile
