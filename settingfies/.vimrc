@@ -46,7 +46,7 @@ endif
 set t_Co=256
 set lazyredraw
 set shell=zsh
-set clipboard=unnamedplus,autoselect
+set clipboard=unnamedplus,autoselect,unmask
 set timeoutlen=250
 set display=uhex
 
@@ -79,8 +79,8 @@ vnoremap <ESC>j <C-d>
 vnoremap <ESC>k <C-u>
 vnoremap <TAB> >
 vnoremap <S-Tab> <
-vnoremap <silent> <ESC>z "qdi/**/<Left><Left><ESC><ESC>"qp
 vnoremap i I
+vnoremap <ESC>z d<ESC>:let @z = "/*" . @" . "*/"<CR>"zp
 
 nnoremap <BS> X
 nnoremap <ESC>1 <C-x>
@@ -102,7 +102,7 @@ nnoremap <ESC>j <C-d>
 nnoremap <ESC>k <C-u>
 nnoremap <silent> <F3> :setlocal relativenumber!<CR>
 nnoremap I <Nop>
-nnoremap II <ESC>gg=G
+nnoremap II :let l=line(".")<CR>:let c=col(".")<CR><ESC>gg=G:call cursor(l,c)<CR>
 nnoremap ww <ESC>:vne<Space>
 nnoremap wv <ESC>:new<Space>
 nnoremap w<TAB> <C-w>w
@@ -156,12 +156,26 @@ augroup BinaryXXD
 	autocmd BufReadPost * set nomod | endif
 augroup END
 
+augroup SyntaxProlog
+	autocmd!
+	autocmd BufNewFile *.swi set filetype=prolog
+	autocmd BufReadPost *.swi set filetype=prolog
+augroup END
+
 let g:tex_flavor = "latex"
 let php_parent_error_close = 1
 let php_parent_error_open = 1
 let java_highlight_all = 1
 let java_highlight_debug = 1
 let java_highlight_functions = 1
+
+augroup LatexSub
+	autocmd!
+	autocmd BufWritePre *.tex silent :%s/｡/。/ge
+	autocmd BufWritePre *.tex silent :%s/､/、/ge
+	autocmd BufWritePre *.tex silent :%s/｢\(.*\)｣/「\1」/ge
+	autocmd BufWritePre *.tex silent :%s/(\(.*\))/（\1）/ge
+augroup END
 
 function! s:mkdir(dir, force)
 	if !isdirectory(a:dir) && (a:force ||
@@ -241,6 +255,8 @@ endfunction
 	NeoBundle 'tpope/vim-endwise'
 	NeoBundle 'tpope/vim-pathogen'
 	NeoBundle 'scrooloose/syntastic'
+	NeoBundle 'rkitover/vimpager'
+	NeoBundle 'adimit/prolog.vim'
 "" }
 
 "" ----plugins' settings & keymaps----{
@@ -333,6 +349,7 @@ endfunction
 	"" vim-quickrun {
 		let g:quickrun_config = {}
 		let g:quickrun_config['tex'] = {'command' : 'lpshow'}
+		let g:quickrun_config['prolog'] = {'command' : 'gprolog'}
 	"" }
 
 	"" surround {
@@ -356,8 +373,6 @@ endfunction
 
 "" ----color setting---- {
 	colorscheme rdark
-	" colorscheme jellybeans
-	" colorscheme xoria256
 	hi CursorLine cterm=bold ctermbg=234
 	hi CursorColumn ctermbg=234
 	hi Comment ctermfg=255 ctermbg=237
