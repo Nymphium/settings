@@ -15,18 +15,26 @@ if [[ -d /usr/local/share/zsh-completions ]]; then
 	fpath=($fpath /usr/local/share/zsh-completions)
 fi
 
-[ -d $HOME/.oh-my-zsh/plugins/zsh-completions/src ] && fpath=($HOME/.oh-my-zsh/plugins/zsh-completions/src $fpath)
+if [ -d $HOME/.oh-my-zsh/plugins/zsh-completions/src ]; then
+	fpath=($HOME/.oh-my-zsh/plugins/zsh-completions/src $fpath)
+fi
+
+export TERM="screen-256color"
 
 if [ ! $TMUX ]; then
 	tmux -2
 fi
 
-export TERM="screen-256color"
-
-source $ZSH/oh-my-zsh.sh
-source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -d $HOME/.oh-my-zsh ]; then
+	source $ZSH/oh-my-zsh.sh
+	source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
 export PS1=\[%{$fg_bold[red]%}%n\ %{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
+
+if [ -d $HOME/.vim/bundle/vimpager/vimpager ]; then
+	export PAGER=$HOME/.vim/bundle/vimpager/vimpager
+fi
 
 setopt HIST_IGNORE_ALL_DUPS
 setopt hist_verify
@@ -37,8 +45,8 @@ compinit -u
 
 # load many dotfiles
 _PRV_FILE=$HOME/.privatekeys
-if [ -e $_PRV_FILE ] && [ -r $_PRV_FILE ]; then
-	source $_PRV_FILE
+if [ -e ${_PRV_FILE} ] && [ -r ${_PRV_FILE} ]; then
+	source ${_PRV_FILE}
 fi
 unset _PRV_FILE
 
@@ -63,7 +71,8 @@ alias eq='alsamixer -D equal'
 alias alsamixer='alsamixer -gc 0'
 alias ag='ag --hidden -S --stats'
 alias ....='cd ../../../..'
-alias dmesg='dmesg -H -L -e -P -k -d'
+alias dmesg='dmesg -dekHPL'
+alias less='vim -R'
 
 ## network
 alias wifisearch='sudo killall -r iwlwifi; sudo ip link set wlp6s0 up; sudo iw dev wlp6s0 scan'
@@ -71,10 +80,10 @@ alias pacman='sudo pacman'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
 alias pkgsearch='yaourt -Ss'
-alias renew='gem update 2>&1 /dev/null & sudo pacman -Sc --noconfirm && sudo yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
+alias renew='gem update 2>&1 /dev/null & sudo pacman -Sc --noconfirm && yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
 alias P='ping 8.8.8.8 -c 3'
 
-## compile
+## compile, interp
 alias platex='platex -kanji=utf8'
 alias gcc='gcc -Wall -lm -std=c99 -O3 -march=core-avx-i'
 alias gpp='g++'

@@ -1,0 +1,18 @@
+runtime! archlinux.vim
+
+filetype plugin indent on
+syntax on
+
+let $SOURCES = "$HOME/.vim/sources"
+
+source $SOURCES/set.vim
+
+source $SOURCES/keymap.vim
+
+source $SOURCES/func.vim
+
+source $SOURCES/plugin.vim
+
+source $SOURCES/color.vim
+
+autocmd Filetype * set formatoptions-=ro

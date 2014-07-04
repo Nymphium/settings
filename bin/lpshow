@@ -1,5 +1,8 @@
 #!/bin/bash
 
+VIEWER=evince
+
+
 if [ -z $1 ]; then
 	echo "Yo Yo"
 
@@ -24,7 +27,14 @@ sed -ie "s/､/、/g" ${NAME_RANDOMIZE}.tex
 
 sed -ie "s/｡/。/g" ${NAME_RANDOMIZE}.tex
 
-platex -kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex > /dev/null
+sed -ie "s/(\(.*\))/（\1）/g" ${NAME_RANDOMIZE}.tex
+
+sed -ie "s/｢/「/g" ${NAME_RANDOMIZE}.tex
+
+sed -ie "s/｣/」/g" ${NAME_RANDOMIZE}.tex
+
+
+platex --kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex | grep -B8 "No pages of output." | grep -v "No pages of output."
 
 if [ -e ${NAME_RANDOMIZE}.dvi ]; then
 	platex -kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex > /dev/null
@@ -36,10 +46,10 @@ else
 	exit
 fi
 
-dvipdfmx ${NAME_RANDOMIZE}.dvi > /dev/null
+dvipdfmx ${NAME_RANDOMIZE}.dvi
 
-cp ${NAME_RANDOMIZE}.pdf ${F}.pdf
+mv ${NAME_RANDOMIZE}.pdf ${F}.pdf
 
 rm ${NAME_RANDOMIZE}.*
 
-evince ${F}.pdf &
+${VIEWER} ${F}.pdf &
