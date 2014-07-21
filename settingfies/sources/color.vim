@@ -1,6 +1,6 @@
 colorscheme rdark
-hi CursorLine cterm=bold ctermbg=234
-hi CursorColumn ctermbg=234
+hi CursorLine cterm=none ctermbg=237
+hi CursorColumn cterm=none ctermbg=237
 hi Comment ctermfg=255 ctermbg=237
 hi SpecialKey ctermfg=240
 hi LineNr cterm=bold ctermfg=246 ctermbg=232

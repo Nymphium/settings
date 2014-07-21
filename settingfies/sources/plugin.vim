@@ -22,7 +22,15 @@ NeoBundle 'tpope/vim-pathogen'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'rkitover/vimpager'
 NeoBundle 'adimit/prolog.vim'
-"" }
+NeoBundle 'Shougo/vimproc', {
+    \ 'build' : {
+    \     'windows' : 'make -f make_mingw32.mak',
+    \     'cygwin' : 'make -f make_cygwin.mak',
+    \     'mac' : 'make -f make_mac.mak',
+    \     'unix' : 'make -f make_unix.mak',
+    \    },
+    \ }
+
 
 "" ----plugins' settings & keymaps----{
  "" eregex {
@@ -113,8 +121,15 @@ NeoBundle 'adimit/prolog.vim'
 
 "" vim-quickrun {
 	let g:quickrun_config = {}
-	let g:quickrun_config['tex'] = {'command' : 'lpshow'}
-	let g:quickrun_config['prolog'] = {'command' : 'gprolog'}
+
+	let g:quickrun_config['*'] = {
+		\ 'outputter/buffer/close_on_empty' : 1 ,
+	\ }
+
+	let g:quickrun_config['tex'] = {
+		\ 'command' : 'lpshow', 
+		\ 'outputter/error/error' : 'quickfix',
+	\ }
 "" }
 
 "" surround {
@@ -131,6 +146,13 @@ NeoBundle 'adimit/prolog.vim'
 "" }
 
 "" syntastic {
+	let g:syntastic_check_on_open = 1
+	let g:syntastic_loc_list_height = 5
+	let g:syntastic_echo_current_error = 1
+	let g:syntastic_enable_balloons = 1
+	let g:syntastic_enable_highlighting = 1
 	let g:syntastic_enable_signs=1
 	let g:syntastic_auto_loc_list=2
+	let g:syntastic_ignore_files = ['\.tex$']
 "" }
+

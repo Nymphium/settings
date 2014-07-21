@@ -41,10 +41,14 @@ endif
 set t_Co=256
 set lazyredraw
 set shell=zsh
-set clipboard=unnamedplus,autoselect,unmask
+set clipboard+=unnamed,autoselect
 set timeoutlen=250
 set display=uhex
 
 "" StatusLine settings
 set statusline=[Edit:\"%t%m\"\|Type:\"%Y\"\|%{'Enc:\"'.(&fenc!=''?&fenc:&enc).'\"]'}\ %h%w\L%l\/%L
 set laststatus=2
+
+set splitright
+
+set shellslash

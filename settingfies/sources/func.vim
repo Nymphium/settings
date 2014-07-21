@@ -20,9 +20,9 @@ augroup END
 
 "" highlighting program as Prolog {
 	augroup SyntaxProlog
-	autocmd!
-	autocmd BufNewFile *.swi set filetype=prolog
-	autocmd BufReadPost *.swi set filetype=prolog
+		autocmd!
+		autocmd BufNewFile *.swi set filetype=prolog
+		autocmd BufReadPost *.swi set filetype=prolog
 	augroup END
 "" }
 
@@ -40,17 +40,10 @@ augroup END
 		autocmd BufWritePre *.tex silent :%s/､/、/ge
 		autocmd BufWritePre *.tex silent :%s/｢/「/ge
 		autocmd BufWritePre *.tex silent :%s/｣/」/ge
-		autocmd BufWritePre *.tex silent :%s/(/（/ge
-		autocmd BufWritePre *.tex silent :%s/)/）/ge
+		autocmd BufWritePre *.tex silent :%s/\([lL][eE][fF][tT]\)\@<!(/（/ge
+		autocmd BufWritePre *.tex silent :%s/\([rR][iI][gG][hH][tT]\)\@<!)/）/ge
 		autocmd BufWritePre *.tex silent :%s/"/''/ge
 	augroup END
-
-	" function! s:mkdir(dir, force)
-		" if !isdirectory(a:dir) && (a:force ||
-					" \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
-			" call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-		" endif
-	" endfunction
 "" }
 
 "" highlight Zenkaku-space {

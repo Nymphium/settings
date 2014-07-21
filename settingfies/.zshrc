@@ -30,7 +30,11 @@ if [ -d $HOME/.oh-my-zsh ]; then
 	source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-export PS1=\[%{$fg_bold[red]%}%n\ %{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
+if [ ${SSH_CONNECTION} ]; then
+	SSH="%{$fg[green]%}from %{$fg[blue]%}`echo ${SSH_CONNECTION} | awk '{print $1}'`"
+fi
+
+export PS1=\[%{$fg_bold[red]%}%n\ ${SSH}%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
 
 if [ -d $HOME/.vim/bundle/vimpager/vimpager ]; then
 	export PAGER=$HOME/.vim/bundle/vimpager/vimpager
@@ -40,7 +44,7 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt hist_verify
 setopt hist_expand
 
-autoload -U compinit
+autoload -U compinit compinit
 compinit -u
 
 # load many dotfiles
@@ -74,8 +78,13 @@ alias ....='cd ../../../..'
 alias dmesg='dmesg -dekHPL'
 alias less='vim -R'
 
+#suffix
+alias -s rb=ruby
+alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
+alias -s {mp3,mp4}=vlc
+
 ## network
-alias wifisearch='sudo killall -r iwlwifi; sudo ip link set wlp6s0 up; sudo iw dev wlp6s0 scan'
+alias wifisearch='sudo iw dev wlp6s0 scan'
 alias pacman='sudo pacman'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
@@ -88,6 +97,7 @@ alias platex='platex -kanji=utf8'
 alias gcc='gcc -Wall -lm -std=c99 -O3 -march=core-avx-i'
 alias gpp='g++'
 alias R='ruby'
+alias mkernel='make -j4 CC="ccache gcc" CXX="ccache g++"'
 
 ## other
 alias englize='export LANG=en_US.UTF-8'

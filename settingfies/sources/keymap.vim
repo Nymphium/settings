@@ -23,6 +23,7 @@ vnoremap <ESC>k <C-u>
 vnoremap <TAB> >
 vnoremap <S-Tab> <
 vnoremap <silent> n "vy/\V<C-r>=substitute(escape(@v,'\/'),"\n",'\\n','g')<CR><CR>
+vnoremap <S-y> "+y
 
 nnoremap <BS> X
 nnoremap <ESC>1 <C-x>
@@ -56,6 +57,7 @@ nnoremap <S-Tab> <<
 nnoremap <ESC>o <Nop>
 nnoremap <ESC>o o<ESC>
 nnoremap F :new<Space><cfile><CR>
+nnoremap <S-k> k<S-j>
 
 inoremap <ESC>v <Nop>
 inoremap <ESC>v <ESC>"*pa
