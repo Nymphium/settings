@@ -28,9 +28,9 @@ elif [ ${#PASS} -lt 8 ]; then # if password-length < 8
 else
 	WPA_CONF=/etc/wpa_supplicant/wpa_supplicant.conf
 
-	echo "ctrl_interface=/var/run/wpa_supplicant GROUP=wheel" > ${WPA_CONF}
+	sudo sed -ie "2,5d" ${WPA_CONF}
 
-	sudo wpa_passphrase ${ID} ${PASS}  ${WPA_CONF} >> ${WPA_CONF}
+	wpa_passphrase ${ID} ${PASS}  ${WPA_CONF} >> ${WPA_CONF}
 
 	sudo sed -ie "/${PASS}/d" ${WPA_CONF}
 

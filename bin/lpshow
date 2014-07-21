@@ -23,23 +23,14 @@ NAME_RANDOMIZE=${F}-`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -
 
 cp ${F}.tex ${NAME_RANDOMIZE}.tex
 
-sed -ie "s/､/、/g" ${NAME_RANDOMIZE}.tex
-
-sed -ie "s/｡/。/g" ${NAME_RANDOMIZE}.tex
-
-sed -ie "s/(\(.*\))/（\1）/g" ${NAME_RANDOMIZE}.tex
-
-sed -ie "s/｢/「/g" ${NAME_RANDOMIZE}.tex
-
-sed -ie "s/｣/」/g" ${NAME_RANDOMIZE}.tex
-
+# sed -e "s/｡/。/g" -e "s/､/、/g" ${NAME_RANDOMIZE}.tex
 
 platex --kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex | grep -B8 "No pages of output." | grep -v "No pages of output."
 
 if [ -e ${NAME_RANDOMIZE}.dvi ]; then
 	platex -kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex > /dev/null
 else
-	echo "platex error occured. failed..."
+	echo "compile error occured. failed..."
 	
 	rm ${NAME_RANDOMIZE}*
 

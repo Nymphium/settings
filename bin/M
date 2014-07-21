@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vim -c ":autocmd FileType man :only" -c ":Man ${1}"
