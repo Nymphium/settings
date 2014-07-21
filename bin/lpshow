@@ -31,7 +31,7 @@ if [ -e ${NAME_RANDOMIZE}.dvi ]; then
 	platex -kanji=utf8 -halt-on-error ${NAME_RANDOMIZE}.tex > /dev/null
 else
 	echo "compile error occured. failed..."
-	
+
 	rm ${NAME_RANDOMIZE}*
 
 	exit
