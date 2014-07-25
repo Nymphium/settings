@@ -31,10 +31,10 @@ if [ -d $HOME/.oh-my-zsh ]; then
 fi
 
 if [ ${SSH_CONNECTION} ]; then
-	SSH="%{$fg[green]%}from %{$fg[blue]%}`echo ${SSH_CONNECTION} | awk '{print $1}'`"
+	SSH="%{$fg_bold[green]%}(%{$fg_bold[blue]%}SSH%{$fg[green]%})%{$reset_color%}"
 fi
 
-export PS1=\[%{$fg_bold[red]%}%n\ ${SSH}%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
+export PS1=\[%{$fg_bold[red]%}%n%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$reset_color%}\]${SSH}%#\ 
 
 if [ -d $HOME/.vim/bundle/vimpager/vimpager ]; then
 	export PAGER=$HOME/.vim/bundle/vimpager/vimpager
@@ -44,7 +44,7 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt hist_verify
 setopt hist_expand
 
-autoload -U compinit compinit
+autoload -U compinit
 compinit -u
 
 # load many dotfiles
@@ -81,7 +81,6 @@ alias less='vim -R'
 #suffix
 alias -s rb=ruby
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
-alias -s {mp3,mp4}=vlc
 
 ## network
 alias wifisearch='sudo iw dev wlp6s0 scan'
