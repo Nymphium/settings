@@ -29,8 +29,6 @@ while test $# -gt 0; do
 			;;
 	esac
 
-	echo ${SIZE}
-
 	_setwindowsize ${SIZE}
 
 	exit 0
