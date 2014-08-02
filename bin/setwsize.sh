@@ -20,7 +20,7 @@ while test $# -gt 0; do
 
 	CURRENT_SIZE=(`echo ${INFO} | awk '{print $8}' | sed -e "s/x/ /"`)
 
-	CURRENT_POSIT=(`echo ${INFO} | awk '{print $4}' | sed "s/\(-\{0,1\}[0-9]\+\),\(-\{0,1\}[0-9]\+\)/\1 \2/g"`)
+	CURRENT_POSIT=(`echo ${INFO} | awk '{print $4}' | sed "s/,/ /g"`)
 
 	case "$1" in
 		-l) # right
@@ -34,7 +34,7 @@ while test $# -gt 0; do
 		--max|--square)
 			MAX=(`xdpyinfo | grep dimensions | awk 'split($2, arr, "x") {print arr[1], arr[2]}'`)
 
-			if [ $1 == "--max" ]; then
+			if [[ $1 == "--max" ]]; then
 				case "$2" in
 					--vert)
 						SIZE="`expr ${MAX[0]} / 2` ${MAX[1]}"
@@ -57,7 +57,7 @@ while test $# -gt 0; do
 					*)
 						exit 1 ;;
 				esac
-			elif [ $1 == "--square" ]; then
+			elif [[ $1 == "--square" ]]; then
 				SIZE="`expr ${MAX[0]} / 2` `expr ${MAX[1]} / 2`"
 			fi ;;
 		--move)
@@ -75,13 +75,13 @@ while test $# -gt 0; do
 			esac ;;
 	esac
 
-	if [ ! ${POSIT} ]; then
+	if [[ ! ${POSIT} ]]; then
 		POSIT=${CURRENT_POSIT}
 	fi
 
 	_setwindowgeometry ${POSIT}
 
-	if [ $1 != "--move" ]; then
+	if [[ $1 != "--move" ]]; then
 		_setwindowsize ${SIZE}
 	fi
 
