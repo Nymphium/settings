@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# use this before install "manpagevim(http://nanasi.jp/articles/vim/manpageview_vim.html)"
-
-vim -c ":autocmd FileType man :only" -c ":Man ${1}"
