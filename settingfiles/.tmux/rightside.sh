@@ -21,11 +21,13 @@ IF_VMSTAT=`which vmstat | awk '{printf $2}'`
 
 if [ ! ${IF_VMSTAT} ]; then
 	# cpu
-	vmstat -w 1 2 | awk 'NR==4{printf "#[fg=colour76]CPU:%d% ", (100 - $15)}'; \
+	vmstat -w 1 2 | awk 'NR==4{printf "#[fg=colour76]CPU:%d% ", (100 - $15)}'
 
-	ps aux | sed -e "s/\/[^ ]*\///g" | awk '{printf $3 " " $11 "\n"}' | \
+	# ps aux | sed -e "s/\/[^ ]*\///g" | awk '{printf $3 " " $11 "\n"}' | \
 
-	sort -r | awk 'NR==2{printf "#[fg=yellow]Max:" $2 "(" $1 "%)＞"}'
+	# sort -r | awk 'NR==2{printf "#[fg=yellow]Max:" $2 "(" $1 "%)＞"}'
+
+	top -bn1 | awk 'NR==8{printf "#[fg=yellow]Max:%s(%2.1f%)", $12, $9}'
 fi
 
 echo "#[fg=colour235]"

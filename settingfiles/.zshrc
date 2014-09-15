@@ -6,8 +6,15 @@ EDITOR="vim"
 DISABLE_AUTO_TITLE=true
 # COMPLETION_WAITING_DOTS="true"
 
-export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/home/beshowjo/.gem/ruby/2.1.0/doc:/home/beshowjo/works/ruby:/usr/lib/ccache/bin:/home/beshowjo/.gem/ruby/2.1.0/gems:/usr/lib/ruby/gems/2.1.0:/usr/lib/colorgcc/bin
+export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
+# RUBYGEM=/home/beshowjo/.gem/ruby/2.1.0
+# export PATH=$PATH:$RUBYGEM/bin:$RUBYGEM/doc:$RUBYGEM/gems
+
+export USE_CCACHE=1
 export CCACHE_PATH="/usr/bin"
+export CCACHE_DIR="/home/beshowjo/.ccache"
+
+export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
 plugins=(git ruby gem history)
 
@@ -21,9 +28,11 @@ fi
 
 export TERM="screen-256color"
 
+# if tmux has-session; then
+	# tmux attach
 if [ ! $TMUX ]; then
 	tmux -2
-fi
+fi 
 
 if [ -d $HOME/.oh-my-zsh ]; then
 	source $ZSH/oh-my-zsh.sh
@@ -31,21 +40,26 @@ if [ -d $HOME/.oh-my-zsh ]; then
 fi
 
 if [ ${SSH_CONNECTION} ]; then
-	SSH="%{$fg_bold[green]%}(%{$fg_bold[blue]%}SSH%{$fg[green]%})%{$reset_color%}"
+	# SSH="%{$fg[green]%}from %{$fg[blue]%}`echo ${SSH_CONNECTION} | awk '{print $1}'`"
+	SSH="%{$fg[green]%}over%{$fg[blue]%}SSH"
 fi
 
-export PS1=\[%{$fg_bold[red]%}%n%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$reset_color%}\]${SSH}%#\ 
+export PS1=\[%{$fg_bold[red]%}%n\ ${SSH}%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
 
-if [ -d $HOME/.vim/bundle/vimpager/vimpager ]; then
-	export PAGER=$HOME/.vim/bundle/vimpager/vimpager
-fi
+# if [ -d $HOME/.vim/bundle/vimpager/vimpager ]; then
+	# export PAGER=$HOME/.vim/bundle/vimpager/vimpager
+# fi
+
+[ -r /etc/profile.d/cnf.sh ] && . /etc/profile.d/cnf.sh
 
 setopt HIST_IGNORE_ALL_DUPS
 setopt hist_verify
 setopt hist_expand
+setopt print_eight_bit
+setopt no_flow_control
 
-autoload -U compinit
-compinit -u
+autoload -Uz compinit
+compinit -uC
 
 # load many dotfiles
 _PRV_FILE=$HOME/.privatekeys
@@ -75,12 +89,14 @@ alias eq='alsamixer -D equal'
 alias alsamixer='alsamixer -gc 0'
 alias ag='ag --hidden -S --stats'
 alias ....='cd ../../../..'
-alias dmesg='dmesg -dekHPL'
+alias dmesg='dmesg -TL'
 alias less='vim -R'
 
 #suffix
 alias -s rb=ruby
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
+alias -s {mp3,mp4}=vlc
+alias -s pdf=evince
 
 ## network
 alias wifisearch='sudo iw dev wlp6s0 scan'
@@ -107,3 +123,4 @@ alias lmap='xmodmap $HOME/.xmodmap'
 alias tmuxn='tmux -2 source-file $HOME/.tmux.conf'
 alias tmuxd='tmux detach'
 alias tmuxa='tmux -2 attach'
+

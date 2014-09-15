@@ -7,17 +7,6 @@ endfunction
 
 vnoremap <ESC>z <ESC>:call CommentInLine()<CR>
 
-"" edit binary by run: %vim -b filename
-augroup BinaryXXD
-	autocmd!
-	autocmd BufReadPre *.bin let &binary = 1
-	autocmd BufReadPost * if &binary | silent %!xxd -g 1
-	autocmd BufReadPost * set ft=xxd | endif
-	autocmd BufReadPre * if &binary | silent %!xxd -r | endif
-	autocmd BufReadPost * if &binary | silent %!xxd -g 1
-	autocmd BufReadPost * set nomod | endif
-augroup END
-
 "" highlighting program as Prolog {
 	augroup SyntaxProlog
 		autocmd!

@@ -22,6 +22,7 @@ NeoBundle 'tpope/vim-pathogen'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'rkitover/vimpager'
 NeoBundle 'adimit/prolog.vim'
+NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
     \     'windows' : 'make -f make_mingw32.mak',
@@ -130,6 +131,12 @@ NeoBundle 'Shougo/vimproc', {
 		\ 'command' : 'lpshow', 
 		\ 'outputter/error/error' : 'quickfix',
 	\ }
+	let g:quickrun_config['cpp'] = {
+		\ 'cmdopt': '-Wall -lm -march=native --std=c++11 -O3'
+	\ }
+	let g:quickrun_config['c'] = {
+		\ 'cmdopt' : "-Wall -lm -march=native --std=c11 -O3"
+	\ }
 "" }
 
 "" surround {
@@ -147,12 +154,22 @@ NeoBundle 'Shougo/vimproc', {
 
 "" syntastic {
 	let g:syntastic_check_on_open = 1
-	let g:syntastic_loc_list_height = 5
+	let g:syntastic_loc_list_height = 3
 	let g:syntastic_echo_current_error = 1
 	let g:syntastic_enable_balloons = 1
 	let g:syntastic_enable_highlighting = 1
 	let g:syntastic_enable_signs=1
 	let g:syntastic_auto_loc_list=2
 	let g:syntastic_ignore_files = ['\.tex$']
+	let g:syntastic_cpp_compiler = 'g++'
+	let g:syntastic_cpp_compiler_options = '--std=c++11'
 "" }
 
+"" vinarise {
+	augroup VinariseXXD
+		autocmd!
+		autocmd BufReadPre *.bin let &binary = 1
+		autocmd BufReadPost * if &binary | silent Vinarise
+		autocmd BufReadPost * endif
+	augroup END
+"" }

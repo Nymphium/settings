@@ -43,7 +43,7 @@ nnoremap <ESC>j <C-d>
 nnoremap <ESC>k <C-u>
 nnoremap <silent> <F3> :setlocal relativenumber!<CR>
 nnoremap I <Nop>
-nnoremap II :let l=line(".")<CR>:let c=col(".")<CR><ESC>gg=G:call cursor(l,c)<CR>
+nnoremap <silent> II :let l=line(".")<CR>:let c=col(".")<CR><ESC>gg=G:call cursor(l,c)<CR>
 nnoremap ww <ESC>:vne<Space>
 nnoremap wv <ESC>:new<Space>
 nnoremap w<TAB> <C-w>w
@@ -58,6 +58,7 @@ nnoremap <ESC>o <Nop>
 nnoremap <ESC>o o<ESC>
 nnoremap F :new<Space><cfile><CR>
 nnoremap <S-k> k<S-j>
+nnoremap <silent> <F11> <ESC>:Q<CR>
 
 inoremap <ESC>v <Nop>
 inoremap <ESC>v <ESC>"*pa
@@ -87,3 +88,4 @@ inoremap <ESC>f <ESC><ESC>/
 inoremap <ESC>a <ESC>:saveas <Space>
 inoremap <S-Tab> <ESC><ESC><<i
 inoremap <C-q> <ESC>:q!<CR>
+inoremap <F3> <ESC><ESC>:setlocal relativenumber!<CR>a
