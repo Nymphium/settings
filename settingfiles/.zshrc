@@ -7,8 +7,6 @@ DISABLE_AUTO_TITLE=true
 # COMPLETION_WAITING_DOTS="true"
 
 export PATH=$PATH:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
-# RUBYGEM=/home/beshowjo/.gem/ruby/2.1.0
-# export PATH=$PATH:$RUBYGEM/bin:$RUBYGEM/doc:$RUBYGEM/gems
 
 export USE_CCACHE=1
 export CCACHE_PATH="/usr/bin"
@@ -40,15 +38,10 @@ if [ -d $HOME/.oh-my-zsh ]; then
 fi
 
 if [ ${SSH_CONNECTION} ]; then
-	# SSH="%{$fg[green]%}from %{$fg[blue]%}`echo ${SSH_CONNECTION} | awk '{print $1}'`"
 	SSH="%{$fg[green]%}over%{$fg[blue]%}SSH"
 fi
 
 export PS1=\[%{$fg_bold[red]%}%n\ ${SSH}%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
-
-# if [ -d $HOME/.vim/bundle/vimpager/vimpager ]; then
-	# export PAGER=$HOME/.vim/bundle/vimpager/vimpager
-# fi
 
 [ -r /etc/profile.d/cnf.sh ] && . /etc/profile.d/cnf.sh
 
