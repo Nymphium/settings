@@ -1,18 +1,16 @@
 IF_FREE=`which free | awk '{printf $2}'`
-
 if [ ! ${IF_FREE} ]; then
 	printf "#[bg=colour235]"
-
 	# memory
 	free -m | sort -n | \
+		awk 'NR==1{
+				printf "#[fg=colour76]Mem:"$3"/"
+			}NR==2{
+				printf $2"MB "
+			}'; \
 
-	awk 'NR==1{
-		printf "#[fg=colour76]Mem:"$3"/"
-	}NR==2{
-		printf $2"MB "
-	}'; \
-
-	top -bn1 -o%MEM | awk 'NR==8{printf "#[fg=colour6]Max:%s(%2.1f%)＞", $12, $10}'
+	ps aux | sed -e "s/\/[^ ]*\///g" | awk '{printf $4 " " $11 "\n"}' | \
+	sort -r | awk 'NR==2{printf "#[fg=colour6]Max:" $2 "(" $1 "%)＞"}'
 fi
 
 IF_VMSTAT=`which vmstat | awk '{printf $2}'`

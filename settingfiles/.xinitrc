@@ -32,9 +32,11 @@ if [ $DISPLAY ]; then
 
 	xrandr --output LVDS1 --brightness 0.8 --gamma 0.8:0.75:0.7
 
-	nitrogen --restore &
+	hsetroot -solid "#000000"
 
 	exec xcompmgr &
+
+	nitrogen --restore &
 
 	exec openbox-session
 else
