@@ -4,7 +4,6 @@ ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="robbyrussell"
 EDITOR="vim"
 DISABLE_AUTO_TITLE=true
-# COMPLETION_WAITING_DOTS="true"
 
 export PATH=$PATH:/home/beshowjo/.bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
 
@@ -26,6 +25,8 @@ fi
 
 export TERM="screen-256color"
 
+# if tmux has-session; then
+	# tmux attach
 if [ ! $TMUX ]; then
 	tmux -2
 fi 
@@ -40,7 +41,6 @@ if [ ${SSH_CONNECTION} ]; then
 fi
 
 export PS1=\[%{$fg_bold[red]%}%n\ ${SSH}%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
-
 
 [ -r /etc/profile.d/cnf.sh ] && . /etc/profile.d/cnf.sh
 
@@ -87,7 +87,7 @@ alias less='vim -R'
 #suffix
 alias -s rb=ruby
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
-alias -s {mp3,mp4,wav,wmv,avi}=mplayer
+alias -s {mp3,mp4}=vlc
 alias -s pdf=evince
 
 ## network
@@ -104,7 +104,7 @@ alias platex='platex -kanji=utf8'
 alias gcc='gcc -Wall -lm -std=c99 -O3 -march=core-avx-i'
 alias gpp='g++'
 alias R='ruby'
-alias mkernel='make -j4 CC="ccache gcc" CXX="ccache g++"'
+alias mkernel='make -j6 CC="ccache gcc" CXX="ccache g++"'
 
 ## other
 alias englize='export LANG=en_US.UTF-8'

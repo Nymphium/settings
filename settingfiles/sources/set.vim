@@ -26,7 +26,6 @@ set wrap
 set scrolloff=20
 set backspace=indent,eol,start
 set list
-" set listchars=tab:»-,trail:.,extends:»,precedes:«,nbsp:%,eol:↲
 set listchars=tab:>_,trail:.,extends:>,precedes:<,nbsp:%,eol:<
 set matchpairs& matchpairs+=<:>
 set ambw=double

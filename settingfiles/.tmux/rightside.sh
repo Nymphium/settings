@@ -19,7 +19,7 @@ if [ ! ${IF_VMSTAT} ]; then
 	# cpu
 	vmstat -w 1 2 | awk 'NR==4{printf "#[fg=colour76]CPU:%d% ", (100 - $15)}'
 
-	top -bn1 | awk 'NR==8{printf "#[fg=yellow]Max:%s(%2.1f%)＞", $12, $9}'
+	top -bn1 | awk 'NR==8{printf "#[fg=colour226]Max:%s(%2.1f%)＞", $12, $9}'
 fi
 
 echo "#[fg=colour235]"
