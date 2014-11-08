@@ -10,5 +10,5 @@ if [ `amixer | awk '{printf $1}'` != "Failed" ]; then
 
 	VOL=`amixer -c 0 set Master 0%- | awk NR==5 | sed -e "s/.*\[\([0-9]*\)%\].*/\1/"`
 
-	echo "#[bg=colour235]${MUTE}Vol:${VOL}＞"
+	echo "#[bg=colour235]${MUTE}Vol:${VOL}＞#[fg=colour27]"
 fi

@@ -5,7 +5,7 @@ ZSH_THEME="robbyrussell"
 EDITOR="vim"
 DISABLE_AUTO_TITLE=true
 
-export PATH=$PATH:/home/beshowjo/.bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
+export PATH=$PATH:/home/beshowjo/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
 
 export USE_CCACHE=1
 export CCACHE_PATH="/usr/bin"
@@ -25,22 +25,34 @@ fi
 
 export TERM="screen-256color"
 
-# if tmux has-session; then
-	# tmux attach
-if [ ! $TMUX ]; then
-	tmux -2
-fi 
-
 if [ -d $HOME/.oh-my-zsh ]; then
 	source $ZSH/oh-my-zsh.sh
 	source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 if [ ${SSH_CONNECTION} ]; then
-	SSH="%{$fg[green]%}over%{$fg[blue]%}SSH"
+	SSH="%{$fg[green]%}over %{$fg[blue]%}SSH"
+
+	SSH_CLI_IP=`echo ${SSH_CONNECTION} | awk '{print $1}' | sed -e "s/\./-/g"`
 fi
 
 export PS1=\[%{$fg_bold[red]%}%n\ ${SSH}%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
+
+unset SSH
+
+# tmux attach
+if [ ! $TMUX ]; then
+	if [ ${SSH_CONNECTION} ]; then
+		tmux kill-session -t `echo ${SSH_CLI_IP}`
+
+		tmux -2 new-session -s "${SSH_CLI_IP}"
+	else
+		tmux -2
+	fi
+
+fi
+
+unset SSH_CLI_IP
 
 [ -r /etc/profile.d/cnf.sh ] && . /etc/profile.d/cnf.sh
 
@@ -60,59 +72,7 @@ if [ -e ${_PRV_FILE} ] && [ -r ${_PRV_FILE} ]; then
 fi
 unset _PRV_FILE
 
-# aliases
-alias S='sudo'
-alias C='cat'
-alias V='vim'
-alias reboot='systemctl reboot -i'
-alias poweroff='systemctl poweroff -i'
-alias shutdown='sudo poweroff'
-alias rmf='sudo rm -rf'
-alias cpr='cp -r'
-alias chmod='sudo chmod'
-alias modc='sudo chmod 755'
-alias ps='ps auxfh'
-alias day='date +%R && cal'
-alias libreoffice='libreoffice --nologo'
-alias -g G=' | grep -iE'
-alias visudo='sudo VISUAL=vim visudo'
-alias suspend='sudo systemctl suspend'
-alias eq='alsamixer -D equal'
-alias alsamixer='alsamixer -gc 0'
-alias ag='ag --hidden -S --stats'
-alias ....='cd ../../../..'
-alias dmesg='dmesg -TL'
-alias less='vim -R'
-
-#suffix
-alias -s rb=ruby
-alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
-alias -s {mp3,mp4}=vlc
-alias -s pdf=evince
-
-## network
-alias wifisearch='sudo iw dev wlp6s0 scan'
-alias pacman='sudo pacman'
-alias pacs='sudo pacman -S --noconfirm'
-alias yaous='yaourt -S --noconfirm'
-alias pkgsearch='yaourt -Ss'
-alias renew='gem update 2>&1 /dev/null & sudo pacman -Sc --noconfirm && yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
-alias P='ping 8.8.8.8 -c 3'
-
-## compile, interp
-alias platex='platex -kanji=utf8'
-alias gcc='gcc -Wall -lm -std=c99 -O3 -march=core-avx-i'
-alias gpp='g++'
-alias R='ruby'
-alias mkernel='make -j6 CC="ccache gcc" CXX="ccache g++"'
-
-## other
-alias englize='export LANG=en_US.UTF-8'
-alias japanize='export LANG=ja_JP.UTF-8'
-alias lmap='xmodmap $HOME/.xmodmap'
-
-## tmux config
-alias tmuxn='tmux -2 source-file $HOME/.tmux.conf'
-alias tmuxd='tmux detach'
-alias tmuxa='tmux -2 attach'
+# keybind
+bindkey '^[e' forward-word
+bindkey '^[w' backward-word
 
