@@ -9,11 +9,9 @@ alias poweroff='systemctl poweroff -i'
 alias shutdown='sudo poweroff'
 alias rmf='sudo rm -rf'
 alias cpr='cp -r'
-alias chmod='sudo chmod'
 alias modc='sudo chmod 755'
 alias ps='ps auxfh'
 alias day='date +%R && cal'
-alias libreoffice='libreoffice --nologo'
 alias -g G=' | grep -iE'
 alias visudo='sudo VISUAL=vim visudo'
 alias suspend='sudo systemctl suspend'
@@ -42,7 +40,6 @@ alias P='ping 8.8.8.8 -c 3'
 
 ## compile, interp
 alias platex='platex -kanji=utf8'
-alias gcc='gcc -Wall -lm -std=c99 -O3 -march=core-avx-i'
 alias cgcc='gcc -std=c99 -lglut -lm -lGL -lGLU'
 alias gpp='g++'
 alias R='ruby'
@@ -50,4 +47,4 @@ alias mkernel='make -j6 CC="ccache gcc" CXX="ccache g++"'
 
 ## other
 alias englize='export LANG=en_US.UTF-8'
-
+alias japanize='export LANG=ja_JP.UTF-8'
