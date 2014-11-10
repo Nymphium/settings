@@ -44,6 +44,8 @@ set clipboard+=unnamed,autoselect
 set timeoutlen=250
 set display=uhex
 
+set omnifunc=syntaxcomplete#Complete
+
 "" StatusLine settings
 set statusline=[file:\"%t%m\"\|Type:\"%Y\"\|%{'Enc:\"'.(&fenc!=''?&fenc:&enc).'\"]'}\ %h%w\L%l\/%L\ %v
 set laststatus=2
@@ -52,7 +54,7 @@ set splitright
 
 set shellslash
 
-" augroup CmdWithAlias
+	" augroup CmdWithAlias
 	" autocmd!
 	" autocmd VimEnter * set shellcmdflag+=i
 " augroup END

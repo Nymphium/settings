@@ -5,18 +5,15 @@ hi luaCond cterm=bold ctermfg=48
 hi link luaElse luaCond
 hi luaChar cterm=bold
 
-augroup LuaSntax
-	autocmd!
-	autocmd VimEnter *.lua syn match luaChar "[=%<>/+\*,]"
-	autocmd VimEnter *.lua syn match luaChar "\([\w\s]\)\@<=\.\.\([\w\s]\)\@="
-	autocmd VimEnter *.lua syn match luaChar "-\(-\)\@!"
-	autocmd VimEnter *.lua syn match luaBracket "[(){}\[\]]"
-	autocmd VimEnter *.lua syn match luaLength "#\(\h\)\+\>"
-	autocmd VimEnter *.lua syn match luaTable "\w\+\([\.:]\)\@="
-	autocmd VimEnter *.lua syn match luaTable "\w\+\s*\(=[ \_s\t]*\)\@="
-	autocmd VimEnter *.lua syn match luaFunc "\(\<function\>\)\@<=\s\+\<\w\+\s*\>\@="
+syn match luaChar "[=%<>/+\*,]"
+syn match luaChar "\([\w\s]\)\@<=\.\.\([\w\s]\)\@="
+syn match luaChar "-\(-\)\@!"
+syn match luaBracket "[)}\]]"
+syn match luaLength "#\(\h\)\+\>"
+syn match luaTable "\w\+\([\.:]\)\@="
+syn match luaTable "\w\+\s*\(=[ \_s\t]*\)\@="
+syn match luaFunc "\(\<function\>\)\@<=\s\+\<\w\+\s*\>\@="
 	" autocmd VimEnter *.lua syn match luaFunc "\(\(if\)\|\(or\)\|\(and\)\|\(function\)\)\@<!\w*\((\_.*)\)\@="
-	autocmd VimEnter *.lua syn match luaFunc "\<\w\+\>\(\s*=\s*function\)\@="
-augroup END
+syn match luaFunc "\<\w\+\>\(\s*=\s*function\)\@="
 
 
