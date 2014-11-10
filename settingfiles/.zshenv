@@ -1,27 +1,32 @@
 # vim: ft=sh
 
-# aliases
 alias S='sudo'
 alias C='cat'
 alias V='vim'
-alias reboot='systemctl reboot -i'
-alias poweroff='systemctl poweroff -i'
-alias shutdown='sudo poweroff'
 alias rmf='sudo rm -rf'
 alias cpr='cp -r'
 alias modc='sudo chmod 755'
-alias ps='ps auxfh'
 alias day='date +%R && cal'
 alias -g G=' | grep -iE'
 alias visudo='sudo VISUAL=vim visudo'
 alias suspend='sudo systemctl suspend'
 alias eq='alsamixer -D equal'
-alias alsamixer='alsamixer -gc 0'
-alias ag='ag --hidden -S --stats'
 alias ....='cd ../../../..'
-alias dmesg='dmesg -TL'
 # alias less='vim -R'
 alias reexec='sudo kexec -l /boot/vmlinuz-3.17.1 --initrd=/boot/initramfs-3.17.1.img --reuse-cmdline && sudo kexec -e'
+alias tmuxn='tmux source-file $HOME/.tmux.conf'
+
+# add option
+alias ag='ag --hidden -S --stats'
+alias alsamixer='alsamixer -gc 0'
+alias dmesg='dmesg -TL'
+alias pacman='sudo pacman'
+alias ps='ps auxfh'
+
+# rename
+alias reboot='systemctl reboot -i'
+alias poweroff='systemctl poweroff -i'
+alias shutdown='sudo poweroff'
 
 #suffix
 alias -s rb=ruby
@@ -31,7 +36,6 @@ alias -s pdf=evince
 
 ## network
 alias wifisearch='sudo iw dev wlp6s0 scan'
-alias pacman='sudo pacman'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
 alias pkgsearch='yaourt -Ss'

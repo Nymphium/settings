@@ -125,11 +125,17 @@ NeoBundle 'Shougo/vimproc.vim', {
 "" }
 
 "" vim-over {
+	let g:over_command_line_prompt = "Over > "
+	hi OverCommandLineCursor cterm=bold,reverse ctermfg=46
+	hi OverCommandLineCursorInsert cterm=bold,reverse ctermbg=46
+
 	nnoremap <silent> %% :OverCommandLine<CR>%s/
 	nnoremap <silent> %P y:OverCommandLine<CR>%s!<C-r>=substitute(@0, '!', '\\!','g')<CR>!!gI<Left><Left><Left>
 	nnoremap / <Nop>
 	nnoremap <silent> / :OverCommandLine<CR>/
-"" }
+	nnoremap n <Nop
+	nnoremap <silent> n :OverCommandLine<CR>/<Up><CR>
+"" g}
 
 "" vim-quickrun {
 	let g:quickrun_config = {}
@@ -152,15 +158,6 @@ NeoBundle 'Shougo/vimproc.vim', {
 	\ }
 
 	nnoremap QC :Q -cmdopt '-lm -lGLU -lglut -lGL'<CR>
-"" }
-
-"" surround {
-	xmap " <Plug>VSurround"
-	xmap ' <Plug>VSurround'
-	xmap ( <Plug>VSurround)
-	xmap { <Plug>VSurround}
-	xmap < <Plug>VSurround>
-	xmap [ <Plug>VSurround]
 "" }
 
 "" vim-pathogen {

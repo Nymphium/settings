@@ -76,16 +76,22 @@ inoremap <ESC>u <ESC>ui
 inoremap <ESC>p <ESC>pi
 inoremap <ESC>d <ESC>ddi
 inoremap <silent> <ESC>e <ESC>:nohlsearch<CR>
-inoremap L <Nop>
-inoremap L L
-inoremap H <Nop>
-inoremap H H
 inoremap <ESC>L <End>
 inoremap <ESC>H <Home>
 inoremap <C-w> <Nop>
 inoremap <C-w><C-w> <ESC><ESC>:q!<CR>
 " inoremap <ESC>f <ESC><ESC>/
+inoremap <ESC>w <S-Left>
+inoremap <ESC>e <S-Right>
 inoremap <ESC>a <ESC>:saveas <Space>
 inoremap <S-Tab> <ESC><ESC><<i
 inoremap <C-q> <ESC>:q!<CR>
 inoremap <F3> <ESC><ESC>:setlocal relativenumber!<CR>a
+inoremap " <Nop>
+inoremap " ""<Left>
+inoremap ( <Nop>
+inoremap ( ()<Left>
+inoremap { <Nop>
+inoremap { {}<Left>
+inoremap [ <Nop>
+inoremap [ []<Left>
