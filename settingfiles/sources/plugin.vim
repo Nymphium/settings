@@ -174,8 +174,9 @@ NeoBundle 'Shougo/vimproc.vim', {
 	let g:syntastic_auto_loc_list=2
 	let g:syntastic_ignore_files = ['\.tex$']
 	let g:syntastic_cpp_compiler = 'clang++'
-	" let g:syntastic_cpp_compiler_options = '--std=c++11'
+	let g:syntastic_cpp_compiler_options = '-std=c++11 -Wall'
 	let g:syntastic_c_compiler = 'clang'
+	let g:syntastic_c_compiler_options = '-std=c99 -Wall'
 	" let g:syntastic_ocaml_use_ocamlc = 1
 "" }
 

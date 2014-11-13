@@ -89,6 +89,8 @@ inoremap <C-q> <ESC>:q!<CR>
 inoremap <F3> <ESC><ESC>:setlocal relativenumber!<CR>a
 inoremap " <Nop>
 inoremap " ""<Left>
+inoremap ` <Nop>
+inoremap ` ``<Left>
 inoremap ( <Nop>
 inoremap ( ()<Left>
 inoremap { <Nop>
