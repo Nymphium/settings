@@ -1,15 +1,4 @@
-nmap <silent> <ESC> <ESC><ESC>:nohlsearch<CR>
-nmap <ESC>a <ESC>:saveas 
-nmap <ESC>s <Nop>
-nmap <ESC>s <ESC>:w!<CR>
-nmap <ESC>s<ESC>s <ESC>:wq!<CR>
-nmap <ESC>w <Nop>
-nmap <ESC>w<ESC>w <ESC>:q!<CR>
-nmap V <C-v>
-nmap <ESC>w <Nop>
-nmap <ESC>C <Nop>
-nmap <ESC>K <Nop>
-
+vnoremap <silent> <ESC> <ESC><ESC>:nohlsearch<CR>
 vnoremap v $h
 vnoremap L <Nop>
 vnoremap H <Nop>
@@ -25,6 +14,13 @@ vnoremap <S-Tab> <
 vnoremap <silent> n "vy/\V<C-r>=substitute(escape(@v,'\/'),"\n",'\\n','g')<CR><CR>
 vnoremap <S-y> "+y
 
+nnoremap <silent> <ESC> <ESC><ESC>:nohlsearch<CR>
+nnoremap <ESC>a <ESC>:saveas 
+" nnoremap <ESC>s <Nop>
+nnoremap <ESC>s <ESC>:w!<CR>
+nnoremap <ESC>s<ESC>s <ESC>:wq!<CR>
+" nnoremap <ESC>w <Nop>
+nnoremap <ESC>w<ESC>w <ESC>:q!<CR>
 nnoremap <BS> X
 nnoremap <ESC>1 <C-x>
 nnoremap <ESC>2 <C-a>
@@ -35,10 +31,6 @@ nnoremap E w
 nnoremap W <Nop>
 nnoremap W b
 nnoremap r <C-r>
-nnoremap L <Nop>
-nnoremap H <Nop>
-nnoremap <ESC>L $
-nnoremap <ESC>H ^
 nnoremap <ESC>j <C-d>
 nnoremap <ESC>k <C-u>
 nnoremap <silent> <F3> :setlocal relativenumber!<CR>
@@ -59,7 +51,9 @@ nnoremap <ESC>o o<ESC>
 nnoremap wo :new<Space><cfile><CR>
 nnoremap <S-k> k<S-j>
 nnoremap <silent> <F11> <ESC>:Q<CR>
+nnoremap V <C-v>
 
+inoremap <silent> <ESC> <ESC><ESC>:nohlsearch<CR>
 inoremap <ESC>v <Nop>
 inoremap <ESC>v <ESC>"*pa
 inoremap <ESC>1 <Nop>
@@ -68,8 +62,6 @@ inoremap <ESC>1 <ESC><C-x>i
 inoremap <ESC>2 <ESC><C-a>i
 inoremap <ESC>p <ESC>pi
 inoremap <ESC>d <ESC>ddi
-inoremap <C-w> <Nop>
-inoremap <C-w><C-w> <ESC><ESC>:q!<CR>
 inoremap <ESC>w <S-Left>
 inoremap <ESC>e <S-Right>
 inoremap <C-q> <ESC>:q!<CR>
