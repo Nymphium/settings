@@ -24,7 +24,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'rcmdnk/vim-markdown'
 NeoBundle 'OCamlPro/ocp-indent'
 NeoBundle 'rhysd/unite-ruby-require.vim'
-" NeoBundle 'Townk/vim-autoclose'
+NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'Shougo/vimproc.vim', {
 \ 'build' : {
 \     'windows' : 'tools\\update-dll-mingw',
