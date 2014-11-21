@@ -23,6 +23,6 @@ if [ ${#ACPIB} -gt 1 ]; then
 
 		sed -e "s/,\|\s$//g" -e "s/%/%%/"`
 
-	printf "${COLOR}Bat:${BATTERY}"
+	printf "${COLOR}Bat:${BATTERY}＞"
 fi
 
