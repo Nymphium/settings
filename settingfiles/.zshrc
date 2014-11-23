@@ -62,8 +62,8 @@ setopt hist_expand
 setopt print_eight_bit
 setopt no_flow_control
 
-autoload -Uz compinit
-compinit -uC
+autoload -U -z compinit
+compinit -u -C
 
 # load many dotfiles
 _PRV_FILE=$HOME/.privatekeys
