@@ -27,7 +27,10 @@ export TERM="screen-256color"
 
 if [ -d $HOME/.oh-my-zsh ]; then
 	source $ZSH/oh-my-zsh.sh
-	source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+	if [ -d /usr/share/zsh/plugins/zsh-syntax-highlighting ]; then
+		source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+	fi
 fi
 
 if [ ${SSH_CONNECTION} ]; then
