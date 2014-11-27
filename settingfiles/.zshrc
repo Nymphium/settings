@@ -48,9 +48,9 @@ if [ ! $TMUX ]; then
 	if [ ${SSH_CONNECTION} ]; then
 		tmux kill-session -t `echo ${SSH_CLI_IP}`
 
-		tmux -2 new-session -s "${SSH_CLI_IP}"
+		nice -n0 tmux -2 new-session -s "${SSH_CLI_IP}"
 	else
-		tmux -2
+		nice -n0 tmux -2
 	fi
 
 fi
