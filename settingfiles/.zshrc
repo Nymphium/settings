@@ -13,6 +13,9 @@ export CCACHE_DIR="/home/beshowjo/.ccache"
 
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
+export LUA_PATH="${HOME}/.luarocks/share/lua/5.2/?.lua;;"
+# export LUA_CPATH="${HOME}/.luarocks/lib/lua/5.2;;${HOME}/.luarocks/lib/luarocks/rocks-5.2;;"
+
 plugins=(git ruby gem history)
 
 if [[ -d /usr/local/share/zsh-completions ]]; then

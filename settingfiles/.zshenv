@@ -1,5 +1,9 @@
 # vim: ft=sh
 
+# newst `grep` deprecate GREP_OPTIONS shell variable, but oh-my-zsh still defines GREP_OPTIONS
+unset GREP_OPTIONS
+alias grep='grep --colo=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
+
 alias S='sudo'
 alias C='cat'
 alias V='vim'
@@ -44,8 +48,8 @@ alias P='ping 8.8.8.8 -c 3'
 
 ## compile, interp
 alias platex='platex -kanji=utf8'
-alias cgcc='gcc -std=c99 -lglut -lm -lGL -lGLU'
-alias gpp='g++'
+alias cgcc='gcc -O3 -std=c99 -lglut -lm -lGL -lGLU'
+alias cgpp='gcc -O3 -lglut -lm -lGL -lGLU'
 alias R='ruby'
 alias mkernel='make -j6 CC="ccache gcc" CXX="ccache g++"'
 
