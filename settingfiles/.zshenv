@@ -17,8 +17,12 @@ alias suspend='sudo systemctl suspend'
 alias eq='alsamixer -D equal'
 alias ....='cd ../../../..'
 # alias less='vim -R'
-alias reexec='sudo kexec -l /boot/vmlinuz-3.17.1 --initrd=/boot/initramfs-3.17.1.img --reuse-cmdline && sudo kexec -e'
+alias reexec='sudo kexec -l /boot/vmlinuz-3.18-rc6 --initrd=/boot/initramfs-3.18-rc6.img --reuse-cmdline && sudo kexec -e'
+
+# tmux
 alias tmuxn='tmux source-file $HOME/.tmux.conf'
+alias tmuxd='tmux detach'
+alias tmuxa='tmux attach'
 
 # add option
 alias ag='ag --hidden -S --stats'
@@ -31,6 +35,7 @@ alias ps='ps auxfh'
 alias reboot='systemctl reboot -i'
 alias poweroff='systemctl poweroff -i'
 alias shutdown='sudo poweroff'
+alias mixer='pavucontrol'
 
 #suffix
 alias -s rb=ruby
