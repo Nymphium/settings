@@ -40,7 +40,7 @@ alias mixer='pavucontrol'
 #suffix
 alias -s rb=ruby
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
-alias -s {mp3,mp4,avi}=mplayer
+alias -s {mp3,mp4,avi,m4a,ts}=mplayer
 alias -s pdf=evince
 
 ## network
