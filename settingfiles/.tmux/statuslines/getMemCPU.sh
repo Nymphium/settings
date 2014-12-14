@@ -3,8 +3,9 @@ if [ ${free} ]; then
 	# memory
 	${free} -m | awk 'BEGIN{{total = 0}{used = 0}} {{total += $2}{used += $3}} END{printf "#[bg=colour235,fg=colour76]Mem:%d/%sMB ", used, total}'
 
-	ps -axho "%c%C" --sort -%cpu | awk 'NR==1{printf "#[fg=colour6]Max:%s(%2.1f%%)＞", $1, $2}'
+	ps -axho comm,%mem --sort -%mem | awk 'NR==1{printf "#[fg=colour6]Max:%s(%2.1f%%)＞", $1, $2}'
 fi
+
 
 vmstat=`which vmstat`
 
