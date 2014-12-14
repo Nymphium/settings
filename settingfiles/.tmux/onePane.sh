@@ -1,8 +1,8 @@
-PANE_NUM=`tmux display -p "#{window_panes}"`
+pane_num=`tmux display -p "#{window_panes}"`
 
-WIN_NUM=`tmux display -p "#{session_windows}"`
+win_num=`tmux display -p "#{session_windows}"`
 
-if [ ${PANE_NUM} -eq 1 -a ${WIN_NUM} -eq 1 ]; then
+if [ ${pane_num} -eq 1 -a ${win_num} -eq 1 ]; then
 	tmux split-window -c $HOME
 
 	tmux 'kill-pane' -t 0
