@@ -5,7 +5,7 @@ ZSH_THEME="robbyrussell"
 EDITOR="vim"
 DISABLE_AUTO_TITLE=true
 
-export PATH=$PATH:/home/beshowjo/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/beshowjo/.gem/ruby/2.1.0:/home/beshowjo/.gem/ruby/2.1.0/bin:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
+export PATH=$PATH:${HOME}/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:${HOME}/.gem/ruby/2.1.0:${HOME}/.gem/ruby/2.1.0/bin:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
 
 export USE_CCACHE=1
 export CCACHE_PATH="/usr/bin"
@@ -15,6 +15,8 @@ export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
 export LUA_PATH="${HOME}/.luarocks/share/lua/5.2/?.lua;;"
 export LUA_CPATH="${HOME}/.luarocks/lib/lua/5.2/?.so;${HOME}/.luarocks/lib/luarocks/rocks-5.2/?.so;;"
+
+export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number' -\""
 
 plugins=(git ruby gem history)
 
