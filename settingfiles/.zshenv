@@ -14,9 +14,8 @@ alias day='date +%R && cal'
 alias -g G=' | grep -iE'
 alias visudo='sudo VISUAL=vim visudo'
 alias suspend='sudo systemctl suspend'
-alias eq='alsamixer -D equal'
 alias ....='cd ../../../..'
-# alias less='vim -R'
+alias wpa_reconf='killall -1 wpa_supplicant'
 alias reexec='sudo kexec -l /boot/vmlinuz-3.18-rc6 --initrd=/boot/initramfs-3.18-rc6.img --reuse-cmdline && sudo kexec -e'
 
 # tmux
@@ -39,6 +38,7 @@ alias mixer='pavucontrol'
 
 #suffix
 alias -s rb=ruby
+alias -s lua=lua
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
 alias -s {mp3,mp4,avi,m4a,ts}=mplayer
 alias -s pdf=evince

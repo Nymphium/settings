@@ -16,7 +16,7 @@ export JAVA_HOME=${JAVA_HOME:-/opt/java}
 export LUA_PATH="${HOME}/.luarocks/share/lua/5.2/?.lua;;"
 export LUA_CPATH="${HOME}/.luarocks/lib/lua/5.2/?.so;${HOME}/.luarocks/lib/luarocks/rocks-5.2/?.so;;"
 
-export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number' -\""
+export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 
 plugins=(git ruby gem history)
 
