@@ -1,7 +1,6 @@
 # vim:filetype=sh
 
 ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="robbyrussell"
 EDITOR="vim"
 DISABLE_AUTO_TITLE=true
 
@@ -18,7 +17,7 @@ export LUA_CPATH="${HOME}/.luarocks/lib/lua/5.2/?.so;${HOME}/.luarocks/lib/luaro
 
 export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 
-plugins=(git ruby gem history)
+plugins=(git ruby gem history tmux)
 
 if [[ -d /usr/local/share/zsh-completions ]]; then
 	fpath=($fpath /usr/local/share/zsh-completions)
@@ -44,7 +43,19 @@ if [ ${SSH_CONNECTION} ]; then
 	SSH_CLI_IP=`echo ${SSH_CONNECTION} | awk '{print $1}' | sed -e "s/\./-/g"`
 fi
 
-export PS1=\[%{$fg_bold[red]%}%n\ ${SSH}%{$fg_bold[green]%}%p\ %{$fg[cyan]%}%c\ %{$fg_bold[blue]%}%{$fg_bold[blue]%}%\ %{$reset_color%}\]%#\ 
+# prompt theme
+if [ $UID -eq 0 ]; then
+	PRM="%{$fg_bold[magenta]%}=>"
+else
+	PRM="%{$fg_bold[blue]%}->"
+fi
+
+export PROMPT='%{$fg_bold[green]%}>> ${SSH}%{$fg_bold[green]%}%p%{$fg[cyan]%}%c %{$reset_color%}$(git_prompt_info)${PRM}%{$reset_color%} '
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[yellow]%}<%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%}> %{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[yellow]%}>"
 
 unset SSH
 
