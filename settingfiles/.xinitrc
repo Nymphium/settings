@@ -24,8 +24,6 @@ if [ $DISPLAY ]; then
 
 	xset r rate 190 20
 
-	exec guake &
-
 	xmodmap $HOME/.xmodmap
 
 	xbindkeys
@@ -35,6 +33,8 @@ if [ $DISPLAY ]; then
 	hsetroot -solid "#000000"
 
 	exec xcompmgr &
+
+	exec tilda &
 
 	nitrogen --restore &
 
