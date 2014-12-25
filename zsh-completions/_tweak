@@ -1,4 +1,0 @@
-#compdef tweak
-
-_arguments \
-':commands:(-v -z -t -x -xm --tweak)'
