@@ -8,7 +8,7 @@ export PATH=$PATH:${HOME}/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:${HOME}/.g
 
 export USE_CCACHE=1
 export CCACHE_PATH="/usr/bin"
-export CCACHE_DIR="/home/beshowjo/.ccache"
+export CCACHE_DIR="/home/beshowjo/.ccache" # use immutable dir
 
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
@@ -17,7 +17,13 @@ export LUA_CPATH="${HOME}/.luarocks/lib/lua/5.2/?.so;${HOME}/.luarocks/lib/luaro
 
 export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 
-plugins=(git ruby gem history tmux)
+export TERM="screen-256color"
+
+plugins=(git ruby gem history)
+
+if [ ! $DISPLAY ]; then
+	stty iutf8
+fi
 
 if [[ -d /usr/local/share/zsh-completions ]]; then
 	fpath=($fpath /usr/local/share/zsh-completions)
@@ -27,8 +33,6 @@ if [ -d $HOME/.oh-my-zsh/plugins/zsh-completions/src ]; then
 	fpath=($HOME/.oh-my-zsh/plugins/zsh-completions/src $fpath)
 fi
 
-export TERM="screen-256color"
-
 if [ -d $HOME/.oh-my-zsh ]; then
 	source $ZSH/oh-my-zsh.sh
 
@@ -37,30 +41,31 @@ if [ -d $HOME/.oh-my-zsh ]; then
 	fi
 fi
 
+# prompt theme
+if [ $UID -eq 0 ]; then
+	colors=("red" "magenta")
+
+	rootprm="#"
+else
+	colors=("green" "blue")
+fi
+
 if [ ${SSH_CONNECTION} ]; then
-	SSH="%{$fg[green]%}over %{$fg[blue]%}SSH"
+	SSH="[over %{$fg[${colors[2]}]%}SSH%{$fg[${colors[1]}]%}] "
 
 	SSH_CLI_IP=`echo ${SSH_CONNECTION} | awk '{print $1}' | sed -e "s/\./-/g"`
 fi
 
-# prompt theme
-if [ $UID -eq 0 ]; then
-	PRM="%{$fg_bold[magenta]%}=>"
-else
-	PRM="%{$fg_bold[blue]%}->"
-fi
+export PROMPT='%{$fg_bold[${colors[1]}]%}>> ${SSH}%p%{$fg[cyan]%}%c%{$reset_color%}$(git_prompt_info)%{$fg_bold[${colors[2]}]%} ${rootprm}=>>%{$reset_color%} '
 
-export PROMPT='%{$fg_bold[green]%}>> ${SSH}%{$fg_bold[green]%}%p%{$fg[cyan]%}%c %{$reset_color%}$(git_prompt_info)${PRM}%{$reset_color%} '
-
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[yellow]%}<%{$fg[red]%}"
+# display branch at that current repo to prompt
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[yellow]%}::%{$fg[red]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%}> %{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[yellow]%}>"
-
-unset SSH
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 # tmux attach
-if [ ! $TMUX ]; then
+if [ ! $TMUX ] && [ `which tmux` ]; then
 	if [ ${SSH_CONNECTION} ]; then
 		tmux kill-session -t `echo ${SSH_CLI_IP}`
 
@@ -68,10 +73,8 @@ if [ ! $TMUX ]; then
 	else
 		tmux -2
 	fi
-
 fi
 
-unset SSH_CLI_IP
 
 [ -r /etc/profile.d/cnf.sh ] && . /etc/profile.d/cnf.sh
 
@@ -89,7 +92,7 @@ _PRV_FILE=$HOME/.privatekeys
 if [ -e ${_PRV_FILE} ] && [ -r ${_PRV_FILE} ]; then
 	source ${_PRV_FILE}
 fi
-unset _PRV_FILE
+# unset _PRV_FILE
 
 # keybind
 bindkey '^[e' forward-word
