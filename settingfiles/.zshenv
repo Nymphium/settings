@@ -4,6 +4,7 @@
 unset GREP_OPTIONS
 alias grep='grep --colo=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
 
+
 alias S='sudo'
 alias C='cat'
 alias V='vim'
