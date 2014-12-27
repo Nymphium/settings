@@ -98,217 +98,225 @@
 		<moveButton>Middle</moveButton>
 	</dock>
 	<keyboard>
-		<chainQuitKey/>
-		<keybind key="Super-Tab">
-			<action name="NextWindow"/>
-		</keybind>
-		<keybind key="Super-S-Tab">
-			<action name="PreviousWindow"/>
-		</keybind>
-		<keybind key="A-q">
-			<action name="Close"/>
-		</keybind>
-		<keybind key="S-C-x">
-			<action name="Execute">
-				<command>firefox</command>
-			</action>
-		</keybind>
-		<keybind key="S-C-n">
-			<action name="Execute">
-				<command>lilyterm</command>
-			</action>
-		</keybind>
-		<keybind key="S-C-a">
-			<action name="Execute">
-				<command>chromium</command>
-			</action>
-		</keybind>
-		<keybind key="S-C-f">
-			<action name="Execute">
-				<command>thunar</command>
-			</action>
-		</keybind>
-		<keybind key="S-C-t">
-			<action name="Execute">
-				<command>thunderbird</command>
-			</action>
-		</keybind>
-		<keybind key="S-C-F12">
-			<action name="Execute">
-				<command>tilda</command>
-			</action>
-		</keybind>
-		<keybind key="W-1">
-			<action name="Desktop">
-				<desktop>1</desktop>
-			</action>
-		</keybind>
-		<keybind key="W-2">
-			<action name="Desktop">
-				<desktop>2</desktop>
-			</action>
-		</keybind>
-		<keybind key="W-3">
-			<action name="Desktop">
-				<desktop>3</desktop>
-			</action>
-		</keybind>
-		<keybind key="W-4">
-			<action name="Desktop">
-				<desktop>4</desktop>
-			</action>
-		</keybind>
-		<keybind key="W-5">
-			<action name="Desktop">
-				<desktop>5</desktop>
-			</action>
-		</keybind>
-		<keybind key="S-w-1">
-			<action name="SendToDesktop">
-				<desktop>2</desktop>
-			</action>
-			<action name="SendToDesktopLeft"/>
-		</keybind>
-		<keybind key="S-w-2">
-			<action name="SendToDesktop">
-				<desktop>2</desktop>
-			</action>
-		</keybind>
-		<keybind key="S-w-3">
-			<action name="SendToDesktop">
-				<desktop>3</desktop>
-			</action>
-		</keybind>
-		<keybind key="S-w-4">
-			<action name="SendToDesktop">
-				<desktop>4</desktop>
-			</action>
-		</keybind>
-		<keybind key="S-w-5">
-			<action name="SendToDesktop">
-				<desktop>5</desktop>
-			</action>
-		</keybind>
-		<keybind key="W-k">
-			<action name="MoveResizeTo">
-				<x>0</x>
-				<y>0</y>
-			</action>
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh
+    <chainQuitKey/>
+    <keybind key="Super-Tab">
+      <action name="NextWindow"/>
+    </keybind>
+    <keybind key="Super-S-Tab">
+      <action name="PreviousWindow"/>
+    </keybind>
+    <keybind key="A-q">
+      <action name="Close"/>
+    </keybind>
+    <keybind key="S-C-x">
+      <action name="Execute">
+        <command>firefox</command>
+      </action>
+    </keybind>
+    <keybind key="S-C-n">
+      <action name="Execute">
+        <command>lilyterm</command>
+      </action>
+    </keybind>
+    <keybind key="S-C-a">
+      <action name="Execute">
+        <command>chromium</command>
+      </action>
+    </keybind>
+    <keybind key="S-C-f">
+      <action name="Execute">
+        <command>thunar</command>
+      </action>
+    </keybind>
+    <keybind key="S-C-t">
+      <action name="Execute">
+        <command>thunderbird</command>
+      </action>
+    </keybind>
+    <keybind key="S-C-F12">
+      <action name="Execute">
+        <command>tilda</command>
+      </action>
+    </keybind>
+    <keybind key="W-1">
+      <action name="Desktop"/>
+    </keybind>
+    <keybind key="W-2">
+      <action name="Desktop">
+        <desktop>2</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-3">
+      <action name="Desktop">
+        <desktop>3</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-4">
+      <action name="Desktop">
+        <desktop>4</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-5">
+      <action name="Desktop">
+        <desktop>5</desktop>
+      </action>
+    </keybind>
+    <keybind key="S-w-1">
+      <action name="SendToDesktop">
+        <desktop>2</desktop>
+      </action>
+      <action name="SendToDesktopLeft"/>
+    </keybind>
+    <keybind key="S-w-2">
+      <action name="SendToDesktop">
+        <desktop>2</desktop>
+      </action>
+    </keybind>
+    <keybind key="S-w-3">
+      <action name="SendToDesktop">
+        <desktop>3</desktop>
+      </action>
+    </keybind>
+    <keybind key="S-w-4">
+      <action name="SendToDesktop">
+        <desktop>4</desktop>
+      </action>
+    </keybind>
+    <keybind key="S-w-5">
+      <action name="SendToDesktop">
+        <desktop>5</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-k">
+      <action name="MoveResizeTo">
+        <x>0</x>
+        <y>0</y>
+      </action>
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh
 					--max</command>
-			</action>
-		</keybind>
-		<keybind key="W-l">
-			<action name="UnmaximizeFull"/>
-			<action name="MoveResizeTo">
-				<x>800</x>
-				<y>0</y>
-				<width>800</width>
-				<height>900</height>
-			</action>
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh
+      </action>
+    </keybind>
+    <keybind key="W-l">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo">
+        <x>800</x>
+        <y>0</y>
+        <width>800</width>
+        <height>900</height>
+      </action>
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh
 					--max --vert --right</command>
-			</action>
-		</keybind>
-		<keybind key="W-h">
-			<action name="UnmaximizeFull"/>
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh
+      </action>
+    </keybind>
+    <keybind key="W-h">
+      <action name="UnmaximizeFull"/>
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh
 					--max --vert --left</command>
-			</action>
-		</keybind>
-		<keybind key="W-j">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh
+      </action>
+    </keybind>
+    <keybind key="W-j">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh
 					--max --horiz</command>
-			</action>
-		</keybind>
-		<keybind key="W-semicolon">
-			<action name="UnmaximizeFull"/>
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh
+      </action>
+    </keybind>
+    <keybind key="W-semicolon">
+      <action name="UnmaximizeFull"/>
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh
 					--square</command>
-			</action>
-		</keybind>
-		<keybind key="W-u">
-			<action name="ToggleMaximizeFull"/>
-		</keybind>
-		<keybind key="A-W-l">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh -l</command>
-			</action>
-		</keybind>
-		<keybind key="A-W-h">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh -h</command>
-			</action>
-		</keybind>
-		<keybind key="A-W-k">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh -k</command>
-			</action>
-		</keybind>
-		<keybind key="A-W-j">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh -j</command>
-			</action>
-		</keybind>
-		<keybind key="S-A-W-l">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh --move -l</command>
-			</action>
-		</keybind>
-		<keybind key="S-A-W-k">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh --move -k</command>
-			</action>
-		</keybind>
-		<keybind key="S-A-W-j">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh --move -j</command>
-			</action>
-		</keybind>
-		<keybind key="S-A-W-h">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/setwsize.sh --move -h</command>
-			</action>
-		</keybind>
-		<keybind key="W-w">
-			<action name="Move"/>
-		</keybind>
-		<keybind key="Print">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/scshot</command>
-			</action>
-		</keybind>
-		<keybind key="S-Print">
-			<action name="Execute">
-				<command>/home/beshowjo/bin/scshot a</command>
-			</action>
-		</keybind>
-		<keybind key="XF86AudioLowerVolume">
-			<action name="Execute">
-				<command>amixer -c 0 set Master 1%-</command>
-			</action>
-		</keybind>
-		<keybind key="XF86AudioRaiseVolume">
-			<action name="Execute">
-				<command>amixer -c 0 set Master 1%+</command>
-			</action>
-		</keybind>
-		<keybind key="XF86AudioMute">
-			<action name="Execute">
-				<command>amixer set Master toggle</command>
-			</action>
-		</keybind>
-		<keybind key="S-F11">
-			<action name="Execute">
-				<command>xdotool click --repeat 50 -delay 10 1</command>
-			</action>
-		</keybind>
-	</keyboard>
+      </action>
+    </keybind>
+    <keybind key="W-u">
+      <action name="ToggleMaximizeFull"/>
+    </keybind>
+    <keybind key="A-W-l">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh -l</command>
+      </action>
+    </keybind>
+    <keybind key="A-W-h">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh -h</command>
+      </action>
+    </keybind>
+    <keybind key="A-W-k">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh -k</command>
+      </action>
+    </keybind>
+    <keybind key="A-W-j">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh -j</command>
+      </action>
+    </keybind>
+    <keybind key="S-A-W-l">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh --move -l</command>
+      </action>
+    </keybind>
+    <keybind key="S-A-W-k">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh --move -k</command>
+      </action>
+    </keybind>
+    <keybind key="S-A-W-j">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh --move -j</command>
+      </action>
+    </keybind>
+    <keybind key="S-A-W-h">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/setwsize.sh --move -h</command>
+      </action>
+    </keybind>
+    <keybind key="W-w">
+      <action name="Move"/>
+    </keybind>
+    <keybind key="Print">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/scshot</command>
+      </action>
+    </keybind>
+    <keybind key="S-Print">
+      <action name="Execute">
+        <command>/home/beshowjo/bin/scshot a</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute">
+        <command>amixer -c 0 set Master 1%-</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute">
+        <command>amixer -c 0 set Master 1%+</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioMute">
+      <action name="Execute">
+        <command>amixer set Master toggle</command>
+      </action>
+    </keybind>
+    <keybind key="S-F11">
+      <action name="Execute">
+        <command>xdotool click --repeat 50 -delay 10 1</command>
+      </action>
+    </keybind>
+    <keybind key="XF86MonBrightnessDown">
+      <action name="Execute">
+        <command>xbacklight - 5</command>
+      </action>
+    </keybind>
+    <keybind key="XF86MonBrightnessUp">
+      <action name="Execute">
+        <command>xbacklight + 5</command>
+      </action>
+    </keybind>
+  </keyboard>
 	<mouse>
 		<dragThreshold>1</dragThreshold>
 		<doubleClickTime>500</doubleClickTime>
