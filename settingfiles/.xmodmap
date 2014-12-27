@@ -17,8 +17,8 @@ keycode  30 = u U period less
 keycode  31 = i I comma greater
 keycode  32 = o O Home
 keycode  33 = p P End
-keycode  34 = NoSymbol
-keycode  35 = NoSymbol
+keycode  34 = XF86AudioLowerVolume
+keycode  35 = XF86AudioRaiseVolume
 keycode  36 = NoSymbol
 keycode  38 = a A minus equal
 keycode  39 = s S percent
@@ -36,11 +36,11 @@ keycode  53 = x X F7
 keycode  54 = c C
 keycode  55 = v V
 keycode  59 = NoSymbol
-keycode  61 = XF86MonBrightnessDown
+keycode  61 = NoSymbol
 keycode  65 = Return space
 clear lock
 keycode  66 = Muhenkan Caps_Lock Henkan
-keycode  97 = XF86MonBrightnessUp
+keycode  97 = NoSymbol
 keycode 100 = BackSpace BackSpace Delete BackSpace
 keycode 101 = Home NoSymbol End
 clear mod5
