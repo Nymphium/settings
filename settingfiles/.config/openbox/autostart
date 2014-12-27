@@ -17,5 +17,5 @@
 #xfce-mcs-manager &
 
 
-xrandr --output LVDS1 --brightness 0.8 --gamma 0.8:0.75:0.7 -set Backlight 45
+xrandr --output LVDS1 --brightness 0.8 --gamma 0.8:0.75:0.7
 
