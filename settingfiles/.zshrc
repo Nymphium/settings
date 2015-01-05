@@ -12,7 +12,7 @@ export CCACHE_DIR="/home/beshowjo/.ccache" # use immutable dir
 
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
-export LUA_PATH="${HOME}/.luarocks/share/lua/5.2/?.lua;;"
+export LUA_PATH="${HOME}/.luarocks/share/lua/5.2/?.lua;${HOME}/.luarocks/share/lua/5.2/?.so;;"
 export LUA_CPATH="${HOME}/.luarocks/lib/lua/5.2/?.so;${HOME}/.luarocks/lib/luarocks/rocks-5.2/?.so;;"
 
 export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
@@ -48,6 +48,8 @@ if [ $UID -eq 0 ]; then
 	rootprm="#"
 else
 	colors=("green" "blue")
+
+	rootprm="="
 fi
 
 if [ ${SSH_CONNECTION} ]; then
@@ -56,7 +58,7 @@ if [ ${SSH_CONNECTION} ]; then
 	SSH_CLI_IP=`echo ${SSH_CONNECTION} | awk '{print $1}' | sed -e "s/\./-/g"`
 fi
 
-export PROMPT='%{$fg_bold[${colors[1]}]%}>> ${SSH}%p%{$fg[cyan]%}%c%{$reset_color%}$(git_prompt_info)%{$fg_bold[${colors[2]}]%} ${rootprm}=>>%{$reset_color%} '
+export PROMPT='%{$fg_bold[${colors[1]}]%}>> ${SSH}%p%{$fg[cyan]%}%c%{$reset_color%}$(git_prompt_info)%{$fg_bold[${colors[2]}]%} ${rootprm}>>%{$reset_color%} '
 
 # display branch at that current repo to prompt
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[yellow]%}::%{$fg[red]%}"
