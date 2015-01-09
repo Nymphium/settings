@@ -4,7 +4,7 @@ ZSH=$HOME/.oh-my-zsh
 EDITOR="vim"
 DISABLE_AUTO_TITLE=true
 
-export PATH=$PATH:${HOME}/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:${HOME}/.gem/ruby/2.1.0:${HOME}/.gem/ruby/2.1.0/bin:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
+export PATH=$PATH:${HOME}/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:`ruby -e 'print Gem.user_dir'`/bin:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
 
 export USE_CCACHE=1
 export CCACHE_PATH="/usr/bin"

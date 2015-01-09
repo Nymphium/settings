@@ -25,13 +25,12 @@ xmodmap $HOME/.xmodmap
 
 xbindkeys
 
-hsetroot -solid "#000000"
 
 exec xcompmgr &
 
 exec tilda &
 
-nitrogen --restore &
+hsetroot -solid "#000000" && nitrogen --restore &
 
 exec openbox-session
 
