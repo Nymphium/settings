@@ -4,11 +4,11 @@ if [ ${#ACPIB} -gt 1 ]; then
 	COLOR=`acpi -b | sed -e "s/.* \([0-9]*\)%.*/\1/g" | \
 		awk '{
 			if($1 <= 10){
-				print "#[bg=colour196,fg=colour0]"
+				print "#[bg=colour196,fg=colour202]"
 			}else if($1 <= 20){
-				print "#[bg=colour226,fg=colour0]"
+				print "#[bg=colour226,fg=colour202]"
 			}else{
-				print "#[fg=colour208]"
+				print "#[fg=colour202]"
 			}
 		}'`
 
