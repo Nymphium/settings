@@ -2,7 +2,7 @@
 
 # newst `grep` deprecate GREP_OPTIONS shell variable, but oh-my-zsh still defines GREP_OPTIONS
 unset GREP_OPTIONS
-alias grep='grep --colo=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
+alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
 
 
 alias S='sudo'
@@ -41,7 +41,7 @@ alias mixer='pavucontrol'
 alias -s rb=ruby
 alias -s lua=lua
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
-alias -s {mp3,mp4,avi,m4a,ts}=mplayer
+alias -s {mp3,mp4,avi,m4a,ts,mkv}=mplayer
 alias -s pdf=evince
 
 ## network
@@ -49,16 +49,21 @@ alias wifisearch='sudo iw dev wlp6s0 scan'
 alias pacs='sudo pacman -S --noconfirm'
 alias yaous='yaourt -S --noconfirm'
 alias pkgsearch='yaourt -Ss'
-alias renew='gem update 2>&1 /dev/null & sudo pacman -Sc --noconfirm && yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
 alias P='ping 8.8.8.8 -c 3'
+alias renew='gem update 2>&1 /dev/null & sudo pacman -Sc --noconfirm && yaourt -Syua --devel --noconfirm && sudo pacman-optimize && sudo updatedb &'
 
 ## compile, interp
-alias platex='platex -kanji=utf8'
+alias R='ruby'
+alias mkernel='make -j5 CC="ccache gcc" CXX="ccache g++"'
+alias platex='platex -kanji=utf8 -halt-on-error'
+alias lualatex='lualatex -halt-on-error'
+alias xelatex='xelatex -halt-on-error'
+### for task
 alias cgcc='gcc -O3 -std=c99 -lglut -lm -lGL -lGLU'
 alias cgpp='gcc -O3 -lglut -lm -lGL -lGLU'
-alias R='ruby'
-alias mkernel='make -j6 CC="ccache gcc" CXX="ccache g++"'
+gascc(){gcc -m32 $1 ../libkikaigo.a && ./a.out}
 
 ## other
 alias englize='export LANG=en_US.UTF-8'
 alias japanize='export LANG=ja_JP.UTF-8'
+
