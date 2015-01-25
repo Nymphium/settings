@@ -40,7 +40,10 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 theme.font = "comfortaa 8"
--- theme.wallpaper = "/home/beshowjo/picture/jokes/aikatsu/20141011_19:34:34.png"
+-- theme.wallpaper = os.getenv("HOME") .. ".config/awesome/wallpaper.png"
+-- theme.wallpaper = "/home/beshowjo/picture/screenshots/20141013_23:18:36.png"
+-- local wp = "/home/beshowjo/picture/screenshots/20141013_23:18:36.png"
+-- gears.wallpaper.set(wp)
 
 -- This is used later as the default terminal and editor to run.
 terminal = "lilyterm"
@@ -73,21 +76,27 @@ local layouts =
 -- }}}
 
 -- {{{ Wallpaper
-if beautiful.wallpaper then
-	for s = 1, screen.count() do
-		gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-	end
+local wp = {
+	"wallpaper1.png",
+	"wallpaper2.png"
+}
+
+for i = 1, #wp do
+	gears.wallpaper.fit(os.getenv("HOME") .. "/.config/awesome/" .. wp[i], i)
 end
 -- }}}
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
+-- for s = 1, screen.count() do
+-- Each screen has its own tag table.
+-- tags[s] = awful.tag({ 1, 2, 3, 4, 5}, s, layouts[1])
+-- end
 tags = {}
-for s = 1, screen.count() do
-	-- Each screen has its own tag table.
-	tags[s] = awful.tag({ 1, 2, 3, 4, 5}, s, layouts[1])
-end
+tags[1] = awful.tag({ 1, 2, 3, 4, 5}, 1, layouts[1])
+tags[2] = awful.tag({1}, 2, layouts[1])
 -- }}}
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -161,7 +170,9 @@ awful.button({ }, 5, function ()
 	if client.focus then client.focus:raise() end
 end))
 
-for s = 1, screen.count() do
+-- for s = 1, screen.count() do
+do
+	local s = 1
 	-- Create a promptbox for each screen
 	mypromptbox[s] = awful.widget.prompt()
 	-- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -201,6 +212,7 @@ for s = 1, screen.count() do
 
 	mywibox[s]:set_widget(layout)
 end
+
 -- }}}
 
 -- {{{ Mouse bindings
@@ -278,10 +290,10 @@ awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:
 
 -- awful.key({ modkey }, "x",
 -- function ()
-	-- awful.prompt.run({ prompt = "Run Lua code: " },
-	-- mypromptbox[mouse.screen].widget,
-	-- awful.util.eval, nil,
-	-- awful.util.getdir("cache") .. "/history_eval")
+-- awful.prompt.run({ prompt = "Run Lua code: " },
+-- mypromptbox[mouse.screen].widget,
+-- awful.util.eval, nil,
+-- awful.util.getdir("cache") .. "/history_eval")
 -- end),
 -- Menubar
 -- awful.key({ modkey }, "p", function() menubar.show() end)
@@ -458,4 +470,4 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-os.execute("nitrogen --restore")
+-- os.execute("nitrogen --restore")
