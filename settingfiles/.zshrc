@@ -66,6 +66,8 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
+# zstyle ':vcs_info:git:*' un
+
 # tmux attach
 if [ ! $TMUX ] && [ `which tmux` ]; then
 	if [ ${SSH_CONNECTION} ]; then
