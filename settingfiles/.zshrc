@@ -41,6 +41,8 @@ fi
 setopt prompt_subst
 autoload -Uz add-zsh-hook
 
+# zstyle ':vcs_info:git:*' un
+
 # tmux attach
 if [ ! $TMUX ] && [ `which tmux` ]; then
 	if [ ${SSH_CONNECTION} ]; then

@@ -66,4 +66,3 @@ gascc(){gcc -m32 $1 ../libkikaigo.a && ./a.out}
 ## other
 alias englize='export LANG=en_US.UTF-8'
 alias japanize='export LANG=ja_JP.UTF-8'
-
