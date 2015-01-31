@@ -294,7 +294,7 @@ awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:
 
 clientkeys = awful.util.table.join(
 awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-awful.key({ "Mod1"   }, "q",      function (c) c:kill()                         end),
+awful.key({ "Mod1"            }, "q",      function (c) c:kill()                         end),
 awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
 awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
 awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
@@ -307,8 +307,10 @@ function (c)
 end),
 awful.key({ modkey,           }, "k",
 function (c)
-	c.maximized_horizontal = not c.maximized_horizontal
-	c.maximized_vertical   = not c.maximized_vertical
+	if not c.fullscreen then
+		c.maximized_horizontal = not c.maximized_horizontal
+		c.maximized_vertical   = not c.maximized_vertical
+	end
 end))
 
 -- Bind all key numbers to tags.
@@ -369,23 +371,42 @@ root.keys(globalkeys)
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
 	-- All clients will match this rule.
-	{ rule = { },
-	properties = { border_width = beautiful.border_width,
-	border_color = beautiful.border_normal,
-	focus = awful.client.focus.filter,
-	raise = true,
-	keys = clientkeys,
-	buttons = clientbuttons } },
-	{ rule = { class = "MPlayer" },
-	properties = { floating = true } },
-	{ rule = { class = "pinentry" },
-	properties = { floating = true } },
-	{ rule = { class = "gimp" },
-	properties = { floating = true } },
-	{ rule = { class = "tilda" },
-	properties = { floating = true }, callback = function(c) c.fullscreen = not c.fullscreen  end},
-	{ rule = { instance = "plugin-container" },
-	properties = { floating = true, focus = yes } },
+	{
+		rule = {},
+		properties = {
+			border_width = beautiful.border_width,
+			border_color = beautiful.border_normal,
+			focus = awful.client.focus.filter,
+			raise = true,
+			keys = clientkeys,
+			buttons = clientbuttons
+		}
+	},
+	{
+		rule = {class = "Mplayer"},
+		properties = {floating = true}
+	},
+	{
+		rule = {class = "Gimp"},
+		properties = {floating = true}
+	},
+	{
+		rule = {class = "Tilda"},
+		properties = {floating = true},
+		callback = function(c) c.fullscreen = not c.fullscreen  end
+	},
+	{
+		rule = {instance = "plugin-container"},
+		properties = {floating = true, focus = yes}
+	},
+	{
+		rule = {class = "Thunderbird"},
+		properties = {tag = tags[1][4], switchtotag = true}
+	},
+	{
+		rule = {class = "Mikutter"},
+		properties = {tag = tags[1][3], switchtotag = true}
+	}
 }
 -- }}}
 
@@ -462,4 +483,3 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
--- os.execute("nitrogen --restore")
