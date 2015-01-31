@@ -1,6 +1,5 @@
 # vim: ft=sh
 
-# prompt theme
 if [ $UID -eq 0 ]; then
 	colors=("red" "magenta")
 
@@ -12,7 +11,7 @@ else
 fi
 
 if [ ${SSH_CONNECTION} ]; then
-	SSH="[over %{$fg[${colors[2]}]%}SSH%{$fg[${colors[1]}]%}] "
+	SSH="%{$fg_bold[yellow]%}<%{$fg[${colors[2]}]%}SSH%{$fg_bold[yellow]%}> "
 
 	SSH_CLI_IP=`echo ${SSH_CONNECTION} | awk '{print $1}' | sed -e "s/\./-/g"`
 fi
@@ -25,5 +24,4 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$reset_color%}%{$fg_bold[red]%}?%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
-
 
