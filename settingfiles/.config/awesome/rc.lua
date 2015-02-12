@@ -10,6 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+local myfuncs = require("myfuncs")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -46,7 +47,7 @@ local wp = {
 	"wallpaper2.png"
 }
 
-for i = 1, #wp do
+for i = 1, screen.count() do
 	gears.wallpaper.fit(os.getenv("HOME") .. "/.config/awesome/" .. wp[i], i)
 end
 -- }}}
@@ -87,7 +88,7 @@ local layouts =
 -- Each screen has its own tag table.
 tags = {}
 tags[1] = awful.tag({ 1, 2, 3, 4, 5}, 1, layouts[1])
-tags[2] = awful.tag({1}, 2, layouts[1])
+if screen.count() > 1 then tags[2] = awful.tag({1}, 2, layouts[1]) end
 -- }}}
 
 
@@ -223,14 +224,9 @@ awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
 awful.key({ modkey,           }, "j",
 function ()
-	awful.client.focus.byidx( 1)
+	awful.client.focus.byidx(1)
 	if client.focus then client.focus:raise() end
 end),
--- awful.key({ modkey,           }, "k",
--- function ()
--- awful.client.focus.byidx(-1)
--- if client.focus then client.focus:raise() end
--- end),
 
 -- Layout manipulation
 awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -255,40 +251,22 @@ awful.key({ "Control", "Shift" }, "t", function () awful.util.spawn("thunderbird
 awful.key({ "Control", "Shift" },"F12",function () awful.util.spawn("tilda") end),
 awful.key({                    },"Print",function () awful.util.spawn("/home/beshowjo/bin/scshot") end),
 awful.key({ "Shift"            }, "Print", function () awful.util.spawn("/home/beshowjo/bin/scshot a") end),
-awful.key({ modkey, "Mod1"     },  "l", function () awful.util.spawn("/home/beshowjo/bin/setwsize.sh -l") end),
-awful.key({ modkey, "Mod1"     },  "k", function () awful.util.spawn("/home/beshowjo/bin/setwsize.sh -k") end),
-awful.key({ modkey, "Mod1"     },  "j", function () awful.util.spawn("/home/beshowjo/bin/setwsize.sh -j") end),
-awful.key({ modkey, "Mod1"     },  "h", function () awful.util.spawn("/home/beshowjo/bin/setwsize.sh -h") end),
+awful.key({modkey, "Mod1"}, "l", function() myfuncs.setwindowsize("l") end),
+awful.key({modkey, "Mod1"}, "k", function() myfuncs.setwindowsize("k") end),
+awful.key({modkey, "Mod1"}, "j", function() myfuncs.setwindowsize("j") end),
+awful.key({modkey, "Mod1"}, "h", function() myfuncs.setwindowsize("h") end),
 awful.key({ modkey, "Control" }, "r", awesome.restart),
 awful.key({ modkey, "Shift"   }, "q", awesome.quit),
-
--- awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
--- awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
-awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
-awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
-awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
-awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
--- awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-awful.key({ modkey,           }, "l", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile.left) end),
-awful.key({ modkey,           }, "h", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile) end),
--- awful.key({ modkey,           }, ";", function () awful.layout.set(awful.layout.suit.max) end),
+awful.key({ modkey, "Shift"   }, "l", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile.left) end),
+awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile) end),
+-- awful.key({modkey}, "l", function() local c = client.focus local geom = c:geometry()  end),
+awful.key({ modkey,           }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
 awful.key({ modkey,           }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
 awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
 -- Prompt
 awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
-
--- awful.key({ modkey }, "x",
--- function ()
--- awful.prompt.run({ prompt = "Run Lua code: " },
--- mypromptbox[mouse.screen].widget,
--- awful.util.eval, nil,
--- awful.util.getdir("cache") .. "/history_eval")
--- end),
--- Menubar
--- awful.key({ modkey }, "p", function() menubar.show() end)
 {}
 )
 
@@ -363,9 +341,13 @@ awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
 awful.button({ "Shift" }, 1,  awful.mouse.client.move),
 awful.button({ modkey,  }, 3, awful.mouse.client.resize))
 
+
+myfuncs.domyconf("extkey.lua")
+
 -- Set keys
 root.keys(globalkeys)
 -- }}}
+
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -393,7 +375,7 @@ awful.rules.rules = {
 	{
 		rule = {class = "Tilda"},
 		properties = {floating = true},
-		callback = function(c) c.fullscreen = not c.fullscreen  end
+		callback = function(c) c.fullscreen = not c.fullscreen c.ontop = not c.ontop end
 	},
 	{
 		rule = {instance = "plugin-container"},
