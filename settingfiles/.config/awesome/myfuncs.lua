@@ -1,17 +1,7 @@
 local awful = require("awful")
 
-local myfunc = {}
-function myfunc.domyconf(file)
-	file = awful.util.getdir("config") .. "/" .. file
-	local posix = require("posix")
-
-	if posix.stat(file) then
-		dofile(file)
-	end
-end
-
-function myfunc.getwindowsize()
-	local c = client.focus
+local function getwindowsize(c)
+	local c = c or client.focus
 	local full_state = 1
 
 	if not c.fullscreen then
@@ -31,6 +21,17 @@ function myfunc.getwindowsize()
 	return h, w
 end
 
+
+local myfunc = {}
+function myfunc.domyconf(file)
+	file = awful.util.getdir("config") .. "/" .. file
+	local posix = require("posix")
+
+	if posix.stat(file) then
+		dofile(file)
+	end
+end
+
 function myfunc.lifting(c)
 	if c.fullscreen then c.fullscreen = not c.fullscreen end
 	if c.maximized_vertical then c.maximized_vertical = not c.maximized_vertical end
@@ -42,7 +43,7 @@ function myfunc.setwindowsize(direction)
 	-- if c.fullscreen or c.maximized_vertical or c.maximized_horizontal then return end
 
 	local geom = c:geometry()
-	local h, w = getwindowsize()
+	local h, w = getwindowsize(c)
 	h = h / 20
 	w = w / 20
 
