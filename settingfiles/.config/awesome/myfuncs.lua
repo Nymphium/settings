@@ -8,7 +8,7 @@ local function getwindowsize(c)
 		c.fullscreen = not c.fullscreen
 		full_state = 0
 	end
-	
+
 	local geom = c:geometry()
 
 	local h = geom.height
@@ -25,10 +25,10 @@ end
 local myfunc = {}
 function myfunc.domyconf(file)
 	file = awful.util.getdir("config") .. "/" .. file
-	local posix = require("posix")
 
-	if posix.stat(file) then
+	if io.open(file) then
 		dofile(file)
+		io.close(file)
 	end
 end
 
@@ -49,14 +49,14 @@ function myfunc.setwindowsize(direction)
 
 	if direction == "l" then
 		geom.width = geom.width + w
-	elseif direction == "k" then
-		geom.height = geom.height + h
-	elseif direction == "j" then
-		geom.height = geom.height - h
-	elseif direction == "h" then
-		geom.width = geom.width - w
-	end
-end
+		elseif direction == "k" then
+			geom.height = geom.height + h
+			elseif direction == "j" then
+				geom.height = geom.height - h
+				elseif direction == "h" then
+					geom.width = geom.width - w
+				end
+			end
 
-return myfunc
+			return myfunc
 
