@@ -10,6 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+-- myfunc
 local myfuncs = require("myfuncs")
 
 -- {{{ Error handling
@@ -255,11 +256,16 @@ awful.key({modkey, "Mod1"}, "l", function() myfuncs.setwindowsize("l") end),
 awful.key({modkey, "Mod1"}, "k", function() myfuncs.setwindowsize("k") end),
 awful.key({modkey, "Mod1"}, "j", function() myfuncs.setwindowsize("j") end),
 awful.key({modkey, "Mod1"}, "h", function() myfuncs.setwindowsize("h") end),
+awful.key({modkey, "Mod1", "Shift"}, "l", function() myfuncs.setwindowsize("l", true) end),
+awful.key({modkey, "Mod1", "Shift"}, "k", function() myfuncs.setwindowsize("k", true) end),
+awful.key({modkey, "Mod1", "Shift"}, "j", function() myfuncs.setwindowsize("j", true) end),
+awful.key({modkey, "Mod1", "Shift"}, "h", function() myfuncs.setwindowsize("h", true) end),
 awful.key({ modkey, "Control" }, "r", awesome.restart),
 awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 awful.key({ modkey, "Shift"   }, "l", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile.left) end),
 awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile) end),
--- awful.key({modkey}, "l", function() local c = client.focus local geom = c:geometry()  end),
+awful.key({modkey}, "l", function() myfuncs.halfsize("l") end),
+awful.key({modkey}, "h", function() myfuncs.halfsize("h") end),
 awful.key({ modkey,           }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
 awful.key({ modkey,           }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
@@ -271,7 +277,7 @@ awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:
 )
 
 clientkeys = awful.util.table.join(
-awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+awful.key({ modkey,           }, "f",      function (c) myfuncs.toggle("f")  end),
 awful.key({ "Mod1"            }, "q",      function (c) c:kill()                         end),
 awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
 awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
@@ -286,8 +292,9 @@ end),
 awful.key({ modkey,           }, "k",
 function (c)
 	if not c.fullscreen then
-		c.maximized_horizontal = not c.maximized_horizontal
-		c.maximized_vertical   = not c.maximized_vertical
+		-- c.maximized_horizontal = not c.maximized_horizontal
+		-- c.maximized_vertical   = not c.maximized_vertical
+		myfuncs.toggle("hv")
 	end
 end))
 
@@ -375,7 +382,7 @@ awful.rules.rules = {
 	{
 		rule = {class = "Tilda"},
 		properties = {floating = true},
-		callback = function(c) c.fullscreen = not c.fullscreen c.ontop = not c.ontop end
+		callback = function(c) myfuncs.toggle("f", c) c.ontop = not c.ontop end
 	},
 	{
 		rule = {instance = "plugin-container"},
@@ -465,5 +472,7 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
+
+-- autostart script
 myfuncs.domyconf("autostart.lua")
 
