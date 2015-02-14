@@ -1,103 +1,104 @@
+<?xml version="1.0"?>
 <openbox_config xmlns="http://openbox.org/3.4/rc" xmlns:xi="http://www.w3.org/2001/XInclude">
-	<resistance>
-		<strength>0</strength>
-		<screen_edge_strength>0</screen_edge_strength>
-	</resistance>
-	<focus>
-		<focusNew>yes</focusNew>
-		<followMouse>yes</followMouse>
-		<focusLast>no</focusLast>
-		<underMouse>no</underMouse>
-		<focusDelay>0</focusDelay>
-		<raiseOnFocus>yes</raiseOnFocus>
-	</focus>
-	<placement>
-		<policy>Smart</policy>
-		<monitor>Primary</monitor>
-		<primaryMonitor>Mouse</primaryMonitor>
-	</placement>
-	<theme>
-		<name>Onyx</name>
-		<titleLayout/>
-		<keepBorder>no</keepBorder>
-		<animateIconify>no</animateIconify>
-		<font place="ActiveWindow">
-			<name>Source Han Sans JP</name>
-			<size>8</size>
-			<weight>Normal</weight>
-			<slant>Normal</slant>
-		</font>
-		<font place="InactiveWindow">
-			<name>Source Han Sans JP</name>
-			<size>8</size>
-			<weight>Normal</weight>
-			<slant>Normal</slant>
-		</font>
-		<font place="MenuHeader">
-			<name>Source Han Sans JP</name>
-			<size>9</size>
-			<weight>Normal</weight>
-			<slant>Normal</slant>
-		</font>
-		<font place="MenuItem">
-			<name>Source Han Sans JP</name>
-			<size>9</size>
-			<weight>Normal</weight>
-			<slant>Normal</slant>
-		</font>
-		<font place="ActiveOnScreenDisplay">
-			<name>Source Han Sans JP</name>
-			<size>9</size>
-			<weight>Bold</weight>
-			<slant>Normal</slant>
-		</font>
-		<font place="InactiveOnScreenDisplay">
-			<name>Source Han Sans JP</name>
-			<size>9</size>
-			<weight>Normal</weight>
-			<slant>Normal</slant>
-		</font>
-	</theme>
-	<desktops>
-		<number>5</number>
-		<firstdesk>1</firstdesk>
-		<names>
-			<name>work</name>
-			<name>game</name>
-			<name>みくっ</name>
-			<name>contents</name>
-			<name>free</name>
-		</names>
-		<popupTime>400</popupTime>
-	</desktops>
-	<resize>
-		<drawContents>yes</drawContents>
-		<popupShow>Never</popupShow>
-		<popupPosition>Center</popupPosition>
-		<popupFixedPosition>
-			<x>10</x>
-			<y>10</y>
-		</popupFixedPosition>
-	</resize>
-	<margins>
-		<top>0</top>
-		<bottom>0</bottom>
-		<left>0</left>
-		<right>0</right>
-	</margins>
-	<dock>
-		<position>TopLeft</position>
-		<floatingX>0</floatingX>
-		<floatingY>0</floatingY>
-		<noStrut>no</noStrut>
-		<stacking>Above</stacking>
-		<direction>Vertical</direction>
-		<autoHide>no</autoHide>
-		<hideDelay>300</hideDelay>
-		<showDelay>300</showDelay>
-		<moveButton>Middle</moveButton>
-	</dock>
-	<keyboard>
+  <resistance>
+    <strength>0</strength>
+    <screen_edge_strength>0</screen_edge_strength>
+  </resistance>
+  <focus>
+    <focusNew>yes</focusNew>
+    <followMouse>yes</followMouse>
+    <focusLast>no</focusLast>
+    <underMouse>no</underMouse>
+    <focusDelay>0</focusDelay>
+    <raiseOnFocus>yes</raiseOnFocus>
+  </focus>
+  <placement>
+    <policy>Smart</policy>
+    <monitor>Primary</monitor>
+    <primaryMonitor>Mouse</primaryMonitor>
+  </placement>
+  <theme>
+    <name>Dyne</name>
+    <titleLayout/>
+    <keepBorder>no</keepBorder>
+    <animateIconify>no</animateIconify>
+    <font place="ActiveWindow">
+      <name>Source Han Sans JP</name>
+      <size>8</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="InactiveWindow">
+      <name>Source Han Sans JP</name>
+      <size>8</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="MenuHeader">
+      <name>Source Han Sans JP</name>
+      <size>9</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="MenuItem">
+      <name>Source Han Sans JP</name>
+      <size>9</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="ActiveOnScreenDisplay">
+      <name>Source Han Sans JP</name>
+      <size>9</size>
+      <weight>Bold</weight>
+      <slant>Normal</slant>
+    </font>
+    <font place="InactiveOnScreenDisplay">
+      <name>Source Han Sans JP</name>
+      <size>9</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+  </theme>
+  <desktops>
+    <number>5</number>
+    <firstdesk>1</firstdesk>
+    <names>
+      <name>work</name>
+      <name>game</name>
+      <name>&#x307F;&#x304F;&#x3063;</name>
+      <name>contents</name>
+      <name>free</name>
+    </names>
+    <popupTime>400</popupTime>
+  </desktops>
+  <resize>
+    <drawContents>yes</drawContents>
+    <popupShow>Never</popupShow>
+    <popupPosition>Center</popupPosition>
+    <popupFixedPosition>
+      <x>10</x>
+      <y>10</y>
+    </popupFixedPosition>
+  </resize>
+  <margins>
+    <top>0</top>
+    <bottom>0</bottom>
+    <left>0</left>
+    <right>0</right>
+  </margins>
+  <dock>
+    <position>TopLeft</position>
+    <floatingX>0</floatingX>
+    <floatingY>0</floatingY>
+    <noStrut>no</noStrut>
+    <stacking>Above</stacking>
+    <direction>Vertical</direction>
+    <autoHide>no</autoHide>
+    <hideDelay>300</hideDelay>
+    <showDelay>300</showDelay>
+    <moveButton>Middle</moveButton>
+  </dock>
+  <keyboard>
     <chainQuitKey/>
     <keybind key="Super-Tab">
       <action name="NextWindow"/>
@@ -298,7 +299,7 @@
     </keybind>
     <keybind key="XF86AudioMute">
       <action name="Execute">
-        <command>amixer set Master toggle</command>
+        <command>amixer -c 0 set Master toggle</command>
       </action>
     </keybind>
     <keybind key="S-F11">
@@ -307,32 +308,31 @@
       </action>
     </keybind>
   </keyboard>
-	<mouse>
-		<dragThreshold>1</dragThreshold>
-		<doubleClickTime>500</doubleClickTime>
-		<screenEdgeWarpTime>0</screenEdgeWarpTime>
-		<screenEdgeWarpMouse>false</screenEdgeWarpMouse>
-		<context name="Root">
+  <mouse>
+    <dragThreshold>1</dragThreshold>
+    <doubleClickTime>500</doubleClickTime>
+    <screenEdgeWarpTime>0</screenEdgeWarpTime>
+    <screenEdgeWarpMouse>false</screenEdgeWarpMouse>
+    <context name="Root">
 			Menus
-			<mousebind action="Press" button="Right">
-				<action name="ShowMenu">
-					<menu>root-menu</menu>
-				</action>
-			</mousebind>
+			<mousebind action="Press" button="Right"><action name="ShowMenu"><menu>root-menu</menu></action></mousebind>
 		</context>
-	</mouse>
-	<menu>
-		<file>menu.xml</file>
-		<hideDelay>200</hideDelay>
-		<middle>no</middle>
-		<submenuShowDelay>100</submenuShowDelay>
-		<submenuHideDelay>400</submenuHideDelay>
-		<showIcons>yes</showIcons>
-		<manageDesktops>yes</manageDesktops>
-	</menu>
-	<applications>
-		<application class="*">
-			<decor>no</decor>
-		</application>
-	</applications>
+    <context name="Titlebar">
+      <mousebind button="Left" action="DoubleClick"/>
+    </context>
+  </mouse>
+  <menu>
+    <file>menu.xml</file>
+    <hideDelay>200</hideDelay>
+    <middle>no</middle>
+    <submenuShowDelay>100</submenuShowDelay>
+    <submenuHideDelay>400</submenuHideDelay>
+    <showIcons>yes</showIcons>
+    <manageDesktops>yes</manageDesktops>
+  </menu>
+  <applications>
+    <application class="*">
+      <decor>no</decor>
+    </application>
+  </applications>
 </openbox_config>
