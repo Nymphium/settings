@@ -132,7 +132,7 @@ mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
 awful.button({ }, 1, function (c)
 	if c == client.focus then
-		c.minimized = true
+		-- c.minimized = true
 	else
 		-- Without this, the following
 		-- :isvisible() makes no sense
@@ -219,22 +219,7 @@ awful.button({ }, 5, awful.tag.viewprev)
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
-awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
-
-awful.key({ modkey,           }, "j",
-function ()
-	awful.client.focus.byidx(1)
-	if client.focus then client.focus:raise() end
-end),
-
 -- Layout manipulation
-awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
--- awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
-awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
-awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
-awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
 awful.key({ modkey,           }, "Tab",
 function ()
 	awful.client.focus.history.previous()
@@ -244,14 +229,6 @@ function ()
 end),
 
 -- Standard program
-awful.key({ "Control", "Shift" }, "n", function () awful.util.spawn(terminal) end),
-awful.key({ "Control", "Shift" }, "x", function () awful.util.spawn("firefox") end),
-awful.key({ "Control", "Shift" }, "a", function () awful.util.spawn("chromium") end),
-awful.key({ "Control", "Shift" }, "f", function () awful.util.spawn("thunar") end),
-awful.key({ "Control", "Shift" }, "t", function () awful.util.spawn("thunderbird") end),
-awful.key({ "Control", "Shift" },"F12",function () awful.util.spawn("tilda") end),
-awful.key({                    },"Print",function () awful.util.spawn("/home/beshowjo/bin/scshot") end),
-awful.key({ "Shift"            }, "Print", function () awful.util.spawn("/home/beshowjo/bin/scshot a") end),
 awful.key({modkey, "Mod1"}, "l", function() myfuncs.setwindowsize("l") end),
 awful.key({modkey, "Mod1"}, "k", function() myfuncs.setwindowsize("k") end),
 awful.key({modkey, "Mod1"}, "j", function() myfuncs.setwindowsize("j") end),
@@ -269,7 +246,6 @@ awful.key({modkey}, "h", function() myfuncs.halfsize("h") end),
 awful.key({ modkey,           }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
 awful.key({ modkey,           }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
-awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
 -- Prompt
 awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
@@ -289,14 +265,7 @@ function (c)
 	-- minimized, since minimized clients can't have the focus.
 	c.minimized = true
 end),
-awful.key({ modkey,           }, "k",
-function (c)
-	if not c.fullscreen then
-		-- c.maximized_horizontal = not c.maximized_horizontal
-		-- c.maximized_vertical   = not c.maximized_vertical
-		myfuncs.toggle("hv")
-	end
-end))
+awful.key({ modkey,           }, "k", function (c) if not c.fullscreen then myfuncs.toggle("hv") end end))
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.

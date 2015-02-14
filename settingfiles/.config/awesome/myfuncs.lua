@@ -5,9 +5,8 @@ local myfuncs = {}
 
 function myfuncs.domyconf(file)
 	file = awful.util.getdir("config") .. "/" .. file
-	local posix = require("posix")
 
-	if posix.stat(file) then
+	if awful.util.file_readable(file) then
 		dofile(file)
 	end
 end
@@ -39,7 +38,6 @@ function myfuncs.getwindowsize(full)
 	end
 	
 	local geom = c:geometry()
-
 	local h = geom.height
 	local w = geom.width
 
@@ -60,13 +58,10 @@ end
 function myfuncs.setwindowsize(direction, pos)
 	local c = client.focus
 
-	if c.fullscreen
-		or c.maximized_vertical
-		or c.maximized_horizontal then
+	if c.fullscreen or c.maximized_vertical or c.maximized_horizontal then
 		return
 	end
 
-	local pos = pos or nil
 	local _x = pos and "x" or "width"
 	local _y = pos and "y" or "height"
 
@@ -78,6 +73,7 @@ function myfuncs.setwindowsize(direction, pos)
 
 	local tip_h = geom.height % h
 	local tip_w = geom.width % w
+
 	if tip_w > 0 then geom.width = geom.width + w - tip_w end
 	if tip_h > 0 then geom.height = geom.height + h - tip_h end
 
@@ -101,24 +97,23 @@ function myfuncs.halfsize(rl)
 		myfuncs.toggle("f")
 	end
 
-	if c.maximized_vertical then
+	if not c.maximized_vertical then
 		myfuncs.toggle("v")
 	end
 
-	if c.maximized_horizontal then
+	if not c.maximized_horizontal then
 		myfuncs.toggle("h")
 	end
 
-	myfuncs.toggle("vh")
-
 	local geom = c:geometry()
 	geom.width = geom.width / 2
+
 	if rl:find("l") then geom.x = geom.width end
 
 	myfuncs.toggle("vh")
+
 	c:geometry(geom)
 end
-
 
 return myfuncs
 
