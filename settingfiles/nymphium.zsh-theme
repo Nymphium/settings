@@ -11,12 +11,17 @@ else
 	rootprm="="
 fi
 
+ZSH_THEME_GIT_PROMPT_PREFIX=""
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_DIRTY=""
+ZSH_THEME_GIT_PROMPT_UNTRACKED="u"
+
 autoload -Uz vcs_info
 zstyle ":vcs_info:*" enable git
 zstyle ":vcs_info:git:*" check-for-changes true
 zstyle ":vcs_info:git:*" stagedstr 'm'
 zstyle ":vcs_info:git:*" unstagedstr 'a'
-zstyle ":vcs_info:*" formats "%{$fg_bold[yellow]%}:%{$fg_bold[green]%}%u%c%{$fg_bold[yellow]%}:%{$fg_bold[red]%}%b"
+zstyle ":vcs_info:*" formats "%{$fg_bold[yellow]%}:%{$fg_bold[green]%}%u%c$(git_prompt_status)%{$fg_bold[yellow]%}:%{$fg_bold[red]%}%b"
 zstyle ":vcs_info:*" actionformats "%F{red}[yabai]"
 setopt prompt_subst
 precmd(){vcs_info}
