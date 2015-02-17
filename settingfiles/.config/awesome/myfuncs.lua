@@ -115,5 +115,21 @@ function myfuncs.halfsize(rl)
 	c:geometry(geom)
 end
 
+function myfuncs.squaresize()
+	local c = client.focus
+
+	myfuncs.lifting(c)
+
+	myfuncs.toggle("vh")
+
+	local geom = c:geometry()
+	geom.height = geom.height / 2
+	geom.width = geom.width / 2
+
+	myfuncs.toggle("vh")
+
+	c:geometry(geom)
+end
+
 return myfuncs
 
