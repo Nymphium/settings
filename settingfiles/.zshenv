@@ -18,6 +18,7 @@ alias suspend='sudo systemctl suspend'
 alias ....='cd ../../../..'
 alias wpa_reconf='killall -1 wpa_supplicant'
 alias reexec='sudo kexec -l /boot/vmlinuz-3.18-rc6 --initrd=/boot/initramfs-3.18-rc6.img --reuse-cmdline && sudo kexec -e'
+alias chrome='google-chrome-beta'
 
 # tmux
 alias tmuxn='tmux source-file $HOME/.tmux.conf'
