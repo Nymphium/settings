@@ -28,8 +28,7 @@ function myfuncs.toggle(fvh, c)
 	end
 end
 
-function myfuncs.getwindowsize(full)
-	local c = client.focus
+function myfuncs.getwindowsize(full) local c = client.focus
 	local full_state = full or 0
 
 	if not c.fullscreen then
@@ -62,8 +61,8 @@ function myfuncs.setwindowsize(direction, pos)
 		return
 	end
 
-	local _x = pos and "x" or "width"
-	local _y = pos and "y" or "height"
+	local x = pos and "x" or "width"
+	local y = pos and "y" or "height"
 
 
 	local geom = c:geometry()
@@ -78,13 +77,13 @@ function myfuncs.setwindowsize(direction, pos)
 	if tip_h > 0 then geom.height = geom.height + h - tip_h end
 
 	if direction == "l" then
-		geom[_x] = geom[ _x ] + w
+		geom[x] = geom[x] + w
 	elseif direction == "k" then
-		geom[_y] = geom[_y] - h
+		geom[y] = geom[y] - h
 	elseif direction == "j" then
-		geom[_y] = geom[_y] + h
+		geom[y] = geom[y] + h
 	elseif direction == "h" then
-		geom[_x] = geom[_x] - w
+		geom[x] = geom[x] - w
 	end
 
 	c:geometry(geom)
@@ -117,16 +116,13 @@ end
 
 function myfuncs.squaresize()
 	local c = client.focus
-
-	myfuncs.lifting(c)
-
-	myfuncs.toggle("vh")
-
 	local geom = c:geometry()
-	geom.height = geom.height / 2
-	geom.width = geom.width / 2
-
-	myfuncs.toggle("vh")
+	local x, y = geom.x, geom.y
+	local h, w = myfuncs.getwindowsize()
+	geom.height = h / 2
+	geom.width = w / 2
+	geom.x = x
+	geom.y = y
 
 	c:geometry(geom)
 end
