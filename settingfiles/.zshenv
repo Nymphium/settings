@@ -19,6 +19,7 @@ alias ....='cd ../../../..'
 alias wpa_reconf='killall -1 wpa_supplicant'
 alias reexec='sudo kexec -l /boot/vmlinuz-3.18-rc6 --initrd=/boot/initramfs-3.18-rc6.img --reuse-cmdline && sudo kexec -e'
 alias chrome='google-chrome-beta'
+alias mplayer='mplayer -lavdopts threads=16'
 
 # tmux
 alias tmuxn='tmux source-file $HOME/.tmux.conf'
@@ -38,11 +39,11 @@ alias poweroff='systemctl poweroff -i'
 alias shutdown='sudo poweroff'
 alias mixer='pavucontrol'
 
-#suffix
+# suffix
 alias -s rb=ruby
 alias -s lua=lua
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
-alias -s {mp3,mp4,avi,m4a,ts,mkv}=mplayer
+alias -s {mp3,mp4,avi,m4a,ts,mkv}="mplayer -lavdopts threads=16"
 alias -s pdf=evince
 
 ## network
