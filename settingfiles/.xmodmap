@@ -39,7 +39,7 @@ keycode  59 = NoSymbol
 keycode  61 = NoSymbol
 keycode  65 = Return space
 clear lock
-keycode  66 = Muhenkan Caps_Lock Henkan
+keycode  66 = Muhenkan NoSymbol Henkan
 keycode  97 = NoSymbol
 keycode 100 = BackSpace BackSpace Delete BackSpace
 keycode 101 = Home NoSymbol End
