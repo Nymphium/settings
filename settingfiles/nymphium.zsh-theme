@@ -26,7 +26,7 @@ zstyle ":vcs_info:*" enable git
 zstyle ":vcs_info:git:*" check-for-changes true
 zstyle ":vcs_info:git:*" stagedstr 'm'
 zstyle ":vcs_info:git:*" unstagedstr 'a'
-zstyle ":vcs_info:*" formats "%u%c${YERLLOW}:${RED}%b"
+zstyle ":vcs_info:*" formats "%u%c${YELLOW}:${RED}%b"
 zstyle ":vcs_info:*" actionformats "%F{red}[yabai]"
 setopt prompt_subst
 
@@ -52,7 +52,7 @@ function _my_prompt() {
 		SSH_CLI_IP=`echo ${SSH_CONNECTION} | awk '{print $1}' | sed -e "s/\./-/g"`
 	fi
 
-	PROMPT="${COL1}>> ${SSH}%p${CYAN}%c$(_git_untracked)${vcs_info_msg_0_}${COL2} ${rootprm}>>%{$reset_color%}"
+	PROMPT="${COL1}>> ${SSH}%p${CYAN}%c$(_git_untracked)${vcs_info_msg_0_}${COL2} ${rootprm}>>%{$reset_color%} "
 }
 
 
