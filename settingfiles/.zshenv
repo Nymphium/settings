@@ -44,7 +44,7 @@ alias -s rb=ruby
 alias -s lua=lua
 alias -s {png,jpg,PNG,JPG,JPEG}=gimmage
 alias -s {mp3,mp4,avi,m4a,ts,mkv}="mplayer -lavdopts threads=16"
-alias -s pdf=evince
+alias -s pdf=xdg-open
 
 ## network
 alias wifisearch='sudo iw dev wlp6s0 scan'
@@ -56,8 +56,9 @@ alias renew='gem update 2>&1 /dev/null & sudo pacman -Sc --noconfirm && yaourt -
 
 ## compile, interp
 alias R='ruby'
+alias L='lua5.3'
 alias mkernel='make -j5 CC="ccache gcc" CXX="ccache g++"'
-alias platex='platex -kanji=utf8 -halt-on-error'
+alias platex='uplatex -kanji=utf8 -halt-on-error'
 alias lualatex='lualatex -halt-on-error'
 alias xelatex='xelatex -halt-on-error'
 ### for task
