@@ -16,15 +16,13 @@ Composition	Ctrl Right	MoveCursorToEnd
 Composition	Ctrl Space	Convert
 Composition	Ctrl u	ConvertToHiragana
 Composition	Delete	Delete
-Composition	Down	Commit
+Composition	Down	CommitFirstSuggestion
 Composition	Enter	Commit
 Composition	ESC	Cancel
 Composition	F2	ConvertWithoutHistory
 Composition	F6	ConvertToHiragana
 Composition	F8	ConvertToHalfWidth
 Composition	F9	ConvertToFullAlphanumeric
-Composition	Hiragana	ToggleAlphanumericMode
-Composition	Kana	ToggleAlphanumericMode
 Composition	Left	MoveCursorLeft
 Composition	Right	MoveCursorRight
 Composition	Shift Space	Convert
@@ -47,7 +45,7 @@ Conversion	Ctrl Shift Left	SegmentWidthShrink
 Conversion	Ctrl Shift Right	SegmentWidthExpand
 Conversion	Ctrl Space	ConvertNext
 Conversion	Ctrl u	ConvertToHiragana
-Conversion	Down	CommitOnlyFirstSegment
+Conversion	Down	ConvertNext
 Conversion	Enter	Commit
 Conversion	ESC	Cancel
 Conversion	F10	ConvertToHalfAlphanumeric
@@ -56,11 +54,8 @@ Conversion	F7	ConvertToFullKatakana
 Conversion	F8	ConvertToHalfWidth
 Conversion	F9	ConvertToFullAlphanumeric
 Conversion	Muhenkan	IMEOff
-Conversion	Hiragana	ToggleAlphanumericMode
-Conversion	Insert	Cancel
 Conversion	Left	SegmentWidthShrink
 Conversion	Right	SegmentWidthExpand
-Conversion	Shift Henkan	ConvertPrevPage
 Conversion	Shift Left	SegmentFocusLeft
 Conversion	Shift Right	SegmentFocusRight
 Conversion	Shift Space	ConvertNext
@@ -75,7 +70,6 @@ Precomposition	Ctrl F12	LaunchConfigDialog
 Precomposition	Ctrl F7	LaunchWordRegisterDialog
 Precomposition	F10	ToggleAlphanumericMode
 Precomposition	Henkan	IMEOn
-Precomposition	Kana	ToggleAlphanumericMode
 Precomposition	Muhenkan	IMEOff
 Prediction	Ctrl Down	ConvertNext
 Prediction	Ctrl Up	ConvertPrev
@@ -86,7 +80,6 @@ Suggestion	Ctrl Down	PredictAndConvert
 Suggestion	Ctrl Enter	CommitFirstSuggestion
 Suggestion	Down	PredictAndConvert
 Prediction	Muhenkan	CancelAndIMEOff
-Conversion	Shift Muhenkan	SwitchKanaType
 Composition	F7	ConvertToFullKatakana
 Composition	Kanji	CancelAndIMEOff
 Composition	OFF	CancelAndIMEOff
