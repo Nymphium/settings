@@ -67,11 +67,12 @@ autoload -Uz compinit
 compinit -u -C
 
 # load many dotfiles
-_PRV_FILE=$HOME/.privatekeys
-if [ -e ${_PRV_FILE} ] && [ -r ${_PRV_FILE} ]; then
-	source ${_PRV_FILE}
-fi
-# unset _PRV_FILE
+function() {
+	local _PRV_FILE=$HOME/.privatekeys
+	if [ -e ${_PRV_FILE} ] && [ -r ${_PRV_FILE} ]; then
+		source ${_PRV_FILE}
+	fi
+}
 
 # keybind
 bindkey '^[e' forward-word
