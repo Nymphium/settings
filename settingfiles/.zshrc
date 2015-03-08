@@ -6,7 +6,7 @@ DISABLE_AUTO_TITLE=true
 
 ZSH_THEME="nymphium"
 
-export PATH=$PATH:${HOME}/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:`ruby -e 'print Gem.user_dir'`/bin:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin
+export PATH=${HOME}/bin:${PATH}:/usr/bin/vendor_perl:/usr/bin/core_perl:$(ruby -e 'print Gem.user_dir')/bin:/usr/lib/ccache/bin:/usr/lib/colorgcc/bin:/opt/java/bin:/opt/java/jre/bin:${HOME}/.luarocks/bin
 export USE_CCACHE=1
 export CCACHE_PATH="/usr/bin"
 export CCACHE_DIR="/home/beshowjo/.ccache" # use immutable dir
