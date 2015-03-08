@@ -91,3 +91,4 @@ DirectInput	Kanji	IMEOn
 Precomposition	Kanji	CancelAndIMEOff
 Precomposition	OFF	CancelAndIMEOff
 Precomposition	ON	IMEOn
+
