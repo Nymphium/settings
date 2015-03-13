@@ -1,0 +1,35 @@
+binding "gtk-vi-text-entry" {
+	bind "<alt>w" {"move-cursor" (words, -1, 0)}
+	bind "<alt>e" {"move-cursor" (words, 1, 0)}
+	bind "<shift><alt>w" {"move-cursor" (words, -1, 1)}
+	bind "<shift><alt>e" {"move-cursor" (words, 1, 1)}
+	bind "<alt>d" {"delete-from-cursor" (word-ends, 1)}
+	bind "<shift><alt>d" {"delete-from-cursor" (word-ends, -1)}
+	bind "<alt>c" {"copy-clipboard" ()}
+	bind "<alt>v" {"paste-clipboard" ()}
+}
+
+binding "gtk-vi-text-view" {
+	bind "<alt>c" {"copy-clipboard" ()}
+	bind "<alt>v" {"paste-clipboard" ()}
+}
+
+binding "gtk-vi-tree-view" {
+	bind "<alt>c" {"copy-clipboard" ()}
+	bind "<alt>v" {"paste-clipboard" ()}
+}
+
+binding "gtk-vi-menu" {
+	bind "<alt>e" {}
+	bind "<alt>w" {}
+	bind "<alt>c" {"copy-clipboard" ()}
+	bind "<alt>v" {"paste-clipboard" ()}
+}
+
+
+class "GtkEntry" binding "gtk-vi-text-entry"
+class "GtkTextView" binding "gtk-vi-text-entry"
+class "GtkTextView" binding "gtk-vi-text-view"
+class "GtkTreeView" binding "gtk-vi-tree-view"
+class "GtkMenuShell" binding "gtk-vi-menu"
+
