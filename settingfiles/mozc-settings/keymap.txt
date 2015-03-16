@@ -27,6 +27,8 @@ Conversion	Left	SegmentWidthShrink
 Conversion	Right	SegmentWidthExpand
 Conversion	Up	ConvertPrev
 Conversion	Down	ConvertNext
+Conversion	PageUp	ConvertPrevPage
+Conversion	PageDown	ConvertNextPage
 Conversion	Shift Left	SegmentFocusLeft
 Conversion	Shift Right	SegmentFocusRight
 Conversion	Shift Space	ConvertNext
