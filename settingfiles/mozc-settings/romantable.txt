@@ -306,4 +306,6 @@ whu	う
 whe	うぇ
 who	うぉ
 zb	?
-xh	っ
+\t	っ
+\wa	和英
+\fun	function

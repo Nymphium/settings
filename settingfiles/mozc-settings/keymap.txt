@@ -15,7 +15,7 @@ Composition	Down	Convert
 Composition	Shift Space	Convert
 Composition	Space	Convert
 Composition	Tab	PredictAndConvert
-Conversion	Alt Enter	Commit
+Conversion	Ctrl Enter	Commit
 Conversion	Enter	CommitOnlyFirstSegment
 Conversion	ESC	Cancel
 Conversion	F6	ConvertToHiragana
@@ -27,8 +27,6 @@ Conversion	Left	SegmentWidthShrink
 Conversion	Right	SegmentWidthExpand
 Conversion	Up	ConvertPrev
 Conversion	Down	ConvertNext
-Conversion	PageUp	ConvertPrevPage
-Conversion	PageDown	ConvertNextPage
 Conversion	Shift Left	SegmentFocusLeft
 Conversion	Shift Right	SegmentFocusRight
 Conversion	Shift Space	ConvertNext
@@ -45,3 +43,5 @@ Prediction	Up	ConvertPrev
 Prediction	Down	ConvertNext
 Prediction	Muhenkan	CancelAndIMEOff
 DirectInput	Henkan	IMEOn
+Conversion	PageDown	ConvertNextPage
+Conversion	PageUp	ConvertPrevPage
