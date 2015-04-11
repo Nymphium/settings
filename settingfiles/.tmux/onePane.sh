@@ -1,14 +1,11 @@
-#!/bin/bash
+pane_num=`tmux display -p "#{window_panes}"`
 
-pane_num=$(tmux display -p "#{window_panes}")
+win_num=`tmux display -p "#{session_windows}"`
 
-win_num=$(tmux display -p "#{session_windows}")
-
-if [ "${win_num}" -gt 1 ] | [ "${pane_num}" -gt 1 ]; then
-	tmux kill-pane
-else
+if [ ${pane_num} -eq 1 ] && [ ${win_num} -eq 1 ]; then
 	tmux split-window -c $HOME
 
-	tmux kill-pane -t 0
+	tmux 'kill-pane' -t 0
+else
+	tmux 'kill-pane'
 fi
-
