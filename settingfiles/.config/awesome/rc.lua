@@ -342,7 +342,7 @@ awful.rules.rules = {
 	},
 	{
 		rule = {class = "Mplayer"},
-		properties = {floating = true}
+		properties = {floating = true, focus = true}
 	},
 	{
 		rule = {class = "Gimp"},
@@ -354,8 +354,12 @@ awful.rules.rules = {
 		callback = function(c) myfuncs.toggle("f", c) c.ontop = not c.ontop end
 	},
 	{
-		rule = {instance = "plugin-container"},
-		properties = {floating = true, focus = yes}
+		rule = {instance = "Plugin-container"},
+		properties = {floating = true, focus = true}
+	},
+	{
+		rule = {instance = "Vlc"},
+		properties = {floating = true, focus = true}
 	},
 	{
 		rule = {class = "Thunderbird"},
