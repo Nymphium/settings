@@ -32,7 +32,9 @@ do
 
 		naughty.notify({ preset = naughty.config.presets.critical,
 		title = "Oops, an error happened!",
-		text = err })
+		text = err,
+		height = 80
+	})
 		in_error = false
 	end)
 end
@@ -41,6 +43,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+theme = theme
 theme.font = "comfortaa 8"
 
 (function(wp)
@@ -246,7 +249,6 @@ awful.key({modkey}, "h", function() myfuncs.halfsize("h") end),
 awful.key({ modkey,           }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
 awful.key({ modkey,           }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
-
 -- Prompt
 awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 {}
@@ -255,16 +257,6 @@ awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:
 clientkeys = awful.util.table.join(
 awful.key({ modkey,           }, "f",      function (c) myfuncs.toggle("f")  end),
 awful.key({ "Mod1"            }, "q",      function (c) c:kill()                         end),
--- awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
--- awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
--- awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
--- awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
--- awful.key({ modkey,           }, "n",
--- function (c)
-	-- The client currently has the input focus, so it cannot be
-	-- minimized, since minimized clients can't have the focus.
-	-- c.minimized = true
--- end),
 awful.key({ modkey,           }, "k", function (c) if not c.fullscreen then myfuncs.toggle("hv") end end))
 
 -- Bind all key numbers to tags.
@@ -452,6 +444,11 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 
--- autostart script
-myfuncs.domyconf("autostart.lua")
+-- awesome.connect_signal("spawn::completed", function()
+	myfuncs.domyconf("autostart.lua")
+-- end)
+
+-- if not startup then
+	-- awesome.emit_signal("spawn::completed", {id = 0})
+-- end
 

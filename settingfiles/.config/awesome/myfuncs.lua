@@ -1,13 +1,11 @@
 local awful = require("awful")
-
-
 local myfuncs = {}
 
 function myfuncs.domyconf(file)
 	file = awful.util.getdir("config") .. "/" .. file
 
 	if awful.util.file_readable(file) then
-		dofile(file)
+		in_error = pcall(dofile, file)
 	end
 end
 
@@ -28,30 +26,10 @@ function myfuncs.toggle(fvh, c)
 	end
 end
 
-function myfuncs.getwindowsize(full) local c = client.focus
-	local full_state = full or 0
+function myfuncs.getwindowsize(c)
+	local c = c or client.focus
 
-	if not c.fullscreen then
-		myfuncs.toggle("f")
-		full_state = 0
-	end
-	
-	local geom = c:geometry()
-	local h = geom.height
-	local w = geom.width
-
-	if full_state < 1 then
-		c.fullscreen = not c.fullscreen
-	end
-
-	return h, w
-end
-
-function myfuncs.lifting()
-	local c = client.focus
-	if c.fullscreen then myfuncs.toggle("f") end
-	if c.maximized_vertical then myfuncs.toggle("v") end
-	if c.maximized_horizontal then myfuncs.toggle("h") end
+	return screen[c.screen].geometry.height, screen[c.screen].geometry.width
 end
 
 function myfuncs.setwindowsize(direction, pos)
@@ -63,10 +41,9 @@ function myfuncs.setwindowsize(direction, pos)
 
 	local x = pos and "x" or "width"
 	local y = pos and "y" or "height"
-
-
 	local geom = c:geometry()
-	local h, w = myfuncs.getwindowsize()
+	local h, w = myfuncs.getwindowsize(c)
+
 	h = h / 20
 	w = w / 20
 
@@ -118,7 +95,9 @@ function myfuncs.squaresize()
 	local c = client.focus
 	local geom = c:geometry()
 	local x, y = geom.x, geom.y
-	local h, w = myfuncs.getwindowsize()
+	local h, w = myfuncs.getwindowsize(c)
+	c.maximized_vertical = false
+	c.maximized_horizontal = false
 	geom.height = h / 2
 	geom.width = w / 2
 	geom.x = x
