@@ -15,6 +15,7 @@ setopt hist_verify
 setopt hist_expand
 setopt no_hup
 setopt numeric_glob_sort
+setopt no_flow_control
 
 autoload -Uz compinit promptinit
 autoload -Uz promptinit
@@ -27,22 +28,22 @@ plugins=(git ruby gem history)
 
 export PATH
 PATH=${HOME}/bin:${PATH}
-PATH+=/usr/bin/vendor_perl:/usr/bin/core_perl
-PATH+=$(ruby -e 'print Gem.user_dir')/bin
+PATH+=/usr/bin/vendor_perl:/usr/bin/core_perl:
+PATH+=$(ruby -e 'print Gem.user_dir')/bin:
 PATH+=/usr/lib/ccache/bin:
-PATH+=/opt/java/bin:/opt/java/jre/bin
+PATH+=/opt/java/bin:/opt/java/jre/bin:
 PATH+=${HOME}/.luarocks/bin
 
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
 # LuaRocks path switch each Lua Versions
-# function() {
-	# local LUA_VERSION
-	# LUA_VERSION=$(lua -e 'print(_VERSION)' | awk '{print $2}')
+function() {
+	local LUA_VERSION
+	LUA_VERSION=$(lua -e 'print(_VERSION)' | awk '{print $2}')
 
-	# export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.so;;"
-	# export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
-# }
+	export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.so;;"
+	export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
+}
 
 export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 export TERM="screen-256color"

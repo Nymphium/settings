@@ -93,6 +93,11 @@ end
 
 function myfuncs.squaresize()
 	local c = client.focus
+	
+	if not c then
+		return
+	end
+
 	local geom = c:geometry()
 	local x, y = geom.x, geom.y
 	local h, w = myfuncs.getwindowsize(c)
