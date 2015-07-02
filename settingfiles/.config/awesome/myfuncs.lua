@@ -28,8 +28,9 @@ end
 
 function myfuncs.getwindowsize(c)
 	local c = c or client.focus
+	local s = screen[c.screen].geometry
 
-	return screen[c.screen].geometry.height, screen[c.screen].geometry.width
+	return s.height, s.width
 end
 
 function myfuncs.setwindowsize(direction, pos)
@@ -84,7 +85,9 @@ function myfuncs.halfsize(rl)
 	local geom = c:geometry()
 	geom.width = geom.width / 2
 
-	if rl:find("l") then geom.x = geom.width end
+	if rl:find("l") then
+		geom.x = geom.width
+	end
 
 	myfuncs.toggle("vh")
 

@@ -117,7 +117,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibox
 -- Create a textclock widget
-mytextclock = awful.widget.textclock()
+-- mytextclock = awful.widget.textclock()
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -395,7 +395,7 @@ client.connect_signal("manage", function (c, startup)
 
 	local titlebars_enabled = false
 	if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
-		-- buttons for the titlebar
+	-- buttons for the titlebar
 		local buttons = awful.util.table.join(
 		awful.button({ }, 1, function()
 			client.focus = c
