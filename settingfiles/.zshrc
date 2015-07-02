@@ -10,12 +10,11 @@ zstyle ':completion:*:default' menu select=1
 
 setopt prompt_subst
 setopt magic_equal_subst
-setopt HIST_IGNORE_ALL_DUPS
+setopt hist_ignore_all_dups
 setopt hist_verify
 setopt hist_expand
 setopt no_hup
 setopt numeric_glob_sort
-setopt no_flow_control
 
 autoload -Uz compinit promptinit
 autoload -Uz promptinit
@@ -37,13 +36,13 @@ PATH+=${HOME}/.luarocks/bin
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
 # LuaRocks path switch each Lua Versions
-function() {
-	local LUA_VERSION
-	LUA_VERSION=$(lua -e 'print(_VERSION)' | awk '{print $2}')
+# function() {
+	# local LUA_VERSION
+	# LUA_VERSION=$(lua -e 'print(_VERSION)' | awk '{print $2}')
 
-	export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.so;;"
-	export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
-}
+	# export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.so;;"
+	# export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
+# }
 
 export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 export TERM="screen-256color"
@@ -51,6 +50,9 @@ export TERM="screen-256color"
 if [ ! "${DISPLAY}" ]; then
 	stty iutf8
 fi
+
+# no flow control
+stty -ixon
 
 if [[ -d /usr/local/share/zsh-completions ]]; then
 	fpath=($fpath /usr/local/share/zsh-completions)
