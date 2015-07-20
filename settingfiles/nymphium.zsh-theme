@@ -45,7 +45,7 @@ function _git_untracked() {
 function _my_prompt() {
 	vcs_info
 	local SSH=""
-	local HAS_SSH=$(tmux showenv | grep ^SSH_CONNECTION | sed -e "s/\s//g")
+	local HAS_SSH=$(tmux showenv SSH_CONNECTION 2> /dev/null | sed -e "s/.*SSH_CONNECTION=\?\(\S*\).*$/\1/")
 
 	if [ ! ${#SSH_CONNECTION} -eq 0 -o ! ${#HAS_SSH} -eq 0 ]; then
 		SSH="%{$fg_bold[yellow]%}<${_COL2}SSH${_YELLOW}> "
