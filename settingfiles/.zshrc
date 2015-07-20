@@ -27,11 +27,12 @@ plugins=(git ruby gem history)
 
 export PATH
 PATH=${HOME}/bin:${PATH}
-PATH+=/usr/bin/vendor_perl:/usr/bin/core_perl:
-PATH+=$(ruby -e 'print Gem.user_dir')/bin:
-PATH+=/usr/lib/ccache/bin:
-PATH+=/opt/java/bin:/opt/java/jre/bin:
-PATH+=${HOME}/.luarocks/bin
+PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
+PATH+=:$(ruby -e 'print Gem.user_dir')/bin
+PATH+=:/usr/lib/ccache/bin
+PATH+=:/opt/java/bin:/opt/java/jre/bin
+PATH+=:${HOME}/.luarocks/bin
+PATH+=:${HOME}/.cabal/bin
 
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
@@ -72,16 +73,7 @@ if [[ -d "${HOME}/.oh-my-zsh" ]]; then
 fi
 
 # tmux attach
-if [[ ! "${TMUX}" ]] && [[ "$(which tmux)" ]]; then
-	# if [ "${SSH_CONNECTION}" ]; then
-		# tmux -2 kill-session -t "${SSH_CLI_IP}" || :
-
-		# tmux -2 new-session -s "${SSH_CLI_IP}"
-	# else
-		tmux -2
-	# fi
-fi
-
+[[ ! "${TMUX}" ]] && [[ "$(which tmux)" ]] && tmux -2
 
 # keybind
 bindkey '^[e' forward-word
