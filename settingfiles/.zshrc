@@ -73,13 +73,13 @@ fi
 
 # tmux attach
 if [[ ! "${TMUX}" ]] && [[ "$(which tmux)" ]]; then
-	if [ "${SSH_CONNECTION}" ]; then
-		tmux -2 kill-session -t "${SSH_CLI_IP}" || :
+	# if [ "${SSH_CONNECTION}" ]; then
+		# tmux -2 kill-session -t "${SSH_CLI_IP}" || :
 
-		tmux -2 new-session -s "${SSH_CLI_IP}"
-	else
+		# tmux -2 new-session -s "${SSH_CLI_IP}"
+	# else
 		tmux -2
-	fi
+	# fi
 fi
 
 

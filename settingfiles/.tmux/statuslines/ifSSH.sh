@@ -1,5 +1,6 @@
-IF_SSH=$(tmux display -p '#S')
+SSHARG=$(tmux show-environment | grep "^SSH_CONNECTION")
 
-if [ ${#IF_SSH} -gt 3 ]; then
-	echo "[#[fg=colour47,bold]SSH from $IF_SSH#[fg=colour27]] " | sed -e "s/-/./g"
+if [ "${SSHARG}" ]; then
+	echo "[#[fg=colour47,bold]SSH from ${SSHARG}" | sed -e "s/SSH_CONNECTION=\(\S\+\).*$/\1#[fg=colour27]] /"
 fi
+

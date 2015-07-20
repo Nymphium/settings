@@ -44,11 +44,13 @@ function _git_untracked() {
 
 function _my_prompt() {
 	vcs_info
+	local SSH=""
+	local HAS_SSH=$(tmux showenv | grep ^SSH_CONNECTION | sed -e "s/\s//g")
 
-	if [ ${SSH_CONNECTION} ]; then
+	if [ ! ${#SSH_CONNECTION} -eq 0 -o ! ${#HAS_SSH} -eq 0 ]; then
 		SSH="%{$fg_bold[yellow]%}<${_COL2}SSH${_YELLOW}> "
-
-		SSH_CLI_IP=`echo ${SSH_CONNECTION} | awk '{print $1}' | sed -e "s/\./-/g"`
+	else
+		unset SSH
 	fi
 
 	PROMPT="${_COL1}>> ${SSH}%p${_CYAN}%c$(_git_untracked)${vcs_info_msg_0_}${_COL2} ${rootprm}>>%{$reset_color%} "
