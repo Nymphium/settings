@@ -45,9 +45,6 @@ function() {
 	export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
 }
 
-export MANPAGER="/bin/sh -c \"col -b -x|vim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
-export TERM="screen-256color"
-
 if [ ! "${DISPLAY}" ]; then
 	stty iutf8
 fi

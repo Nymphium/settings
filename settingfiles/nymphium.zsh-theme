@@ -32,7 +32,6 @@ setopt prompt_subst
 function _git_untracked() {
 	if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = "true" ]; then
 		__untracked="${_YELLOW}:${_GREEN}"
-		__git_status=$(git status -s 2> /dev/null)
 
 		if  git status -s 2> /dev/null | grep "^??" > /dev/null 2>&1; then
 			__untracked+="u"
@@ -45,7 +44,9 @@ function _git_untracked() {
 function _my_prompt() {
 	vcs_info
 	local SSH=""
-	local HAS_SSH=$(tmux showenv SSH_CONNECTION 2> /dev/null | sed -e "s/.*SSH_CONNECTION=\?\(\S*\).*$/\1/")
+	local HAS_SSH
+
+	[ "${TMUX}" ] && HAS_SSH=$(tmux showenv SSH_CONNECTION 2> /dev/null | sed -e "s/.*SSH_CONNECTION=\?\(\S*\).*$/\1/")
 
 	if [ ! ${#SSH_CONNECTION} -eq 0 -o ! ${#HAS_SSH} -eq 0 ]; then
 		SSH="%{$fg_bold[yellow]%}<${_COL2}SSH${_YELLOW}> "
