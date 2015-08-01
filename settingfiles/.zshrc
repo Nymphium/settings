@@ -41,7 +41,7 @@ function() {
 	local LUA_VERSION
 	LUA_VERSION=$(lua -e 'print(_VERSION)' | awk '{print $2}')
 
-	export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;;"
+	export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;${HOME}/.luarocks/share/lua/${LUA_VERSION}/?/init.lua;;"
 	export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
 }
 

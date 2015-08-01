@@ -198,8 +198,8 @@ do
 
 	-- Widgets that are aligned to the right
 	local right_layout = wibox.layout.fixed.horizontal()
-	-- if s == 1 then right_layout:add(wibox.widget.systray()) end
-	-- right_layout:add(mytextclock)
+	if s == 1 then right_layout:add(wibox.widget.systray()) end
+	-- right_layout:add(mytextclock);
 	right_layout:add(mylayoutbox[s])
 
 	-- Now bring it all together (with the tasklist in the middle)
@@ -451,4 +451,3 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- if not startup then
 	-- awesome.emit_signal("spawn::completed", {id = 0})
 -- end
-
