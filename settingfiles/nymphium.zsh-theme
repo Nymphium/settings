@@ -52,6 +52,7 @@ function _my_prompt() {
 		SSH="%{$fg_bold[yellow]%}<${_COL2}SSH${_YELLOW}> "
 	else
 		unset SSH
+		unset SSH_CONNECTION
 	fi
 
 	PROMPT="${_COL1}>> ${SSH}%p${_CYAN}%c$(_git_untracked)${vcs_info_msg_0_}${_COL2} ${rootprm}>>%{$reset_color%} "

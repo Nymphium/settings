@@ -16,4 +16,3 @@
 
 ## xorg.conf.d
 - transparency, thinkpad-keyboard, prevent black monitor
-
