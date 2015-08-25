@@ -1,0 +1,22 @@
+[include]
+	path = ~/.gituser
+[color]
+	ui = auto
+[core]
+	editor = vim
+[diff]
+  external = gitdiff
+[pager]
+  diff =
+[alias]
+	b = branch
+	br = branch
+	d = diff
+	dif = diff
+	l = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+	st = status
+	co = checkout
+	cm = commit
+	com = commit
+	empty = commit --allow-empty --allow-empty-message
+

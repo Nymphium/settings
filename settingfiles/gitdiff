@@ -1,0 +1,8 @@
+#!/bin/bash
+
+open="vimdiff"
+
+[ "$(file -bi "${2}" | sed -e "s/.*charset=\(.*\)$/\1/")" == binary ] && open=":"
+
+${open} "${2}" "${5}"
+
