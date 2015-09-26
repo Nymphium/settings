@@ -52,7 +52,7 @@ fi
 # no flow control
 stty -ixon
 
-if [[ -d /usr/local/share/zsh-completions ]]; then
+if [[ -d '/usr/local/share/zsh-completions' ]]; then
 	fpath=($fpath /usr/local/share/zsh-completions)
 fi
 
@@ -70,7 +70,18 @@ if [[ -d "${HOME}/.oh-my-zsh" ]]; then
 fi
 
 # tmux attach
-[[ ! "${TMUX}" ]] && [[ "$(which tmux)" ]] && tmux -2
+if [[ ! "${TMUX}" ]] && [[ $(which tmux) ]]; then
+	function() {
+		local unused
+		unused=$(tmux list-sessions | awk '{if($11 !~ /.+/){sub(/[^0-9]/, ""); print $1; exit 0}}')
+
+		if [[ "${#unused}" -gt 0 ]]; then
+			tmux -2 attach -t "${unused}"
+		else
+			tmux -2
+		fi
+	}
+fi
 
 # keybind
 bindkey '^[e' forward-word

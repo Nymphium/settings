@@ -1,28 +1,6 @@
-ACPIB=`acpi -b`
+ACPI=$(which acpi)
 
-if [ ${#ACPIB} -gt 1 ]; then
-	COLOR=`acpi -b | sed -e "s/.* \([0-9]*\)%.*/\1/g" | \
-		awk '{
-			if($1 <= 10){
-				print "#[bg=colour196,fg=colour202]"
-			}else if($1 <= 20){
-				print "#[bg=colour226,fg=colour202]"
-			}else{
-				print "#[fg=colour202]"
-			}
-		}'`
-
-	BATTERY=`acpi -b | \
-		awk '{
-			if($3=="Charging," || $3=="Unknown,"){
-				print "Charging",$4
-			}else{
-				print $4,$5
-			}
-		}' | \
-
-		sed -e "s/,\|\s$//g" -e "s/%/%%/"`
-
-	printf "${COLOR}Bat:${BATTERY}#[bg=colour235]＞"
+if [[ ${#ACPI} -gt 1 ]]; then
+	${ACPI} -b | awk '{gsub(/[^0-9]/,"",$4);if($4*1<=10){bg="#[bg=colour226]"}else if($4*1<=20){bg="#[bg=colour196]"}{printf"%s#[fg=colour202]Bat:%s%%",bg,$4}}/remain/{printf" %s",$5}{printf"＞"}'
 fi
 
