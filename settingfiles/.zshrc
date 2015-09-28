@@ -18,11 +18,11 @@ setopt numeric_glob_sort
 
 autoload -Uz compinit promptinit
 autoload -Uz promptinit
-autoload -Uz add-zsh-hook
+# autoload -Uz add-zsh-hook
 compinit -u -C
 
 export plugins
-plugins=(git ruby gem history)
+plugins=(git history sudo)
 
 
 export PATH
@@ -37,15 +37,16 @@ PATH+=:${HOME}/.cabal/bin
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
 # LuaRocks path switch each Lua Versions
-function() {
-	local LUA_VERSION
-	LUA_VERSION=$(lua -e 'print(_VERSION)' | awk '{print $2}')
+# function() {
+	# local LUA_VERSION
+	# LUA_VERSION=$(lua -e 'print(_VERSION)' | awk '{print $2}')
 
-	export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;${HOME}/.luarocks/share/lua/${LUA_VERSION}/?/init.lua;;"
-	export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
-}
+	# export LUA_PATH="${HOME}/.luarocks/share/lua/${LUA_VERSION}/?.lua;${HOME}/.luarocks/share/lua/${LUA_VERSION}/?/init.lua;;"
+	# export LUA_CPATH="${HOME}/.luarocks/lib/lua/${LUA_VERSION}/?.so;${HOME}/.luarocks/lib/luarocks/rocks-${LUA_VERSION}/?.so;;"
+# }
+eval "$(luarocks path)"
 
-if [ ! "${DISPLAY}" ]; then
+if [[ ! "${DISPLAY}" ]]; then
 	stty iutf8
 fi
 
@@ -73,7 +74,7 @@ fi
 if [[ ! "${TMUX}" ]] && [[ $(which tmux) ]]; then
 	function() {
 		local unused
-		unused=$(tmux list-sessions | awk '{if($11 !~ /.+/){sub(/[^0-9]/, ""); print $1; exit 0}}')
+		unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
 
 		if [[ "${#unused}" -gt 0 ]]; then
 			tmux -2 attach -t "${unused}"
