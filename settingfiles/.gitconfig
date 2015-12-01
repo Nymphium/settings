@@ -19,4 +19,5 @@
 	cm = commit
 	com = commit
 	empty = commit --allow-empty --allow-empty-message
+	submp = submodule foreach git pull
 

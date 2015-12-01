@@ -1,6 +1,6 @@
-SSHARG=$(tmux show-environment | grep "^SSH_CONNECTION")
+HAS_SSH=$(tmux showenv SSH_CONNECTION 2> /dev/null | sed -e 's/SSH_CONNECTION=\(\S\+\).*$/\1/')
 
-if [ ! ${#SSHARG} -eq 0 ]; then
-	echo "[#[fg=colour47,bold]SSH from ${SSHARG}" | sed -e "s/SSH_CONNECTION=\(\S\+\).*$/\1#[fg=colour27]] /"
+if [[ "${#HAS_SSH}" -gt 2 ]] && [[ ! "${SSHARG}" =~ ^-.* ]]; then
+	echo "[#[fg=colour47,bold]SSH from ${HAS_SSH}#[fg=colour27,bold]] "
 fi
 

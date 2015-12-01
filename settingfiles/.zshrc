@@ -27,6 +27,7 @@ plugins=(git history sudo)
 
 export PATH
 PATH=${HOME}/bin:${PATH}
+PATH+=:${HOME}/local/bin
 PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
 PATH+=:$(ruby -e 'print Gem.user_dir')/bin
 PATH+=:/usr/lib/ccache/bin
@@ -73,14 +74,26 @@ fi
 # tmux attach
 if [[ ! "${TMUX}" ]] && [[ $(which tmux) ]]; then
 	function() {
-		local unused
-		unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
+		# if [[ "${SSH_CONNECTION}" ]]; then
+			# echo "tmux has been already running. attach?"
+			# echo "[a]ttach or [n]ot"
+			# read -r tmuxa
 
-		if [[ "${#unused}" -gt 0 ]]; then
-			tmux -2 attach -t "${unused}"
-		else
-			tmux -2
-		fi
+			# if [[ "${tmuxa}" = "a" ]]; then
+				# tmux attach
+			# # else
+				# # tmux -2
+			# fi
+		# else
+			local unused
+			unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
+
+			if [[ "${#unused}" -gt 0 ]]; then
+				tmux -2 attach -t "${unused}"
+			else
+				tmux -2
+			fi
+		# fi
 	}
 fi
 
