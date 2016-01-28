@@ -24,6 +24,11 @@ compinit -u -C
 export plugins
 plugins=(git history sudo)
 
+if [[ $(uname -s) = 'Darwin' ]]; then
+	plugins+='brew'
+	plugins+='brew-cask'
+fi
+
 
 export PATH
 PATH=${HOME}/bin:${PATH}
