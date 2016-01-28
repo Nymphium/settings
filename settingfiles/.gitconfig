@@ -3,7 +3,7 @@
 [color]
 	ui = auto
 [core]
-	editor = vim
+	editor = nvim
 [diff]
   external = gitdiff
 [pager]
@@ -18,6 +18,6 @@
 	co = checkout
 	cm = commit
 	com = commit
-	empty = commit --allow-empty --allow-empty-message
+	empty = commit --allow-empty --allow-empty-message -m '' --all
 	submp = submodule foreach git pull
 
