@@ -24,12 +24,13 @@ autoload -Uz promptinit
 compinit -u -C
 
 export plugins
-plugins=(git history zsh-completions luarocks)
+plugins=(git history zsh-completions luarocks stack)
 
 
 export PATH
 PATH=${HOME}/bin:${PATH}
 PATH+=:${HOME}/local/bin
+PATH+=:${HOME}/.local/bin
 PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
 PATH+=:$(ruby -e 'print Gem.user_dir')/bin
 PATH+=:/usr/lib/ccache/bin
