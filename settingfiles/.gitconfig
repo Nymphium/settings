@@ -21,3 +21,6 @@
 	empty = commit --allow-empty --allow-empty-message -m '' --all
 	submp = submodule foreach git pull
 
+[user]
+	email = s1311350@coins.tsuuba.ac.jp
+	name = nymphium
