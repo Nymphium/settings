@@ -26,18 +26,18 @@
 }
 
 GtkEntry {
-	gtk-key-bindings: gtk-vi-text-entry;
+	-gtk-key-bindings: gtk-vi-text-entry;
 }
 
 GtkTextView {
-	gtk-key-bindings: gtk-vi-text-entry, gtk-vi-text-view;
+	-gtk-key-bindings: gtk-vi-text-entry, gtk-vi-text-view;
 }
 
 GtkTreeView {
-	gtk-key-bindings: gtk-vi-tree-view;
+	-gtk-key-bindings: gtk-vi-tree-view;
 }
 
 GtkMenuShell {
-	gtk-key-bindings: gtk-vi-menu;
+	-gtk-key-bindings: gtk-vi-menu;
 }
 

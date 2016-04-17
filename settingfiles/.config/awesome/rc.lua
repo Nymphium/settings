@@ -33,7 +33,8 @@ do
 		naughty.notify({ preset = naughty.config.presets.critical,
 		title = "Oops, an error happened!",
 		text = err,
-		height = 80
+		height = 80,
+		timeout = 10
 	})
 		in_error = false
 	end)
@@ -45,6 +46,9 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 theme = theme
 theme.font = "comfortaa 8"
+
+naughty.config.defaults.font = theme.font or "comfortaa 8"
+naughty.config.defaults.timeout = 5
 
 (function(wp)
 	for i = 1, screen.count() do
@@ -445,7 +449,8 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 
 -- awesome.connect_signal("spawn::completed", function()
-	myfuncs.domyconf("autostart.lua")
+	-- myfuncs.domyconf("autostart.lua")
+	require'autostart'
 -- end)
 
 -- if not startup then

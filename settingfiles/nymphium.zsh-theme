@@ -41,7 +41,7 @@ function _my_prompt() {
 	else
 		unset SSH
 		unset SSH_CONNECTION
-		tmux setenv -u SSH_CONNECTION
+		[[ "${TMUX}" ]] && tmux setenv -u SSH_CONNECTION
 	fi
 
 	PROMPT="${_COL1}>> ${SSH}%p${_CYAN}%c$(git status 2>/dev/null | awk 'NR==1&&($1=="On" || $2 == "detached"){printf "${_YELLOW}:${_GREEN}"}$1=="Untracked"{print "u"}')${vcs_info_msg_0_}${_COL2} ${rootprm}>>%{$reset_color%} "

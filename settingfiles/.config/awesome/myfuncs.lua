@@ -4,7 +4,7 @@ local myfuncs = {}
 function myfuncs.domyconf(file)
 	file = awful.util.getdir("config") .. "/" .. file
 
-	if awful.util.file_readable(file) then
+	if awful.util.checkfile(file) then
 		in_error = pcall(dofile, file)
 	end
 end
