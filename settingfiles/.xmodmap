@@ -47,10 +47,8 @@ keycode  57 = n N Prior
 keycode  58 = m M Next
 keycode  59 = NoSymbol
 keycode  61 = NoSymbol
-! keycode  65 = Return space space
-keycode  65 = space space space
+
 clear lock
-! keycode  66 = Muhenkan NoSymbol Henkan
 keycode  66 = Return Return Return Return
 keycode  97 = NoSymbol
 keycode 100 = BackSpace BackSpace Delete BackSpace

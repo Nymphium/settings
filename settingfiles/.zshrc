@@ -24,7 +24,7 @@ autoload -Uz promptinit
 compinit -u -C
 
 export plugins
-plugins=(git history zsh-completions luarocks stack)
+plugins=(git history zsh-completions luarocks stack docker)
 
 if [[ $(uname -s) = 'Darwin' ]]; then
 	plugins+='brew'
@@ -37,7 +37,7 @@ PATH=${HOME}/bin:${PATH}
 PATH+=:${HOME}/local/bin
 PATH+=:${HOME}/.local/bin
 PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
-PATH+=:$(ruby -e 'print Gem.user_dir')/bin
+which ruby >/dev/null 2>&1 &&  PATH+=:$(ruby -e 'print Gem.user_dir')/bin
 PATH+=:/usr/lib/ccache/bin
 PATH+=:/opt/java/bin:/opt/java/jre/bin
 PATH+=:${HOME}/.luarocks/bin
@@ -45,7 +45,7 @@ PATH+=:${HOME}/.cabal/bin
 
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
-[[ ! -z "$(which luarocks)" ]] && eval "$(luarocks path)"
+which luarocks >/dev/null 2>&1 && eval "$(luarocks path)"
 
 if [[ ! "${DISPLAY}" ]]; then
 	stty iutf8
@@ -67,7 +67,7 @@ if [[ ! -z $(which tmux) ]] && [[ ! "${TMUX}" ]]; then
 		if [[ ! -z "${unused}" ]]; then
 			tmux -2 attach -t "${unused}"
 		else
-			tmux -2
+			exec tmux -2
 		fi
 	}
 fi
