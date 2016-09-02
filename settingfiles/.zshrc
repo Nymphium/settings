@@ -1,5 +1,24 @@
 # vim:ft=sh
 
+export PATH
+PATH=${HOME}/bin:${PATH}
+PATH+=:${HOME}/local/bin
+PATH+=:${HOME}/.local/bin
+PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
+which ruby >/dev/null 2>&1 &&  PATH+=:$(ruby -e 'print Gem.user_dir')/bin
+PATH+=:/usr/lib/ccache/bin
+PATH+=:/opt/java/bin:/opt/java/jre/bin
+PATH+=:${HOME}/.luarocks/bin
+PATH+=:${HOME}/.cabal/bin
+
+export JAVA_HOME=${JAVA_HOME:-/opt/java}
+
+which luarocks >/dev/null 2>&1 && eval "$(luarocks path)"
+
+if [[ ! "${DISPLAY}" ]]; then
+	stty iutf8
+fi
+
 ZSH=$HOME/.oh-my-zsh
 export DISABLE_AUTO_TITLE=true
 export ZSH_THEME="nymphium"
@@ -27,29 +46,10 @@ export plugins
 plugins=(git history zsh-completions luarocks stack docker)
 
 if [[ $(uname -s) = 'Darwin' ]]; then
-	plugins+='brew'
-	plugins+='brew-cask'
+	plugins+=('brew')
+	plugins+=('brew-cask')
 fi
 
-
-export PATH
-PATH=${HOME}/bin:${PATH}
-PATH+=:${HOME}/local/bin
-PATH+=:${HOME}/.local/bin
-PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
-which ruby >/dev/null 2>&1 &&  PATH+=:$(ruby -e 'print Gem.user_dir')/bin
-PATH+=:/usr/lib/ccache/bin
-PATH+=:/opt/java/bin:/opt/java/jre/bin
-PATH+=:${HOME}/.luarocks/bin
-PATH+=:${HOME}/.cabal/bin
-
-export JAVA_HOME=${JAVA_HOME:-/opt/java}
-
-which luarocks >/dev/null 2>&1 && eval "$(luarocks path)"
-
-if [[ ! "${DISPLAY}" ]]; then
-	stty iutf8
-fi
 
 # no flow control
 stty -ixon
