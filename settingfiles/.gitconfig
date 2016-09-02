@@ -22,5 +22,5 @@
 	submp = submodule foreach git pull
 
 [user]
-	email = s1311350@coins.tsuuba.ac.jp
+	email = s1311350@coins.tsukuba.ac.jp
 	name = nymphium
