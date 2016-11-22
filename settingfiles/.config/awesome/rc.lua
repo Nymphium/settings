@@ -453,6 +453,8 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 	require'autostart'
 -- end)
 
+require'battery_alert'
+
 -- if not startup then
 	-- awesome.emit_signal("spawn::completed", {id = 0})
 -- end

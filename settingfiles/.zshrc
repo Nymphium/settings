@@ -75,6 +75,7 @@ fi
 # keybind
 bindkey '^[e' forward-word
 bindkey '^[w' backward-word
+bindkey -r '^[l'
 
 # load many dotfiles
 function() {
