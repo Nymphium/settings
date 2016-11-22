@@ -448,12 +448,14 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 
+pcall(function()
 -- awesome.connect_signal("spawn::completed", function()
 	-- myfuncs.domyconf("autostart.lua")
 	require'autostart'
 -- end)
 
 require'battery_alert'
+end)
 
 -- if not startup then
 	-- awesome.emit_signal("spawn::completed", {id = 0})
