@@ -1,5 +1,7 @@
 # vim:ft=sh
 
+export DISPLAY=${DISPLAY:-:0}
+
 export PATH
 PATH=${HOME}/bin:${PATH}
 PATH+=:${HOME}/local/bin
