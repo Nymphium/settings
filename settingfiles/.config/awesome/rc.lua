@@ -60,10 +60,19 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 
-beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "Comfortaa 8"
+-- beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
 
-naughty.config.defaults.font = beautiful.font
+-- local theme = beautiful.get()
+
+local theme_lua = awful.util.checkfile(awful.util.get_themes_dir() .. "default/theme.lua")
+
+if type(theme_lua) == "function" then
+	local theme = theme_lua()
+	theme.font = "Comfortaa 8"
+	naughty.config.defaults.font = theme.font
+	beautiful.init(theme)
+end
+
 naughty.config.defaults.timeout = 5
 -- }}}
 
@@ -108,7 +117,7 @@ awful.layout.layouts = layouts
 -- }
 
 local mymainmenu = awful.menu({items= {
-	{"hotkeys", function() return false, hotkeys_popup.show_help end}, 
+	-- {"hotkeys", function() return false, hotkeys_popup.show_help end}, 
 	{"restart", awesome.restart}}
 })
 local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
@@ -204,8 +213,8 @@ do
 		end
 	end
 
-	screen_init = function(screen_idx, scr--[[screen object]])
-		local wallpaper = awful.util.get_configuration_dir() .. wallpapers[(screen_idx - 1) % 2 + 1]
+	screen_init = function(scr--[[screen object]])
+		local wallpaper = awful.util.get_configuration_dir() .. wallpapers[(scr.index - 1) % 2 + 1]
 		set_wallpaper(wallpaper, scr)
 
 		awful.tag({1, 2, 3, 4, 5}, scr, awful.layout.layouts[1])
@@ -233,27 +242,20 @@ do
 			scr.mytasklist, -- middle widgets
 			{ -- right widgets
 				layout = wibox.layout.fixed.horizontal,
-				awful.widget.keyboardlayout(),
-				(function() if screen_idx == 1 then wibox.widget.systray() end end)(),
+				(function() if scr.index == 1 then return wibox.widget.systray() end end)(),
 				scr.mylayoutbox
 			}
 		}
 	end
 end
 
-do
-	local screen_idx = 1
-	awful.screen.connect_for_each_screen(function(scr)
-		screen_init(screen_idx, scr)
-		screen_idx = screen_idx + 1
-	end)
-end
+awful.screen.connect_for_each_screen(screen_init)
 
 screen.connect_signal("added", function(...)
 	local screens = {...}
 	table.remove(screens)
-	for screen_idx, scr in pairs(screens) do
-		screen_init(screen_idx, scr)
+	for _, scr in pairs(screens) do
+		screen_init(scr)
 	end
 end)
 -- }}}
