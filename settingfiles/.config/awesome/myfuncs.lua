@@ -27,10 +27,11 @@ function myfuncs.toggle(fvh, c)
 end
 
 function myfuncs.getwindowsize(c)
-	local c = c or client.focus
-	local s = screen[c.screen].geometry
+	return root.size()
+	-- local c = c or client.focus
+	-- local s = screen[c.screen].geometry
 
-	return s.height, s.width
+	-- return s.height, s.width
 end
 
 function myfuncs.setwindowsize(direction, pos)
@@ -43,7 +44,8 @@ function myfuncs.setwindowsize(direction, pos)
 	local x = pos and "x" or "width"
 	local y = pos and "y" or "height"
 	local geom = c:geometry()
-	local h, w = myfuncs.getwindowsize(c)
+	-- local w, h = myfuncs.getwindowsize(c)
+	local w, h = root.size()
 
 	h = h / 20
 	w = w / 20
@@ -103,7 +105,8 @@ function myfuncs.squaresize()
 
 	local geom = c:geometry()
 	local x, y = geom.x, geom.y
-	local h, w = myfuncs.getwindowsize(c)
+	-- local w, h = myfuncs.getwindowsize(c)
+	local w, h = root.size()
 	c.maximized_vertical = false
 	c.maximized_horizontal = false
 	geom.height = h / 2
