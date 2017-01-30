@@ -9,11 +9,13 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
-local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup").widget
+-- local menubar = require("menubar")
+-- local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- myfunc
 local myfuncs = require("myfuncs")
-
+local init_lock = os.getenv("INIT_AWESOME_LOCK") or "/tmp/init_awesome.lock"
+local file_readable = awful.util.file_readable
+local conf_dir = awful.util.get_configuration_dir()
 
 local function notify_error(err, notifyarg)
 	notifyarg = notifyarg or {}
@@ -77,9 +79,9 @@ naughty.config.defaults.timeout = 5
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "lilyterm"
-local editor = os.getenv("EDITOR") or "vim"
-local editor_cmd = terminal .. " -e " .. editor
+-- local terminal = "lilyterm"
+-- local editor = os.getenv("EDITOR") or "vim"
+-- local editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -123,7 +125,7 @@ local mymainmenu = awful.menu({items= {
 local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
 
 -- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
+-- menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
 -- {{{ Wibox
@@ -131,9 +133,9 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- mytextclock = awful.widget.textclock()
 
 -- Create a wibox for each screen and add it
-local mywibox = {}
-local mypromptbox = {}
-local mylayoutbox = {}
+-- local mywibox = {}
+-- local mypromptbox = {}
+-- local mylayoutbox = {}
 local mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
 	awful.button({ }, 1, function(t) t:view_only() end),
@@ -206,7 +208,7 @@ do
 	}
 
 	local function set_wallpaper(wallpaper_path, screen_or_screenidx)
-		if awful.util.file_readable(wallpaper_path) then
+		if file_readable(wallpaper_path) then
 			xpcall(gears.wallpaper.fit, notify_error, wallpaper_path, screen_or_screenidx)
 		else
 			notify_error("file " .. wallpaper_path .. " not found or is unreadable.")
@@ -214,7 +216,7 @@ do
 	end
 
 	screen_init = function(scr--[[screen object]])
-		local wallpaper = awful.util.get_configuration_dir() .. wallpapers[(scr.index - 1) % 2 + 1]
+		local wallpaper = conf_dir .. wallpapers[(scr.index - 1) % 2 + 1]
 		set_wallpaper(wallpaper, scr)
 
 		awful.tag({1, 2, 3, 4, 5}, scr, awful.layout.layouts[1])
@@ -293,8 +295,8 @@ globalkeys = awful.util.table.join(
 	{}
 )
 
-local clientkeys = awful.util.table.join(
-	awful.key({ modkey,           }, "f",      function (c) myfuncs.toggle("f")  end),
+clientkeys = awful.util.table.join(
+	awful.key({ modkey,           }, "f",      function (c) myfuncs.toggle("f", c)  end),
 	awful.key({ "Mod1"            }, "q",      function (c) c:kill()                         end),
 	awful.key({ modkey,           }, "k", function (c) if not c.fullscreen then myfuncs.toggle("hv") end end),
 	awful.key({modkey, "Mod1"}, "l", function() myfuncs.setwindowsize("l") end, {description = "set client to be half of the screen", group = "client"}),
@@ -401,11 +403,11 @@ awful.rules.rules = {
 		rule = {class = "Gimp"},
 		properties = {floating = true}
 	},
-	{
-		rule = {class = "Tilda"},
-		properties = {floating = true},
-		callback = function(c) myfuncs.toggle("f", c) c.ontop = not c.ontop end
-	},
+	-- {
+		-- rule = {class = "Tilda"},
+		-- properties = {floating = true},
+		-- callback = function(c) myfuncs.toggle("f", c) c.ontop = not c.ontop end
+	-- },
     -- Floating clients.
     { rule_any = {
         instance = {
@@ -446,6 +448,7 @@ awful.rules.rules = {
 				"Mplayer",
 				"Vlc",
 				"Mpv",
+				"Tilda",
 			},
 			role = {
 				"AlarmWindow",
@@ -531,11 +534,19 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 xpcall(function()
-	if awful.util.file_readable(awful.util.get_configuration_dir() .. "autostart.lua") then
-		require'autostart'
+	if file_readable(init_lock) then
+		local autostart = awful.util.checkfile(conf_dir .. "autostart.lua")
+
+		if type(autostart) == "function" then
+			autostart()
+		else
+			notify_error(autostart)
+		end
+
+		awful.util.spawn("rm " .. init_lock)
 	end
 
-	if awful.util.file_readable(awful.util.get_configuration_dir() .. "battery_alert.lua") then
+	if file_readable(conf_dir .. "battery_alert.lua") then
 		require'battery_alert'
 	end
 end, notify_error)

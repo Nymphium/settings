@@ -29,5 +29,8 @@ mkdir -p "${TARGET}/.theme/" && ln -s "${THDIR}/Vi/" "${TARGET}/.theme/"
 mkdir -p "${TARGET}/.config/" && ln -s "${THDIR}/.config/fontconfig" "${TARGET}/.config/"
 
 ## awesome
-mkdir -p "${TARGET}/.config/awesome/" && ln -s ${THDIR}/.config/awesome/{rc.lua,myfuncs.lua} "${TARGET}/.config/awesome/"
+mkdir -p "${TARGET}/.config/awesome/" && \
+	ln -s ${THDIR}/.config/awesome/{rc,myfuncs,autostart,battery_alert,extkey}.lua "${TARGET}/.config/awesome/" && \
+	ln -s ${THDIR}/.config/awesome/.luacheckrc "${TARGET}/.config/awesome/"
+
 

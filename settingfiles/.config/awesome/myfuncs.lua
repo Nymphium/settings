@@ -1,6 +1,12 @@
 local awful = require("awful")
 local myfuncs = {}
 
+local function screen_size(screen)
+	local geom = screen.geometry
+
+	return geom.width, geom.height
+end
+
 function myfuncs.domyconf(file)
 	file = awful.util.getdir("config") .. "/" .. file
 
@@ -26,14 +32,6 @@ function myfuncs.toggle(fvh, c)
 	end
 end
 
-function myfuncs.getwindowsize(c)
-	return root.size()
-	-- local c = c or client.focus
-	-- local s = screen[c.screen].geometry
-
-	-- return s.height, s.width
-end
-
 function myfuncs.setwindowsize(direction, pos)
 	local c = client.focus
 
@@ -44,8 +42,7 @@ function myfuncs.setwindowsize(direction, pos)
 	local x = pos and "x" or "width"
 	local y = pos and "y" or "height"
 	local geom = c:geometry()
-	-- local w, h = myfuncs.getwindowsize(c)
-	local w, h = root.size()
+	local w, h = screen_size(c.screen)
 
 	h = h / 20
 	w = w / 20
@@ -96,8 +93,8 @@ function myfuncs.halfsize(rl)
 	c:geometry(geom)
 end
 
-function myfuncs.squaresize()
-	local c = client.focus
+function myfuncs.squaresize(c)
+	c = c or client.focus
 	
 	if not c then
 		return
@@ -105,8 +102,7 @@ function myfuncs.squaresize()
 
 	local geom = c:geometry()
 	local x, y = geom.x, geom.y
-	-- local w, h = myfuncs.getwindowsize(c)
-	local w, h = root.size()
+	local w, h = screen_size(c.screen)
 	c.maximized_vertical = false
 	c.maximized_horizontal = false
 	geom.height = h / 2
