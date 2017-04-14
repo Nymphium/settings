@@ -13,6 +13,11 @@ PATH+=:/opt/java/bin:/opt/java/jre/bin
 PATH+=:${HOME}/.luarocks/bin
 PATH+=:${HOME}/.cabal/bin
 
+if [[ "$(which opam)" ]]; then
+	eval "$(opam config env)"
+	source ~/.opam/opam-init/init.zsh 1>&2 /dev/null
+fi
+
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
 which luarocks >/dev/null 2>&1 && eval "$(luarocks path)"

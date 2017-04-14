@@ -13,7 +13,8 @@
 	br = branch
 	d = diff
 	dif = diff
-	l = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+	lc = log --graph --name-status --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+	l = log --graph --name-status --format=format:'%h - %aD (%ar)%d%n'' %s — %an' --abbrev-commit
 	st = status
 	co = checkout
 	cm = commit
@@ -23,4 +24,4 @@
 
 [user]
 	email = s1311350@coins.tsukuba.ac.jp
-	name = nymphium
+	name = Kawahara Satoru
