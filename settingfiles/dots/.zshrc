@@ -57,6 +57,9 @@ if [[ $(uname -s) = 'Darwin' ]]; then
 	plugins+=('brew-cask')
 fi
 
+if [[ -e "${ZSH}/plugins/racket" ]]; then
+	plugins+=('racket')
+fi
 
 # no flow control
 stty -ixon
