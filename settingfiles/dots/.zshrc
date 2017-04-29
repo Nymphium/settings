@@ -13,7 +13,7 @@ PATH+=:/opt/java/bin:/opt/java/jre/bin
 PATH+=:${HOME}/.luarocks/bin
 PATH+=:${HOME}/.cabal/bin
 
-if [[ "$(which opam)" ]]; then
+if [[ "$(command -v opam)" ]]; then
 	eval "$(opam config env)"
 	source ~/.opam/opam-init/init.zsh 1>&2 /dev/null
 fi
@@ -69,7 +69,7 @@ if [[ -d "${HOME}/.oh-my-zsh" ]]; then
 fi
 
 # tmux attach
-if [[ ! -z $(which tmux) ]] && [[ ! "${TMUX}" ]]; then
+if [[ "$(command -v tmux)" ]] && [[ ! "${TMUX}" ]]; then
 	function() {
 		local unused
 		unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
