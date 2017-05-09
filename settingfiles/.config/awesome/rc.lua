@@ -60,12 +60,6 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
-
--- beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
-
--- local theme = beautiful.get()
-
 local theme_lua = awful.util.checkfile(awful.util.get_themes_dir() .. "default/theme.lua")
 
 if type(theme_lua) == "function" then
@@ -210,8 +204,6 @@ do
 	local function set_wallpaper(wallpaper_path, screen_or_screenidx)
 		if file_readable(wallpaper_path) then
 			xpcall(gears.wallpaper.fit, notify_error, wallpaper_path, screen_or_screenidx)
-		else
-			notify_error("file " .. wallpaper_path .. " not found or is unreadable.")
 		end
 	end
 
