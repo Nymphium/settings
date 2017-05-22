@@ -5,7 +5,7 @@
 [core]
 	editor = nvim
 [diff]
-  external = gitdiff
+	external = gitdiff
 [pager]
   diff =
 [alias]

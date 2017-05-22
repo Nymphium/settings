@@ -1,4 +1,4 @@
-#!/usr/bin/zsh -eux
+#!/bin/zsh -ux
 
 THDIR=$PWD/settingfiles
 TARGET=$HOME
@@ -15,16 +15,25 @@ for f in ${THDIR}/dots/.*; () {
 	[[ ! -a "${dst}" ]] && git clone https://github.com/robbyrussell/oh-my-zsh "${dst}"
 } || :
 
-# asdd my theme
+# add my theme
 () {
-	local dst; dst="${TARGET}/.oh-my-zsh/custom/"
-	[[ ! -a "${dst}" ]] && ln -s "${THDIR}/nymphium.zsh-theme" "${dst}"
+	local dst; dst="${TARGET}/.oh-my-zsh/custom/themes/"
+	[[ ! -a "${dst}" ]] && mkdir -p "${dst}" && ln -s "${THDIR}/nymphium.zsh-theme" "${dst}"
 } || :
 
 # gtk keybind
 () {
-	local dst; dst="${TARGET}/.theme/Vi"
+	local dst; dst="${TARGET}/.theme/Vi/"
 	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.theme/" && ln -s "${THDIR}/Vi/" "${dst}"
+} || :
+
+# bin
+(){
+	local dst; dst="${TARGET}/bin/"
+	if [[ ! -a "${dst}" ]]; then
+		mkdir -p "${dst}"
+	fi
+	ln -s "${THDIR}/bin/"* "${dst}"
 } || :
 
 # .config

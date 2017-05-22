@@ -7,7 +7,7 @@ PATH=${HOME}/bin:${PATH}
 PATH+=:${HOME}/local/bin
 PATH+=:${HOME}/.local/bin
 PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
-which ruby >/dev/null 2>&1 &&  PATH+=:$(ruby -e 'print Gem.user_dir')/bin
+[[ "$(command -v ruby)" ]] && PATH+=:$(ruby -e 'print Gem.user_dir')/bin
 PATH+=:/usr/lib/ccache/bin
 PATH+=:/opt/java/bin:/opt/java/jre/bin
 PATH+=:${HOME}/.luarocks/bin
@@ -70,7 +70,7 @@ fi
 
 # tmux attach
 if [[ "$(command -v tmux)" ]] && [[ ! "${TMUX}" ]]; then
-	function() {
+	() {
 		local unused
 		unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
 
@@ -88,7 +88,7 @@ bindkey '^[w' backward-word
 bindkey -r '^[l'
 
 # load many dotfiles
-function() {
+() {
 	local _PRV_FILE=$HOME/.privatekeys
 	if [[ -e "${_PRV_FILE}" ]] && [[ -r "${_PRV_FILE}" ]]; then
 		source "${_PRV_FILE}"

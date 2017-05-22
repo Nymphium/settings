@@ -1,0 +1,62 @@
+status	key	command
+Composition	Backspace	Backspace
+Composition	Delete	Delete
+Composition	Enter	Commit
+Composition	Ctrl m	Commit
+Composition	ESC	Cancel
+Composition	F6	ConvertToHiragana
+Composition	F7	ConvertToFullKatakana
+Composition	F8	ConvertToHalfWidth
+Composition	F9	ConvertToFullAlphanumeric
+Composition	Left	MoveCursorLeft
+Composition	Right	MoveCursorRight
+Composition	Up	Convert
+Composition	Down	Convert
+Composition	Shift Space	Convert
+Composition	Space	Convert
+Composition	Tab	PredictAndConvert
+Composition	Ctrl h	Backspace
+Conversion	Ctrl Enter	Commit
+Conversion	Shift Ctrl m	Commit
+Conversion	Enter	CommitOnlyFirstSegment
+Conversion	Ctrl m	CommitOnlyFirstSegment
+Conversion	ESC	Cancel
+Conversion	F6	ConvertToHiragana
+Conversion	F7	ConvertToFullKatakana
+Conversion	F8	ConvertToHalfWidth
+Conversion	F9	ConvertToFullAlphanumeric
+Conversion	Left	SegmentWidthShrink
+Conversion	Right	SegmentWidthExpand
+Conversion	Up	ConvertPrev
+Conversion	Down	ConvertNext
+Conversion	Shift Left	SegmentFocusLeft
+Conversion	Shift Right	SegmentFocusRight
+Conversion	Shift Space	ConvertNext
+Conversion	Shift Tab	ConvertPrev
+Conversion	Space	ConvertNext
+Conversion	Tab	PredictAndConvert
+Conversion	Alt j	CommitOnlyFirstSegment
+Conversion	Backspace	Cancel
+Conversion	Backspace	Backspace
+Conversion	Ctrl h	Cancel
+Conversion	Ctrl h	Backspace
+Precomposition	Backspace	Revert
+Prediction	Up	ConvertPrev
+Prediction	Down	ConvertNext
+Conversion	PageDown	ConvertNextPage
+Conversion	PageUp	ConvertPrevPage
+Composition	Hankaku/Zenkaku	IMEOff
+Composition	Kanji	IMEOff
+Composition	OFF	IMEOff
+Composition	ON	IMEOn
+Conversion	Hankaku/Zenkaku	IMEOff
+Conversion	Kanji	IMEOff
+Conversion	OFF	IMEOff
+Conversion	ON	IMEOn
+DirectInput	Hankaku/Zenkaku	IMEOn
+DirectInput	Kanji	IMEOn
+DirectInput	ON	IMEOn
+Precomposition	Hankaku/Zenkaku	IMEOff
+Precomposition	Kanji	IMEOff
+Precomposition	OFF	IMEOff
+Precomposition	ON	IMEOn

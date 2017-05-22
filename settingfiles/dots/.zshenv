@@ -166,9 +166,11 @@ renew(){
 	vimupdate
 }
 
-open () {
-	xdg-open "${1}" >/dev/null 2>&1 &
-}
+if [[ ! "$(command -v open)" ]]; then
+	open () {
+		xdg-open "${1}" >/dev/null 2>&1 &
+	}
+fi
 
 # misc {{{
 alias ag='ag --hidden -S --stats --ignore=.git'

@@ -1,0 +1,1 @@
+pmset -g batt | awk 'NR==2{fgnum=202; gsub(/[^0-9]/, "", $3); if($3*1<=10){bg="#[bg=colour196]";fgnum=255}else if($3*1<=20){bg="#[bg=colour226]"} printf"%s#[fg=colour%s]Bat:%s%%", bg, fgnum, $3} /discharging/{printf " %s", $5}/AC attached/{printf " Charged"} END{printf "#[bg=colour235]>"}'
