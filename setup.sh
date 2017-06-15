@@ -23,7 +23,7 @@ for f in ${THDIR}/dots/.*; () {
 
 # gtk keybind
 () {
-	local dst; dst="${TARGET}/.theme/Vi/"
+	local dst; dst="${TARGET}/.theme/Vi"
 	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.theme/" && ln -s "${THDIR}/Vi/" "${dst}"
 } || :
 
@@ -46,9 +46,16 @@ for f in ${THDIR}/dots/.*; () {
 ## awesome
 () {
 	mkdir -p "${TARGET}/.config/awesome/"
-	for file in {rc,myfuncs,autostart,battery_alert}.lua .luacheckrc; (){
+	for file in {rc,myfuncs,autostart,battery_alert,shortcuts}.lua .luacheckrc; (){
 		local dst; dst="${TARGET}/.config/awesome/${file}"
 		[[ ! -a "${dst}" ]] && ln -s "${THDIR}/.config/awesome/${file}"  "${dst}"
 	}
+} || :
+
+# .xinitrc
+## it is COPIED
+() {
+	local dst; dst="${TARGET}/.xinitrc"
+	[[ ! -a "${dst}" ]] && cp "${THDIR}/.xinitrc" "${dst}"
 } || :
 

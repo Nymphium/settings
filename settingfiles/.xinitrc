@@ -17,10 +17,11 @@ export XMODIFIERS=@im=ibus
 ibus-daemon --xim -d
 xset r rate 190 20 s off -b -dpms
 xmodmap $HOME/.xmodmap
-xbindkeys
+# xbindkeys
 
-hsetroot -solid "#000000"
 exec xcompmgr &
 exec tilda &
-exec openbox-session
 
+export INIT_AWESOME_LOCK; INIT_AWESOME_LOCK='/tmp/init_awesome.lock'
+touch "${INIT_AWESOME_LOCK}"
+exec awesome

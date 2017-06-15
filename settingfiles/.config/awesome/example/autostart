@@ -1,0 +1,4 @@
+o pkill ibus-ui-gtk3
+o nm-applet &
+o dropbox &
+a xrandr --output eDPI --gamma 0.94:0.9:1

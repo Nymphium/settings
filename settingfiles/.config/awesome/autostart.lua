@@ -1,91 +1,71 @@
 local awful = awful or require('awful')
-local theme = theme
-do
-	-- local function systray_init()
-		local _with_0 = awful.util
-		_with_0.spawn("pkill ibus-ui-gtk3")
-		_with_0.spawn_with_shell("pgrep nm-applet || nm-applet &")
-		_with_0.spawn_with_shell("pgrep dropbox || dropbox &")
-		_with_0.spawn_with_shell("nvidia-settings --load-config-only")
+local autostart = {}
 
-		-- awesome.disconnect_signal("systray::init", systray_init)
-	-- end
+--[[ autostart config file syntax:
+typ command
+typ command
+......
 
-	-- awesome.connect_signal("systray::init", systray_init)
+typ: [o]neshot   as daemon, simple oneshot command
+	 [e]verytime as everytime run(nable) command
+	 --]]
+
+function autostart.read(filepath)
+	if not filepath:match('^/') then
+		filepath = awful.util.get_configuration_dir() .. filepath
+	end
+
+	local file = io.open(filepath)
+
+	local t = {}
+	local linenr = 0
+
+	for line in file:lines() do
+		linenr = linenr + 1
+
+		if not (line:match('^%s*#') or line:match('^%s*$')) then
+			local typ, cmd = line:match('^%s*([oaOA])%s+(.+)$')
+
+			if not typ:match('^[oaOA]$') then
+				error(([=[type must be [o]neshot or [everytime (got `%s' at line %d)]]=]):format(typ, linenr))
+			end
+
+			table.insert(t, {typ, cmd})
+		end
+	end
+
+	file:close()
+
+	local aligned = {
+		oneshot = {},
+		anytime = {}
+	}
+
+	for i = 1, #t do
+		if t[i][1] == 'o' then
+			table.insert(aligned.oneshot, t[i][2])
+		else
+			table.insert(aligned.anytime, t[i][2])
+		end
+	end
+
+	return aligned
 end
-do
-  -- package.path = package.path .. ";/home/nymphium/.luarocks/share/lua/5.3/?.lua;/home/nymphium/.luarocks/share/lua/5.3/?/init.lua;/usr/share/lua/5.3/?.lua;/usr/share/lua/5.3/?/init.lua;/usr/lib/lua/5.3/?.lua;/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua;;"
-  local naughty = naughty or require('naughty')
-  local timer = timer or require('timer')
-  local tsig = "timeout"
-  if pcall(require, 'luakatsu') then
-    local oiwai
-    oiwai = function()
-      local today = os.date("*t")
-      do
-        today.md = ("%02d/%02d"):format(today.month, today.day)
-      end
-      do
-        local idol = Aikatsu:find_birthday(today.md)
-        if idol then
-          return naughty.notify((function()
-            do
-              local msg = {
-                title = tostring(today.month) .. " がつ " .. tostring(today.day) .. " にち",
-                text = "今日は" .. tostring(idol.name) .. "ちゃんのお誕生日だよ!",
-                height = 50,
-                timeout = 10,
-                fg = "ff0000",
-                bg = "ffff00",
-                run = function(n)
-                  awful.util.spawn("xdg-open https://twitter.com/intent/tweet?text=" .. tostring(idol.name:gsub("%s", "+")) .. "ちゃん誕生日おめでとう!")
-                  return naughty.destroy(n)
-                end
-              }
-              msg.width = (theme.font:match("%d+") * 0.5) * msg.text:len()
-              return msg
-            end
-          end)())
-        end
-      end
-    end
-    local luakatsutimer
-    do
-      local _with_0 = timer({
-        timeout = 21600
-      })
-      _with_0:connect_signal(tsig, oiwai)
-      luakatsutimer = _with_0
-    end
-    local now, sec = os.date("*t")
-    do
-      sec = (now.hour * 60 + now.min) * 60 + now.sec
-    end
-    if sec < 21600 then
-      sec = 21600 - sec
-    elseif sec < 43200 then
-      sec = 43200 - sec
-    elseif sec < 64800 then
-      sec = 64800 - sec
-    elseif sec < 86400 then
-      sec = 86400 - sec
-    end
-    oiwai()
-    local padding
-    padding = function(timer)
-      return function(self)
-        self:stop()
-        return timer:start()
-      end
-    end
-    local paddingtimer
-    do
-      local _with_0 = timer({
-        timeout = sec
-      })
-      _with_0:connect_signal(tsig, padding(luakatsutimer))
-      _with_0:start()
-      paddingtimer = _with_0
-    end
-  end
+
+function autostart.run(cmds)
+	for i = 1, #cmds do
+		awful.util.spawn_with_shell(cmds[i])
+	end
 end
+
+setmetatable(autostart, {
+			 __call = function(self, filepath)
+				 local cont = self.read(filepath)
+
+				 self.run(cont.oneshot)
+				 self.run(cont.anytime)
+			 end
+		 })
+
+return autostart
+

@@ -1,4 +1,4 @@
-local awful = require("awful")
+local awful = awful or require("awful")
 local myfuncs = {}
 
 local function screen_size(screen)

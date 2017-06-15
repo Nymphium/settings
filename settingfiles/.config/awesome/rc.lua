@@ -1,18 +1,20 @@
 -- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
+gears = require("gears")
+awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
 -- Widget and layout library
-local wibox = require("wibox")
+wibox = require("wibox")
 -- Theme handling library
-local beautiful = require("beautiful")
+beautiful = require("beautiful")
 -- Notification library
-local naughty = require("naughty")
+naughty = require("naughty")
 -- local menubar = require("menubar")
 -- local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- myfunc
-local myfuncs = require("myfuncs")
+myfuncs = require("myfuncs")
+shortcuts = require("shortcuts")
+autostart = require("autostart")
 local init_lock = os.getenv("INIT_AWESOME_LOCK") or "/tmp/init_awesome.lock"
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
@@ -359,7 +361,14 @@ local clientbuttons = awful.util.table.join(
 )
 
 -- Set keys
-root.keys(globalkeys)
+if file_readable(conf_dir .. 'shortcuts') then
+	xpcall(shortcuts, function(e)
+		notify_error(e); root.keys(globalkeys)
+	end, globalkeys, 'shortcuts')
+else
+	root.keys(globalkeys)
+end
+
 myfuncs.domyconf("extkey.lua")
 -- }}}
 
@@ -526,13 +535,18 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 xpcall(function()
-	if file_readable(init_lock) then
-		local autostart = awful.util.checkfile(conf_dir .. "autostart.lua")
+	local autostart_ini = conf_dir .. "autostart"
+	local autostart_cmds
 
-		if type(autostart) == "function" then
-			autostart()
-		else
-			notify_error(autostart)
+	if file_readable(autostart_ini) then
+		autostart_cmds = autostart.read(conf_dir .. "autostart")
+
+		autostart.run(autostart_cmds.anytime)
+	end
+
+	if file_readable(init_lock) then
+		if autostart_cmds then
+			autostart.run(autostart_cmds.oneshot)
 		end
 
 		awful.util.spawn("rm " .. init_lock)
