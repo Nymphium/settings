@@ -1,0 +1,51 @@
+keycode  10 = 1 exclam F1
+keycode  11 = 2 quotedbl F2
+keycode  12 = 3 numbersign F3 NoSymbol
+keycode  13 = 4 dollar F4
+keycode  14 = 5 percent F5
+keycode  15 = 6 ampersand
+keycode  17 = 8 parenleft bracketleft braceleft
+keycode  18 = 9 parenright bracketright braceright
+keycode  19 = 0 question F12
+keycode  24 = q Q at grave
+keycode  25 = w W plus asterisk
+keycode  26 = e E Escape
+keycode  27 = r R semicolon colon
+keycode  28 = t T asciicircum asciitilde
+keycode  29 = y Y 6 7
+keycode  30 = u U period less
+keycode  31 = i I comma greater
+keycode  32 = o O Home
+keycode  33 = p P End
+keycode  38 = a A minus equal
+keycode  39 = s S percent
+keycode  40 = d D backslash underscore
+keycode  41 = f F slash bar
+keycode  42 = g G apostrophe ampersand
+keycode  45 = h H Left
+keycode  44 = j J Down
+keycode  45 = k K Up
+keycode  46 = l L Right
+keycode  47 = Muhenkan NoSymbol Henkan
+keycode  52 = z Z F6
+keycode  53 = x X F7
+keycode  54 = c C F8
+keycode  55 = v V F9
+keycode  57 = b B F10
+keycode  57 = n N F11
+keycode  58 = m M Prior
+keycode  59 = NoSymbol NoSymbol Next
+keycode  60 = BackSpace NoSymbol Delete
+
+keycode 37 = Return
+keycode 134 = Control_L
+keycode 64 = Super_L
+keycode 133 = Alt_L
+keycode 49 = Mode_switch
+clear mod4
+clear mod1
+clear control
+add mod4 = Super_L
+add control = Control_L
+add mod1 = Alt_L
+
