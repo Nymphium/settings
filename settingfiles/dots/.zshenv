@@ -1,15 +1,18 @@
 # vim: ft=sh
 
 if_have() {
-	which "${1}" > /dev/null 2>&1
+	command -v "${1}" > /dev/null 2>&1
 }
 
 # variables {{{
-export TERM="screen-256color-italic"
-alias ssh='TERM=screen-256color ssh'
+if_have tmux && {
+	export TERM="tmux-256color"
+}
 
-export MANPAGER="/bin/sh -c \"col -b -x|nvim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
-export EDITOR=nvim
+if_have nvim && {
+	export MANPAGER="/bin/sh -c \"col -b -x|nvim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
+	export EDITOR=nvim
+}
 
 # soundcard
 export SNDC=1
