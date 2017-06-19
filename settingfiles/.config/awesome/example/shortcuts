@@ -1,0 +1,16 @@
+# vim: ft=conf
+
+mod, p
+	lua: myfuncs.squaresize(c)
+
+XF86MonBrightnessDown
+	DISPLAY=:0 xbacklight -8
+
+XF86MonBrightnessUp
+	DISPLAY=:0 xbacklight +8
+
+Shift Control, a
+	google-chrome-stable
+
+Shift Control, f
+	thunar
