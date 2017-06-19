@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wait_time=3
+wait_time=1800
 cmd=i3lock
 cmd_args="-e -i /home/nymphium/.config/awesome/lockscreen.png"
 
