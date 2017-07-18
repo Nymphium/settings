@@ -1,0 +1,65 @@
+! Xft.dpi: 192
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+
+### urxvt
+! special colors
+*.foreground:  #00ff00
+*.background:  #1d1f21
+*.cursorColor:  #c5c8c6
+! black
+*.color0:      #282a2e
+*.color8:      #373b41
+! red
+*.color1:      #a54242
+*.color9:      #ff5555
+! green
+*.color2:      #a0f569
+*.color10:     #00ff00
+! yellow
+*.color3:      #ffa82c
+*.color11:     #ffff00
+! blue
+*.color4:      #5f819d
+*.color12:     #5555ff
+! magenta
+*.color5:      #85678f
+*.color13:     #ff40ff
+! cyan
+*.color6:      #5fd7ff
+*.color14:     #00ffff
+! white
+*.color7:      #ffffff
+*.color15:     #c5c8c6
+
+URxvt*scrollBar:         false
+
+URxvt*transparent:       false
+
+URxvt*depth: 32
+URxvt.background: [80]#1d1f21
+
+URxvt.font: xft:Source Han Code JP R:pixelsize=11:antialias=true,\
+            xft:Source Han Sans JP Regular:pixelsize=11:antialias=true,\
+            xft:DejaVu Sans Mono:pixelsize=11,\
+            xft:Symbola Regular:pixelsize=11,\
+
+URxvt.letterSpace: -0.5
+
+*antialias:  true
+*autohint:   true
+
+URxvt.perl-ext-common:matcher,resize-font,xim-onthespot,selection-to-clipboard
+URxvt.urlLauncher: xdg-open
+URxvt.matcher.button: 1
+URxvt.fading: 30
+
+URxvt.inputMethod: ibus
+URxvt.preeditType: OnTheSpot
+
+URxvt.resize-font.smaller: C-F1
+URxvt.resize-font.bigger: C-F2
