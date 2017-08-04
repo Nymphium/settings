@@ -2,16 +2,17 @@
 
 export DISPLAY=${DISPLAY:-:0}
 
-export PATH
-PATH=${HOME}/bin:${PATH}
-PATH+=:${HOME}/local/bin
-PATH+=:${HOME}/.local/bin
-PATH+=:/usr/bin/vendor_perl:/usr/bin/core_perl
-[[ "$(command -v ruby)" ]] && PATH+=:$(ruby -e 'print Gem.user_dir')/bin
-PATH+=:/usr/lib/ccache/bin
-PATH+=:/opt/java/bin:/opt/java/jre/bin
-PATH+=:${HOME}/.luarocks/bin
-PATH+=:${HOME}/.cabal/bin
+path=(
+	${HOME}/bin
+	${HOME}/local/bin
+	${HOME}/.local/bin(N-/)
+	$path
+	/usr/bin/vendor_perl
+	/usr/bin/core_perl(N-/)
+	/usr/lib/ccache/bin(N-/)
+)
+
+[[ "$(command -v ruby)" ]] && path+=$(ruby -e 'print Gem.user_dir')/bin
 
 if [[ "$(command -v opam)" ]]; then
 	eval "$(opam config env)"
@@ -20,7 +21,9 @@ fi
 
 export JAVA_HOME=${JAVA_HOME:-/opt/java}
 
-which luarocks >/dev/null 2>&1 && eval "$(luarocks path)"
+if [[ "$(command -v luarocks)" ]]; then
+	eval "$(luarocks path --bin)"
+fi
 
 if [[ ! "${DISPLAY}" ]]; then
 	stty iutf8
@@ -39,10 +42,10 @@ setopt magic_equal_subst
 setopt hist_ignore_all_dups
 setopt hist_verify
 setopt hist_expand
+setopt hist_ignore_space
 setopt no_hup
 setopt numeric_glob_sort
 setopt auto_param_keys
-unsetopt auto_param_keys
 
 autoload -Uz compinit promptinit
 autoload -Uz promptinit
@@ -89,9 +92,11 @@ bindkey -r '^[l'
 
 # load many dotfiles
 () {
-	local _PRV_FILE=$HOME/.privatekeys
-	if [[ -e "${_PRV_FILE}" ]] && [[ -r "${_PRV_FILE}" ]]; then
-		source "${_PRV_FILE}"
+	local RCD=$HOME/.zshrc.d
+	if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]] ; then
+		for f in "${RCD}"/*; do
+			source "${f}"
+		done
 	fi
 }
 
