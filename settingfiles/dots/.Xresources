@@ -43,10 +43,10 @@ URxvt*transparent:       false
 URxvt*depth: 32
 URxvt.background: [80]#1d1f21
 
-URxvt.font: xft:Source Han Code JP R:pixelsize=11:antialias=true,\
-            xft:Source Han Sans JP Regular:pixelsize=11:antialias=true,\
-            xft:DejaVu Sans Mono:pixelsize=11,\
-            xft:Symbola Regular:pixelsize=11,\
+URxvt.font: xft:Source Han Code JP R:pixelsize=10:antialias=true,\
+            xft:Source Han Sans JP Regular:pixelsize=10:antialias=true,\
+            xft:DejaVu Sans Mono:pixelsize=10,\
+            xft:Symbola Regular:pixelsize=10,\
 
 URxvt.letterSpace: -0.5
 

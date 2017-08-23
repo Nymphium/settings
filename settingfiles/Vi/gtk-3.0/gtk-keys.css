@@ -41,3 +41,19 @@ GtkMenuShell {
 	-gtk-key-bindings: gtk-vi-menu;
 }
 
+
+entry {
+  -gtk-key-bindings: gtk-vi-text-entry;
+}
+
+textview {
+  -gtk-key-bindings: gtk-vi-text-entry, gtk-vi-text-view;
+}
+
+treeview {
+  -gtk-key-bindings: gtk-vi-tree-view;
+}
+
+GtkMenuShell {
+  -gtk-key-bindings: gtk-vi-menu;
+}
