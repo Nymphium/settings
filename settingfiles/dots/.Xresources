@@ -10,7 +10,7 @@ Xft.rgba: rgb
 ! special colors
 *.foreground:  #00ff00
 *.background:  #1d1f21
-*.cursorColor:  #c5c8c6
+*.cursorColor:  #a0f569
 ! black
 *.color0:      #282a2e
 *.color8:      #373b41
