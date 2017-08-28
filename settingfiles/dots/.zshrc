@@ -78,9 +78,9 @@ if [[ "$(command -v tmux)" ]] && [[ ! "${TMUX}" ]]; then
 		unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
 
 		if [[ ! -z "${unused}" ]]; then
-			tmux -2 attach -t "${unused}"
+			tmux -u -2 attach -t "${unused}"
 		else
-			exec tmux -2
+			exec tmux -u -2 -l
 		fi
 	}
 fi
