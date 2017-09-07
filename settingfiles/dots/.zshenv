@@ -217,5 +217,11 @@ for ((i = 1; i < 11; i++)) {
 # }}}
 # }}}
 
+if_have curl && {
+	gitignore() {
+		curl -L -s "https://www.gitignore.io/api/${*}"
+	}
+}
+
 unset -f if_have
 

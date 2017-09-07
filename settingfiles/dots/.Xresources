@@ -63,3 +63,7 @@ URxvt.preeditType: OnTheSpot
 
 URxvt.resize-font.smaller: C-F1
 URxvt.resize-font.bigger: C-F2
+URxvt.keysym.Home: \033[1~
+URxvt.keysym.End: \033[4~
+URxvt.keysym.KP_Home: \033[1~
+URxvt.keysym.KP_End:  \033[4~
