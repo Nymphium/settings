@@ -204,7 +204,7 @@ return loadstring(src)()
 
 unset -f if_have
 
-# load personal preferences
+# load personal preferences {{{
 () {
 	local RCD=$HOME/.zsh.d
 	if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]] ; then
@@ -213,4 +213,53 @@ unset -f if_have
 		done
 	fi
 }
+# }}}
+
+# interactive shell settings {{{
+zstyle ':completion:*' list-colors "${LS_COLORS}"
+zstyle ':completion::complete:*' use-cache true
+zstyle ':completion:*:default' menu select=1
+
+setopt prompt_subst
+setopt magic_equal_subst
+setopt hist_ignore_all_dups
+setopt hist_verify
+setopt hist_expand
+setopt hist_ignore_space
+setopt no_hup
+setopt numeric_glob_sort
+setopt auto_param_keys
+
+autoload -Uz compinit promptinit
+autoload -Uz promptinit
+# autoload -Uz add-zsh-hook
+compinit -u -C
+
+# no flow control
+stty -ixon
+
+if [[ ! "${DISPLAY}" ]]; then
+	stty iutf8
+fi
+
+## tmux attach {{{
+if [[ "$(command -v tmux)" ]] && [[ ! "${TMUX}" ]]; then
+	() {
+		local unused
+		unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
+
+		if [[ ! -z "${unused}" ]]; then
+			tmux -u -2 attach -t "${unused}"
+		else
+			exec tmux -u -2 -l
+		fi
+	}
+fi
+## }}}
+
+# keybind
+bindkey '^[e' forward-word
+bindkey '^[w' backward-word
+bindkey -r '^[l'
+# }}}
 
