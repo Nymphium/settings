@@ -1,5 +1,28 @@
 # vim:ft=sh
 
+## oh-my-zsh {{{
+ZSH=$HOME/.oh-my-zsh
+
+if [[ -d "${ZSH}" ]]; then
+	export plugins
+	plugins=(git history zsh-completions luarocks stack docker)
+
+	if [[ $(uname -s) = 'Darwin' ]]; then
+		plugins+=('brew')
+		plugins+=('brew-cask')
+	fi
+
+	if [[ -e "${ZSH}/plugins/racket" ]]; then
+		plugins+=('racket')
+	fi
+
+	export DISABLE_AUTO_TITLE=true
+	export ZSH_THEME="nymphium"
+	# shellcheck disable=1090
+	source "${ZSH}/oh-my-zsh.sh"
+fi
+## }}}
+
 # shellcheck disable=1036
 # shellcheck disable=1088
 path=(
@@ -11,6 +34,8 @@ path=(
 	/usr/bin/core_perl(N-/)
 	/usr/lib/ccache/bin(N-/)
 )
+
+
 
 [[ "$(command -v ruby)" ]] && path+=$(ruby -e 'print Gem.user_dir')/bin
 
@@ -34,28 +59,6 @@ fi
 		done
 	fi
 }
-
-## oh-my-zsh {{{
-ZSH=$HOME/.oh-my-zsh
-
-if [[ -d "${ZSH}" ]]; then
-	export plugins
-	plugins=(git history zsh-completions luarocks stack docker)
-
-	if [[ $(uname -s) = 'Darwin' ]]; then
-		plugins+=('brew')
-		plugins+=('brew-cask')
-	fi
-
-	if [[ -e "${ZSH}/plugins/racket" ]]; then
-		plugins+=('racket')
-	fi
-
-	export DISABLE_AUTO_TITLE=true
-	export ZSH_THEME="nymphium"
-	source "${ZSH}/oh-my-zsh.sh"
-fi
-## }}}
 
 ## if in interactive shell {{{
 if [[ $- == *i* ]]; then

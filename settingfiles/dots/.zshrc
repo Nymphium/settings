@@ -1,3 +1,5 @@
+[[ ! "${ZSH}" ]] && source "${HOME}/.zprofile"
+
 if_have() {
 	command -v "${1}" > /dev/null 2>&1
 }
