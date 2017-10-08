@@ -50,16 +50,6 @@ if [[ "$(command -v luarocks)" ]]; then
 	eval "$(luarocks path --bin)"
 fi
 
-# load personal preferences
-() {
-	local RCD=$HOME/.zsh.d
-	if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]] ; then
-		for f in "${RCD}"/*; do
-			source "${f}"
-		done
-	fi
-}
-
 ## if in interactive shell {{{
 if [[ $- == *i* ]]; then
 	zstyle ':completion:*' list-colors "${LS_COLORS}"

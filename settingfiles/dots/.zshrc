@@ -204,3 +204,13 @@ return loadstring(src)()
 
 unset -f if_have
 
+# load personal preferences
+() {
+	local RCD=$HOME/.zsh.d
+	if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]] ; then
+		for f in "${RCD}"/*; do
+			source "${f}"
+		done
+	fi
+}
+
