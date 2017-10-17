@@ -4,8 +4,8 @@
 ZSH=$HOME/.oh-my-zsh
 
 if [[ -d "${ZSH}" ]]; then
-	export plugins
 	plugins=(git history zsh-completions luarocks stack docker)
+	export plugins
 
 	if [[ $(uname -s) = 'Darwin' ]]; then
 		plugins+=('brew')
@@ -16,8 +16,10 @@ if [[ -d "${ZSH}" ]]; then
 		plugins+=('racket')
 	fi
 
-	export DISABLE_AUTO_TITLE=true
-	export ZSH_THEME="nymphium"
+	DISABLE_AUTO_TITLE=true
+	export DISABLE_AUTO_TITLE
+	ZSH_THEME="nymphium"
+	export ZSH_THEME
 	# shellcheck disable=1090
 	source "${ZSH}/oh-my-zsh.sh"
 fi

@@ -6,12 +6,15 @@ if_have() {
 
 # variables {{{
 	if_have tmux && {
-		export TERM="tmux-256color"
+		TERM="tmux-256color"
+		export TERM
 	}
 
 	if_have nvim && {
-		export MANPAGER="/bin/sh -c \"col -b -x|nvim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
-		export EDITOR=nvim
+		MANPAGER="/bin/sh -c \"col -b -x|nvim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
+		export MANPAGER
+		EDITOR=nvim
+		export EDITOR
 	}
 # }}}
 
@@ -202,8 +205,6 @@ return loadstring(src)()
 	}
 # }}}
 
-unset -f if_have
-
 # load personal preferences {{{
 () {
 	local RCD=$HOME/.zsh.d
@@ -212,6 +213,10 @@ unset -f if_have
 			source "${f}"
 		done
 	fi
+}
+
+if_have add_comp_ignores && {
+	add_comp_ignores class
 }
 # }}}
 
@@ -262,4 +267,6 @@ bindkey '^[e' forward-word
 bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}}
+
+unset -f if_have
 
