@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ $(command -v vimdiff) ]; then
-	open="vimdiff"
-else
+if [ $(command -v nvim) ]; then
 	open="nvim -d"
+else
+	open="vimdiff"
 fi
 
 [ "$(file -bi "${2}" | sed -e "s/.*charset=\(.*\)$/\1/")" == binary ] && open=":"

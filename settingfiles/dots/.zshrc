@@ -69,6 +69,12 @@ return loadstring(src)()
 		alias tracket='racket -I typed/racket'
 	# }}}
 
+	# ocaml {{{
+		if_have opam && {
+			eval $(opam config env)
+		}
+	# }}}
+
 	# haskell {{{
 		alias rh='runhaskell'
 	# }}}
