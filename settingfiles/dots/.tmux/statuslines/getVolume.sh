@@ -9,8 +9,7 @@ amixer -c "${SNDC}" | awk '
 		hflg = $7 ~ /on/ ? "🎧" : ""; hcnt = 0
 	} $0 ~ /Speaker/ || (scnt > 0 && scnt < 6) {scnt++} scnt == 6 {
 		sflg = $7 ~ /on/ ? "🔊" : ""; scnt = 0
-	}
-	END {
+	} END {
 		printf "#[fg=colour%d]%s%svol:%d%%> #[fg=colour27]", col, hflg, sflg, vol
 	}'
 

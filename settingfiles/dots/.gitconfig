@@ -7,7 +7,7 @@
 [diff]
 	external = gitdiff
 [pager]
-  diff =
+	diff =
 [alias]
 	b = branch
 	br = branch

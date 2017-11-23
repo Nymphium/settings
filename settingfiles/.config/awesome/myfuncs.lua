@@ -15,9 +15,9 @@ function myfuncs.domyconf(file)
 	end
 end
 
-function myfuncs.toggle(fvh, c)
-	local c = c or client.focus
-	local fvh = fvh or "fvh"
+function myfuncs.toggle(c, fvh)
+	c = c or client.focus
+	fvh = fvh or "fvh"
 
 	if fvh:find("f") then
 		c.fullscreen = not c.fullscreen
@@ -32,8 +32,8 @@ function myfuncs.toggle(fvh, c)
 	end
 end
 
-function myfuncs.setwindowsize(direction, pos)
-	local c = client.focus
+function myfuncs.setwindowsize(c, direction, pos)
+	c = c or client.focus
 
 	if c.fullscreen or c.maximized_vertical or c.maximized_horizontal then
 		return
@@ -66,19 +66,19 @@ function myfuncs.setwindowsize(direction, pos)
 	c:geometry(geom)
 end
 
-function myfuncs.halfsize(rl)
-	local c = client.focus
+function myfuncs.halfsize(c, rl)
+	c = c or client.focus
 
 	if c.fullscreen then
-		myfuncs.toggle("f")
+		myfuncs.toggle(c, "f")
 	end
 
 	if not c.maximized_vertical then
-		myfuncs.toggle("v")
+		myfuncs.toggle(c, "v")
 	end
 
 	if not c.maximized_horizontal then
-		myfuncs.toggle("h")
+		myfuncs.toggle(c, "h")
 	end
 
 	local geom = c:geometry()
@@ -88,14 +88,14 @@ function myfuncs.halfsize(rl)
 		geom.x = geom.width
 	end
 
-	myfuncs.toggle("vh")
+	myfuncs.toggle(c, "vh")
 
 	c:geometry(geom)
 end
 
 function myfuncs.squaresize(c)
 	c = c or client.focus
-	
+
 	if not c then
 		return
 	end

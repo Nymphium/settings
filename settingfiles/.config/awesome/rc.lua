@@ -270,8 +270,8 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey, "Control" }, "r", awesome.restart),
   awful.key({ modkey, "Shift"   }, "l", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile.left) end),
   awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile) end),
-  awful.key({modkey}, "l", function() myfuncs.halfsize("l") end),
-  awful.key({modkey}, "h", function() myfuncs.halfsize("h") end),
+  awful.key({modkey}, "l", function(c) return myfuncs.halfsize(c, "l") end),
+  awful.key({modkey}, "h", function(c) return myfuncs.halfsize(c, "h") end),
   awful.key({ modkey,       }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
   awful.key({ modkey,       }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
@@ -279,18 +279,18 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey },      "r",   function () awful.screen.focused().mypromptbox:run() end), {})
 
 clientkeys = awful.util.table.join(
-  awful.key({ modkey,       }, "f",    function (c) myfuncs.toggle("f", c)  end),
+  awful.key({ modkey,       }, "f",    function (c) myfuncs.toggle(c, "f")  end),
   awful.key({ "Mod1"      }, "q",    function (c) c:kill()             end),
-  awful.key({ modkey,       }, "k", function (c) if not c.fullscreen then myfuncs.toggle("hv") end end),
-  awful.key({modkey, "Mod1"}, "l", function() myfuncs.setwindowsize("l") end, {description = "set client to be half of the screen", group = "client"}),
-  awful.key({modkey, "Mod1"}, "k", function() myfuncs.setwindowsize("k") end),
-  awful.key({modkey, "Mod1"}, "j", function() myfuncs.setwindowsize("j") end),
-  awful.key({modkey, "Mod1"}, "h", function() myfuncs.setwindowsize("h") end),
-  awful.key({modkey, "Mod1", "Shift"}, "l", function() myfuncs.setwindowsize("l", true) end),
-  awful.key({modkey, "Mod1", "Shift"}, "k", function() myfuncs.setwindowsize("k", true) end),
-  awful.key({modkey, "Mod1", "Shift"}, "j", function() myfuncs.setwindowsize("j", true) end),
-  awful.key({modkey, "Mod1", "Shift"}, "h", function() myfuncs.setwindowsize("h", true) end),
-  awful.key({modkey}, "e", function(c) awful.titlebar.toggle(c) end))
+  awful.key({ modkey,       }, "k", function (c) if not c.fullscreen then myfuncs.toggle(c, "hv") end end),
+  awful.key({modkey, "Mod1"}, "l", function(c) return myfuncs.setwindowsize(c, "l") end, {description = "set client to be half of the screen", group = "client"}),
+  awful.key({modkey, "Mod1"}, "k", function(c) return myfuncs.setwindowsize(c, "k") end),
+  awful.key({modkey, "Mod1"}, "j", function(c) return myfuncs.setwindowsize(c, "j") end),
+  awful.key({modkey, "Mod1"}, "h", function(c) return myfuncs.setwindowsize(c, "h") end),
+  awful.key({modkey, "Mod1", "Shift"}, "l", function(c) return myfuncs.setwindowsize(c, "l", true) end),
+  awful.key({modkey, "Mod1", "Shift"}, "k", function(c) return myfuncs.setwindowsize(c, "k", true) end),
+  awful.key({modkey, "Mod1", "Shift"}, "j", function(c) return myfuncs.setwindowsize(c, "j", true) end),
+  awful.key({modkey, "Mod1", "Shift"}, "h", function(c) return myfuncs.setwindowsize(c, "h", true) end),
+  awful.key({modkey}, "e", function(c) return awful.titlebar.toggle(c) end))
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
@@ -358,7 +358,6 @@ end
 myfuncs.domyconf("extkey.lua")
 -- }}}
 
-
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -378,7 +377,8 @@ awful.rules.rules = {
       keys = clientkeys,
       buttons = clientbuttons,
       screen = awful.screen.preferred,
-      placement = awful.placement.no_overlap+awful.placement.no_offscreen
+      placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+	  maximized = false,
     },
     callback = awful.rules.rules.callback
   },
