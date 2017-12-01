@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "diff ${2} and ${5}"
-sleep 1
+sleep 0.4
 
 if [ "$(command -v nvim)" ]; then
 	open="nvim -d"

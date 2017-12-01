@@ -23,8 +23,8 @@ for f in ${THDIR}/dots/.*; () {
 
 # gtk keybind
 () {
-	local dst; dst="${TARGET}/.theme/Vi"
-	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.theme/" && ln -s "${THDIR}/Vi/" "${dst}"
+	local dst; dst="${TARGET}/.themes/Vi"
+	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.themes/" && ln -s "${THDIR}/Vi/" "${dst}"
 } || :
 
 # bin
