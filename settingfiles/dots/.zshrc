@@ -112,11 +112,13 @@ return loadstring(src)()
 			fi
 		}
 
-		pdfcomp() {
-			local pdf;pdf=${1%.*}
-			local pdf_uuid;pdf_uuid="/tmp/${pdf}-$(uuidgen)"
-			=gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile="${pdf_uuid}.pdf" "${pdf}.pdf"
-			mv "${pdf_uuid}.pdf" "${pdf}.pdf"
+		pdfcomp () {
+				local pdf
+				pdf=${1%.*}
+				local pdf_uuid
+				pdf_uuid="/tmp/${pdf}-$(uuidgen)"
+				=gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dDownsampleColorImages=true  -dColorImageResolution=300  -dNOPAUSE -dQUIET -dBATCH -dNOCACHE -dNOBIND -sOutputFile="${pdf_uuid}.pdf" "${pdf}.pdf"
+				mv "${pdf_uuid}.pdf" "${pdf}.pdf"
 		}
 	# }}}
 

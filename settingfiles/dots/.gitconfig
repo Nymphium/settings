@@ -12,6 +12,7 @@
 	b = branch
 	br = branch
 	d = diff
+	df = diff-files -p
 	dif = diff
 	lc = log --graph --name-status --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
 	l = log --graph --name-status --format=format:'%h - %aD (%ar)%d%n'' %s — %an' --abbrev-commit
@@ -21,6 +22,7 @@
 	com = commit
 	empty = commit --allow-empty --allow-empty-message -m '' --all
 	submp = submodule foreach git pull
+	ls=ls-files
 
 [user]
 	email = s1311350@coins.tsukuba.ac.jp
