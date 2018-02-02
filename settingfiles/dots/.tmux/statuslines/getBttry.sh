@@ -1,6 +1,27 @@
-ACPI=$(which acpi)
+batmax=0
+batnow=0
 
-if [[ ${#ACPI} -gt 1 ]]; then
-	${ACPI} -b | awk '{fgnum=202;gsub(/[^0-9]/,"",$4);if($4*1<=10){bg="#[bg=colour196]";fgnum=255}else if($4*1<=20){bg="#[bg=colour226]"}{printf"%s#[fg=colour%s]Bat:%s%%",bg,fgnum,$4}}/remain/{printf" %s",$5}/charged/{printf" Charged"}{printf"#[bg=colour235]＞"}'
+for bat in /sys/class/power_supply/BAT[0-9]; do
+	batmax=$(("${batmax}" + 100))
+	batnow=$(("${batnow}" + "$(cat "${bat}"/capacity)"))
+done
+
+batnow=$(("${batnow}" * 100 / "${batmax}"))
+
+bg=""
+fg=202
+
+charged=""
+if [ "$(cat /sys/class/power_supply/AC/online)" = 1 ]; then
+	charged="Charged "
 fi
+
+if [ "${batnow}" -lt 10 ]; then
+	bg="#[bg=colour196]"
+	fg=255
+elif [ "${batnow}" -lt 20 ]; then
+	bg="#[bg=colour226]"
+fi
+
+printf "%s#[fg=colour%d]Bat:%s%s%%＞" "${bg}" "${fg}" "${charged}" "${batnow}"
 

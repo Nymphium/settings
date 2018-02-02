@@ -85,7 +85,7 @@ function shortcuts.register(keys, tbl)
 		if type(action) == "function" then
 			keys = awful.util.table.join(keys, awful.key(mods, ch, action))
 		else
-			keys = awful.util.table.join(keys, awful.key(mods, ch, function() awful.util.spawn_with_shell(action) end))
+			keys = awful.util.table.join(keys, awful.key(mods, ch, function() awful.spawn.with_shell(action) end))
 		end
 	end
 

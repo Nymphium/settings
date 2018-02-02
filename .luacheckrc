@@ -1,0 +1,1 @@
+/home/nymphium/works/github/settings/settingfiles/.config/awesome/.luacheckrc

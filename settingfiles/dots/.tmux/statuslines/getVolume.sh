@@ -6,10 +6,11 @@ amixer -c "${SNDC}" | awk '
 		if($6 ~ /on/) col = 255;
 		gsub(/[^0-9]/, "", $4); vol = $4; mcnt = 0
 	} ($0 ~ /Headphone/) || (hcnt > 0 && hcnt < 6) {hcnt++} hcnt == 6 {
-		hflg = $7 ~ /on/ ? "🎧" : ""; hcnt = 0
+		hflg = $7 ~ /on/ ? "true" : "false"; hcnt = 0
 	} $0 ~ /Speaker/ || (scnt > 0 && scnt < 6) {scnt++} scnt == 6 {
-		sflg = $7 ~ /on/ ? "🔊" : ""; scnt = 0
+		sflg = $7 ~ /on/ ? "true" : "false"; scnt = 0
 	} END {
-		printf "#[fg=colour%d]%s%svol:%d%%> #[fg=colour27]", col, hflg, sflg, vol
+	#	printf "#[fg=colour%d]%s%svol:%d%%> #[fg=colour27]", col, hflg, sflg, vol
+		printf "%s, %s, %d", hflg, sflg, vol
 	}'
 

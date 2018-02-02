@@ -52,18 +52,25 @@ function autostart.read(filepath)
 	return aligned
 end
 
-function autostart.run(cmds)
-	for i = 1, #cmds do
-		awful.util.spawn_with_shell(cmds[i])
-	end
+local function spawn_oneshot(cmd)
+	awful.spawn.easy_async_with_shell(([=[[ ! $(pgrep %s) ] && %s]=]):format(cmd, cmd))
 end
 
 setmetatable(autostart, {
 			 __call = function(self, filepath)
 				 local cont = self.read(filepath)
+				 local oneshot, anytime = cont.oneshot, cont.anytime
 
-				 self.run(cont.oneshot)
-				 self.run(cont.anytime)
+				 self.oneshot = oneshot
+				 self.anytime = anytime
+
+				 for i = 1, #oneshot do
+					 spawn_oneshot(oneshot[i])
+				 end
+
+				 for i = 1, #anytime do
+					 awful.spawn.easy_async_with_shell(anytime[i])
+				 end
 			 end
 		 })
 

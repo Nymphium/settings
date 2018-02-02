@@ -46,9 +46,11 @@ for f in ${THDIR}/dots/.*; () {
 ## awesome
 () {
 	mkdir -p "${TARGET}/.config/awesome/"
-	for file in {rc,myfuncs,autostart,battery_alert,shortcuts}.lua .luacheckrc; (){
-		local dst; dst="${TARGET}/.config/awesome/${file}"
-		[[ ! -a "${dst}" ]] && ln -s "${THDIR}/.config/awesome/${file}"  "${dst}"
+	local THDIR2; THDIR2="${THDIR}/.config/awesome"
+	for file in "${THDIR2}"/*.lua .luacheckrc; (){
+		basefile="$(basename ${file})"
+		local dst; dst="${TARGET}/.config/awesome/${basefile}"
+		[[ ! -a "${dst}" ]] && ln -s "${file}"  "${dst}"
 	}
 } || :
 

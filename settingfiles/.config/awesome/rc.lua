@@ -15,6 +15,8 @@ naughty = require("naughty")
 myfuncs = require("myfuncs")
 shortcuts = require("shortcuts")
 autostart = require("autostart")
+battery = require"battery"
+volumectrl = require"volumectrl"
 local init_lock = os.getenv("INIT_AWESOME_LOCK") or "/tmp/init_awesome.lock"
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
@@ -221,6 +223,24 @@ do
     scr.mytasklist = awful.widget.tasklist(scr, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
     scr.mywibox = awful.wibox({position = "top", screen = scr})
 
+	local right_widget = {
+		layout = wibox.layout.fixed.horizontal
+	}
+
+	if scr.index == 1 then
+		table.insert(right_widget, wibox.widget.systray())
+
+		if volumectrl.widget then
+			table.insert(right_widget, volumectrl.widget)
+		end
+
+		if battery then
+			table.insert(right_widget, battery)
+		end
+	end
+
+	table.insert(right_widget, scr.mylayoutbox)
+
     scr.mywibox:setup {
       layout = wibox.layout.align.horizontal,
       { -- left widgets
@@ -230,10 +250,7 @@ do
         scr.mypromptbox
       },
       scr.mytasklist, -- middle widgets
-      { -- right widgets
-        layout = wibox.layout.fixed.horizontal,
-        (function() if scr.index == 1 then return wibox.widget.systray() end end)(),
-        scr.mylayoutbox}}
+      right_widget}
   end
 end
 
@@ -520,25 +537,11 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 xpcall(function()
-  local autostart_ini = conf_dir .. "autostart"
-  local autostart_cmds
+	local autostart_ini = conf_dir .. "autostart"
 
-  if file_readable(autostart_ini) then
-    autostart_cmds = autostart.read(conf_dir .. "autostart")
+	if file_readable(autostart_ini) then
+		autostart(autostart_ini)
+	end
 
-    autostart.run(autostart_cmds.anytime)
-  end
-
-  if file_readable(init_lock) then
-    if autostart_cmds then
-      autostart.run(autostart_cmds.oneshot)
-    end
-
-    awful.util.spawn("rm " .. init_lock)
-  end
-
-  if file_readable(conf_dir .. "battery_alert.lua") then
-    require'battery_alert'
-  end
 end, notify_error)
 
