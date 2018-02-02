@@ -154,6 +154,10 @@ return loadstring(src)()
 			nvim --headless +NeoBundleUpdate +q
 		}
 
+		nvwrap() {
+			nvim +"term rlwrap $1"
+		}
+
 	renew(){
 		sudo pacman -Sc --noconfirm &&
 		gem update >/dev/null 2>&1 &
