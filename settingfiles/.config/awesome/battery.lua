@@ -20,7 +20,9 @@ for i = 0, 9 do
 end
 
 if batmax == 0 then
-	return nil
+	return {
+		widget = nil
+	}
 end
 
 local get_battery = function() -- {{{
@@ -50,7 +52,7 @@ local get_battery = function() -- {{{
 	return (batnow * 100 / batmax), not not charged
 end -- }}}
 
-local mybatterybar = wibox.widget { -- {{{
+local batterywidget = wibox.widget { -- {{{
 	{
 		min_value    = 0,
 		max_value    = 100,
@@ -103,7 +105,7 @@ local mybatterybar = wibox.widget { -- {{{
 } -- }}}
 
 local tooltip = awful.tooltip({
-			  objects = {mybatterybar},
+			  objects = {batterywidget},
 			  delay_show = 1
 		  })
 
@@ -111,7 +113,7 @@ local update_tooltip = function()
 	local val, charged = get_battery()
 
 	local txt = ([[
-Volume: %.1f%%
+Battery: %.1f%%
 State: %s]]):format(val, charged and "charged" or "ac")
 
 	tooltip:set_text(txt)
@@ -119,7 +121,7 @@ end
 
 local batt_callback = function () -- {{{
 	local bat, charged = get_battery()
-	mybatterybar:set_battery(bat, charged)
+	batterywidget:set_battery(bat, charged)
 	update_tooltip()
 end -- }}}
 
@@ -129,4 +131,6 @@ gears.timer {
 	callback  = batt_callback
 }
 
-return mybatterybar
+return {
+	widget = batterywidget
+}

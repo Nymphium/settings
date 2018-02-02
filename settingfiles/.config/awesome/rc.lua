@@ -233,8 +233,8 @@ do
 			table.insert(right_widget, volumectrl.widget)
 		end
 
-		if battery then
-			table.insert(right_widget, battery)
+		if battery.widget then
+			table.insert(right_widget, battery.widget)
 		end
 	end
 
