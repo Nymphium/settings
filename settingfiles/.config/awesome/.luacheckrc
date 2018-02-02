@@ -9,6 +9,7 @@ files["spec"].std = "+busted"
 
 -- The default config may set global variables
 files["awesomerc.lua"].allow_defined_top = true
+files["rc.lua"].allow_defined_top = true
 
 -- Global objects defined by the C code
 read_globals = {

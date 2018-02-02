@@ -17,7 +17,6 @@ shortcuts = require("shortcuts")
 autostart = require("autostart")
 battery = require"battery"
 volumectrl = require"volumectrl"
-local init_lock = os.getenv("INIT_AWESOME_LOCK") or "/tmp/init_awesome.lock"
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
 
@@ -114,7 +113,7 @@ awful.layout.layouts = layouts
 -- }
 
 local mymainmenu = awful.menu({items= {
-  -- {"hotkeys", function() return false, hotkeys_popup.show_help end}, 
+  -- {"hotkeys", function() return false, hotkeys_popup.show_help end},
   {"restart", awesome.restart}}})
 
 local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })

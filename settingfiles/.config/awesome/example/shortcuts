@@ -9,8 +9,28 @@ XF86MonBrightnessDown
 XF86MonBrightnessUp
 	DISPLAY=:0 xbacklight +8
 
+# with "volumectrl" module {{{
+XF86AudioMute
+	lua: volumectrl.toggle()
+
+XF86AudioLowerVolume
+	lua: volumectrl.voldown(3)
+
+XF86AudioRaiseVolume
+	lua: volumectrl.volup(3)
+# }}}
+
 Shift Control, a
-	google-chrome-stable
+	chromium
 
 Shift Control, f
 	thunar
+
+Print
+	$HOME/bin/scshot
+
+Shift, Print
+	$HOME/bin/scshot a
+
+Insert
+	$HOME/bin/lidlock.sh
