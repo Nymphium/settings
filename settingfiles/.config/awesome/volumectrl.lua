@@ -2,8 +2,17 @@ local gears = gears or require'gears'
 local wibox = wibox or require'wibox'
 local awful = awful or require'awful'
 
+if io.popen("pactl"):close() then
+	return {
+		widget = nil,
+		volup = function() end,
+		voldown = function() end,
+		toggle = function() end
+	}
+end
+
 -- {{{
-local sinks = {}
+local sinks = {} -- {{{
 local sink
 local sinkch
 
@@ -25,18 +34,7 @@ local get_rawinfo_ref = function()
 	end
 end
 
-get_rawinfo_ref()
-
-local get_volume = function(ch)
-	get_rawinfo_ref()
-	local vols = sinks[ch].volume
-	local vleft, vright = vols:match("(%d+%.?%d+)%%(.*)")
-	vright = vright:match("(%d+%.?%d+)%%")
-	vleft, vright = tonumber(vleft), tonumber(vright)
-
-	return vleft, vright, sinks[ch].mute
-end
-
+get_rawinfo_ref() -- }}}
 
 local normal_color = "#cc8400"
 local muted_color = "red"
@@ -47,7 +45,7 @@ local function toggled_color(muted)
 	end
 end
 
-local volumebar = wibox.widget {
+local volumebar = wibox.widget { -- {{{
 	{
 		color = toggled_color(sinks[sinkch].mute),
 		background_color = "black",
@@ -76,11 +74,39 @@ local volumebar = wibox.widget {
 		self.barrepr.muted = muted
 		self.barrepr.color = toggled_color(muted)
 	end
+} -- }}}
+
+
+local tooltip = awful.tooltip{ -- {{{
+	objects = {volumebar},
+	delay_show = 1
 }
+
+local update_tooltip = function(vol, muted)
+	local txt = ([[
+Volume: %d%%
+Muted: %s]]):format(vol, muted)
+
+	tooltip:set_text(txt)
+end -- }}}
+
+
+-- {{{
+local get_volume = function(ch)
+	get_rawinfo_ref()
+	local vols = sinks[ch].volume
+	local vleft, vright = vols:match("(%d+%.?%d+)%%(.*)")
+	vright = vright:match("(%d+%.?%d+)%%")
+	vleft, vright = tonumber(vleft), tonumber(vright)
+
+	return vleft, vright, sinks[ch].mute
+end
 
 local vol_callback = function()
 	local vleft, vright, muted = get_volume(sinkch)
-	volumebar:set_volume((vleft+vright)/2, muted)
+	local vol = (vleft + vright) / 2
+	volumebar:set_volume(vol, muted)
+	update_tooltip(vol, muted)
 end
 
 local update_volume = function(ch, vol, up)
@@ -92,13 +118,13 @@ local toggle_volume = function(ch)
 	awful.spawn.easy_async_with_shell(
 		([[pactl set-sink-mute %d toggle]]):format(ch), vol_callback)
 end
+-- }}}
 
 gears.timer {
 	timeout = 2,
 	autostart = true,
 	callback = vol_callback
 }
-
 -- }}}
 
 return {

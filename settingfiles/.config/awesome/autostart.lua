@@ -53,7 +53,7 @@ function autostart.read(filepath)
 end
 
 local function spawn_oneshot(cmd)
-	awful.spawn.easy_async_with_shell(([=[[ ! $(pgrep %s) ] && %s]=]):format(cmd, cmd))
+	awful.spawn.easy_async_with_shell(([=[[ ! $(pgrep %s) ] && %s]=]):format(cmd, cmd), function() end)
 end
 
 setmetatable(autostart, {
@@ -69,7 +69,7 @@ setmetatable(autostart, {
 				 end
 
 				 for i = 1, #anytime do
-					 awful.spawn.easy_async_with_shell(anytime[i])
+					 awful.spawn.easy_async_with_shell(anytime[i], function() end)
 				 end
 			 end
 		 })
