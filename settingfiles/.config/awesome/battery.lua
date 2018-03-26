@@ -86,15 +86,15 @@ local batterywidget = wibox.widget { -- {{{
 			if val <= 20 and self.warn_first then
 				naughty.notify({
 				   title = "Battery",
-				   text = ("%s%% left"):format(tostring(val)),
+				   text = ("%.2f%% left"):format(val),
 				   timeout = 19
 			   })
 
 				self.warn_first = false
-			elseif val <= 20 and self.alert_first then
+			elseif val <= 10 and self.alert_first then
 				naughty.notify({
 				   title = "Battery",
-				   text = ("%s%% left"):format(tostring(val)),
+				   text = ("%.2f%% left"):format(val),
 				   timeout = 19
 			   })
 
