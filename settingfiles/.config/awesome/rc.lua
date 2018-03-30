@@ -228,6 +228,7 @@ do
 
 	if scr.index == 1 then
 		table.insert(right_widget, wibox.widget.systray())
+		table.insert(right_widget, wibox.widget.textclock())
 
 		if volumectrl.widget then
 			table.insert(right_widget, volumectrl.widget)
