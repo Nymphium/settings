@@ -20,6 +20,7 @@
 	submp = submodule foreach git pull
 	ls=ls-files
 	lsu = ls-files --others --exclude-standard
+	ignored = ls-files --others --exclude-standard
 
 [user]
 	email = s1311350@coins.tsukuba.ac.jp

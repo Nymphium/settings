@@ -273,7 +273,7 @@ root.buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = awful.util.table.join(
+local globalkeys = awful.util.table.join(
   -- Layout manipulation
   awful.key({ modkey,       }, "Tab",
        function ()
@@ -362,6 +362,53 @@ local clientbuttons = awful.util.table.join(
   awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
   awful.button({ "Shift" }, 1,  awful.mouse.client.move),
   awful.button({ modkey,  }, 3, awful.mouse.client.resize))
+
+-- terminal {{{
+do
+	local tag = awful.tag
+	local screen = awful.screen
+	local terminal_tagname = "terminal"
+	local terminal_cmd = "urxvt"
+	local src_tag
+
+	tag.add(terminal_tagname, {
+		 screen = screen.primary
+		 })
+
+	local terminal_tag = tag.find_by_name(screen, terminal_tagname)
+
+	awesome.connect_signal("startup",
+		 function()
+			 local clients = client.get()
+
+			 for _, c in pairs(clients) do
+				 notify_error(("%s -- %s"):format(c.class:lower(), c.first_tag.name))
+
+				 if c.first_tag.name == terminal_tagname and c.class:lower() == terminal_cmd then
+					 return
+				 end
+			 end
+
+			 awful.spawn(terminal_cmd, { tag = terminal_tag, fullscreen = true })
+		 end)
+
+	tag.setproperty(terminal_tag, 'hide', true)
+
+	globalkeys = awful.util.table.join(globalkeys,
+									awful.key({modkey, "Shift"}, "j",
+				   function()
+					   local current_screen = screen.focused()
+					   local current = current_screen.selected_tags[1]
+
+					   if current.name ~= terminal_tagname then
+						   src_tag = current
+						   return terminal_tag:view_only()
+					   else
+						   return src_tag:view_only()
+					   end
+				   end))
+end
+-- }}}
 
 -- Set keys
 if file_readable(conf_dir .. 'shortcuts') then
@@ -544,4 +591,5 @@ xpcall(function()
 	end
 
 end, notify_error)
+
 
