@@ -379,12 +379,9 @@ do
 
 	awesome.connect_signal("startup",
 		 function()
-			 local clients = client.get()
+			 for _, c in pairs(terminal_tag:clients()) do
 
-			 for _, c in pairs(clients) do
-				 notify_error(("%s -- %s"):format(c.class:lower(), c.first_tag.name))
-
-				 if c.first_tag.name == terminal_tagname and c.class:lower() == terminal_cmd then
+				 if c.class:lower() == terminal_cmd then
 					 return
 				 end
 			 end
@@ -395,7 +392,7 @@ do
 	tag.setproperty(terminal_tag, 'hide', true)
 
 	globalkeys = awful.util.table.join(globalkeys,
-									awful.key({modkey, "Shift"}, "j",
+									awful.key({"Mod1", "Shift"}, "j",
 				   function()
 					   local current_screen = screen.focused()
 					   local current = current_screen.selected_tags[1]
@@ -591,5 +588,4 @@ xpcall(function()
 	end
 
 end, notify_error)
-
 
