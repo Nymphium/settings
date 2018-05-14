@@ -365,45 +365,77 @@ local clientbuttons = awful.util.table.join(
 
 -- terminal {{{
 do
-	local tag = awful.tag
 	local screen = awful.screen
-	local terminal_tagname = "terminal"
-	local terminal_cmd = "urxvt"
-	local src_tag
+	-- singleton terminal class {{{
+	terminal = {
+		cmd = "urxvt",
+		client = nil,
+		pid = nil,
+		rule = {
+			instance = "myterm"
+		},
+		properties = {
+			fullscreen = true,
+			hidden = true,
+			ontop = true,
+			skip_taskbar = true
+		},
+		get = function(self)
+			for _, c in pairs(client.get()) do
+				if c.pid == self.pid then
+					return c
+				end
+			end
+		end,
+		set = function(self)
+			local c = self:get()
 
-	tag.add(terminal_tagname, {
-		 screen = screen.primary
-		 })
+			if not c then
+				self.pid = awful.spawn(self.cmd, self.properties)
 
-	local terminal_tag = tag.find_by_name(screen, terminal_tagname)
+				c = self:get()
+			end
 
-	awesome.connect_signal("startup",
-		 function()
-			 for _, c in pairs(terminal_tag:clients()) do
+			terminal.client = c
+		end,
 
-				 if c.class:lower() == terminal_cmd then
-					 return
-				 end
-			 end
+		view_toggle = function(self)
+			return function()
+				if not (self.client and self.client.valid) then
+					self:set()
+					return
+				end
 
-			 awful.spawn(terminal_cmd, { tag = terminal_tag, fullscreen = true })
-		 end)
+				local current_screen = screen.focused()
+				local current = current_screen.selected_tags[1]
 
-	tag.setproperty(terminal_tag, 'hide', true)
+				if self.client.hidden then
+					self.client.hidden = false
+					self.client:move_to_tag(current)
+					client.focus = self.client
+					self.client:raise()
+					self.client.fullscreen = false
+					self.client.fullscreen = true
+				else
+					if current ~= self.client.first_tag then
+						current:view_only()
+						self.client:move_to_tag(current)
+						client.focus = self.client
+					else
+						self.client.hidden = true
+					end
+				end
+			end
+		end
+	}
+	-- }}}
 
-	globalkeys = awful.util.table.join(globalkeys,
-									awful.key({"Mod1", "Shift"}, "j",
-				   function()
-					   local current_screen = screen.focused()
-					   local current = current_screen.selected_tags[1]
+	awesome.connect_signal("startup", function() terminal:set() end)
+	awesome.connect_signal("exit", function() if terminal.client then terminal.client:kill() end end)
 
-					   if current.name ~= terminal_tagname then
-						   src_tag = current
-						   return terminal_tag:view_only()
-					   else
-						   return src_tag:view_only()
-					   end
-				   end))
+	globalkeys = awful.util.table.join(
+		globalkeys,
+		awful.key({"Mod1", "Shift"}, "j", terminal:view_toggle()))
 end
 -- }}}
 
@@ -584,7 +616,9 @@ xpcall(function()
 	local autostart_ini = conf_dir .. "autostart"
 
 	if file_readable(autostart_ini) then
-		autostart(autostart_ini)
+		awesome.connect_signal("startup", function()
+			autostart(autostart_ini)
+		end)
 	end
 
 end, notify_error)
