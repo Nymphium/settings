@@ -75,6 +75,12 @@ return loadstring(src)()
 		}
 	# }}}
 
+	# java {{{
+		if_have java && {
+			export JAVA_HOME; JAVA_HOME=/usr/lib/jvm/default
+		}
+	# }}}
+
 	# haskell {{{
 		alias rh='runhaskell'
 	# }}}

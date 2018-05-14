@@ -127,6 +127,11 @@ gears.timer {
 }
 -- }}}
 
+
+volumebar:connect_signal("button::press", function()
+	awful.spawn.easy_async_with_shell("pavucontrol", vol_callback)
+end)
+
 return {
 	widget = volumebar,
 	volup = function(vol)
