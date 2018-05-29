@@ -273,7 +273,7 @@ root.buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ Key bindings
-local globalkeys = awful.util.table.join(
+globalkeys = awful.util.table.join(
   -- Layout manipulation
   awful.key({ modkey,       }, "Tab",
        function ()
@@ -287,15 +287,15 @@ local globalkeys = awful.util.table.join(
   awful.key({ modkey, "Control" }, "r", awesome.restart),
   awful.key({ modkey, "Shift"   }, "l", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile.left) end),
   awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile) end),
-  awful.key({modkey}, "l", function(c) return myfuncs.halfsize(c, "l") end),
-  awful.key({modkey}, "h", function(c) return myfuncs.halfsize(c, "h") end),
+  awful.key({ modkey}, "l", function(c) return myfuncs.halfsize(c, "l") end),
+  awful.key({ modkey}, "h", function(c) return myfuncs.halfsize(c, "h") end),
   awful.key({ modkey,       }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
   awful.key({ modkey,       }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
   -- Prompt
-  awful.key({ modkey },      "r",   function () awful.screen.focused().mypromptbox:run() end), {})
+  awful.key({ modkey },      "r",   function () awful.screen.focused().mypromptbox:run() end))
 
-clientkeys = awful.util.table.join(
+local clientkeys = awful.util.table.join(
   awful.key({ modkey,       }, "f",    function (c) myfuncs.toggle(c, "f")  end),
   awful.key({ "Mod1"      }, "q",    function (c) c:kill()             end),
   awful.key({ modkey,       }, "k", function (c) if not c.fullscreen then myfuncs.toggle(c, "hv") end end),
@@ -363,81 +363,15 @@ local clientbuttons = awful.util.table.join(
   awful.button({ "Shift" }, 1,  awful.mouse.client.move),
   awful.button({ modkey,  }, 3, awful.mouse.client.resize))
 
--- terminal {{{
-do
-	local screen = awful.screen
-	-- singleton terminal class {{{
-	terminal = {
-		cmd = "urxvt",
-		client = nil,
-		pid = nil,
-		rule = {
-			instance = "myterm"
-		},
-		properties = {
-			fullscreen = true,
-			hidden = true,
-			ontop = true,
-			skip_taskbar = true
-		},
-		get = function(self)
-			for _, c in pairs(client.get()) do
-				if c.pid == self.pid then
-					return c
-				end
-			end
-		end,
-		set = function(self)
-			local c = self:get()
-
-			if not c then
-				self.pid = awful.spawn(self.cmd, self.properties)
-
-				c = self:get()
-			end
-
-			terminal.client = c
-		end,
-
-		view_toggle = function(self)
-			return function()
-				if not (self.client and self.client.valid) then
-					self:set()
-					return
-				end
-
-				local current_screen = screen.focused()
-				local current = current_screen.selected_tags[1]
-
-				if self.client.hidden then
-					self.client.hidden = false
-					self.client:move_to_tag(current)
-					client.focus = self.client
-					self.client:raise()
-					self.client.fullscreen = false
-					self.client.fullscreen = true
-				else
-					if current ~= self.client.first_tag then
-						current:view_only()
-						self.client:move_to_tag(current)
-						client.focus = self.client
-					else
-						self.client.hidden = true
-					end
-				end
-			end
-		end
-	}
-	-- }}}
-
+pcall(function()
+	local terminal = require("dropdownterminal")("urxvt")
 	awesome.connect_signal("startup", function() terminal:set() end)
 	awesome.connect_signal("exit", function() if terminal.client then terminal.client:kill() end end)
 
-	globalkeys = awful.util.table.join(
-		globalkeys,
-		awful.key({"Mod1", "Shift"}, "j", terminal:view_toggle()))
-end
--- }}}
+	globalkeys = awful.util.table.join(globalkeys,
+									awful.key({"Mod1", "Shift"}, "j", terminal:view_toggle()),
+									awful.key({"Mod1", "Control"}, "j", function() terminal.show_always = not terminal.show_always end))
+end)
 
 -- Set keys
 if file_readable(conf_dir .. 'shortcuts') then

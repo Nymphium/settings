@@ -4,8 +4,7 @@
 ZSH=$HOME/.oh-my-zsh
 
 if [[ -d "${ZSH}" ]]; then
-	plugins=(git history zsh-completions luarocks stack docker)
-	export plugins
+	plugins=(git history zsh_reload)
 
 	if [[ $(uname -s) = 'Darwin' ]]; then
 		plugins+=('brew')
@@ -15,6 +14,17 @@ if [[ -d "${ZSH}" ]]; then
 	if [[ -e "${ZSH}/plugins/racket" ]]; then
 		plugins+=('racket')
 	fi
+
+	if command -v sbt > /dev/null 2>&1; then
+		plugins+=('sbt')
+		plugins+=('scala')
+	fi
+
+	if command -v stack > /dev/null 2>&1; then
+		plugins+=('stack')
+	fi
+
+	export plugins
 
 	DISABLE_AUTO_TITLE=true
 	export DISABLE_AUTO_TITLE
