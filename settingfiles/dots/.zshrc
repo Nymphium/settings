@@ -168,7 +168,8 @@ return loadstring(src)()
 		sudo pacman -Sc --noconfirm &&
 		gem update >/dev/null 2>&1 &
 		( yaourt -Syua --devel --noconfirm &&\
-			sudo pacman-optimize &&\
+			# sudo pacman-optimize &&\
+			((command -v pacman-optimize >/dev/null 2>&1 && sudo pacman-optimize); (command -v pacman-db-upgrade >/dev/null 2>&1 && sudo pacman-db-upgrade)   )
 			sudo updatedb) &
 		vimupdate
 	}
@@ -180,6 +181,7 @@ return loadstring(src)()
 	fi
 
 	# misc {{{
+		alias 4date='date +%m%d'
 		alias mixer='pavucontrol'
 		alias ag='ag --hidden -S --stats --ignore=.git'
 		alias alsamixer='alsamixer -g'

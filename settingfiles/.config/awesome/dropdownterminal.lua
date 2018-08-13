@@ -43,24 +43,26 @@ return function(term)
 
 				if self.client.hidden then
 					self.client.hidden = false
-					self.client:move_to_tag(current_tag)
-					client.focus = self.client
-					self.client:raise()
-					self.client.fullscreen = false
-					self.client.fullscreen = true
-				else
-					if self.show_always then
+					if not self.show_always then
+						self.client:move_to_tag(current_tag)
 						client.focus = self.client
+						self.client:raise()
+						self.client.fullscreen = false
+						self.client.fullscreen = true
 					else
-
-						if current_tag ~= self.client.first_tag then
-							current_tag:view_only()
-							self.client:move_to_tag(current_tag)
-							client.focus = self.client
-						else
-							self.client.hidden = true
-						end
+						self.client.first_tag:view_only()
+						self.client:raise()
 					end
+					client.focus = self.client
+				elseif current_tag ~= self.client.first_tag then
+					if not self.show_always then
+						current_tag:view_only()
+						self.client:move_to_tag(current_tag)
+					end
+
+					client.focus = self.client
+				else
+					self.client.hidden = true
 				end
 			end
 		end
