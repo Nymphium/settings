@@ -1,6 +1,4 @@
 # vim: ft=sh
-
-
 if [[ "${UID}" -eq 0 ]]; then
 	colors=("red" "magenta")
 
@@ -29,6 +27,17 @@ zstyle ":vcs_info:*" formats "%u%c${_YELLOW}:${_RED}%b"
 zstyle ":vcs_info:*" actionformats "%F{red}[yabai]"
 setopt prompt_subst
 
+function git_status() {
+	git status 2>/dev/null | awk 'NR==1&&($1=="On" || $2 == "detached"){printf "${_YELLOW}:${_GREEN}"}$1=="Untracked"{printf "u"}'
+}
+
+function git_prompt_stash_count {
+	local COUNT; COUNT=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
+	if [ "$COUNT" -gt 0 ]; then
+		echo "${_COL1}[${_RED}$COUNT${_COL1}]"
+	fi
+}
+
 function _my_prompt() {
 	vcs_info
 	local SSH=""
@@ -44,7 +53,7 @@ function _my_prompt() {
 		[[ "${TMUX}" ]] && tmux setenv -u SSH_CONNECTION
 	fi
 
-	PROMPT="${_COL1}>> ${SSH}%p${_CYAN}%c$(git status 2>/dev/null | awk 'NR==1&&($1=="On" || $2 == "detached"){printf "${_YELLOW}:${_GREEN}"}$1=="Untracked"{printf "u"}')${vcs_info_msg_0_}${_COL2} ${rootprm}>>%{$reset_color%} "
+	PROMPT="${_COL1}>> ${SSH}%p${_CYAN}%c$(git_status)${vcs_info_msg_0_}$(git_prompt_stash_count)${_COL2} ${rootprm}>>%{$reset_color%} "
 }
 
 add-zsh-hook precmd(){_my_prompt}

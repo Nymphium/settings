@@ -75,7 +75,7 @@ local batterywidget = wibox.widget { -- {{{
 	warn_first = true,
 	alert_first = true,
 	set_battery = function(self, val, charged)
-		self.textrepr.text  = ("%s%.1f%%"):format(charged and "🔌 " or "⚡ ", val)
+		self.textrepr.text  = ("%s%.1f%%"):format(charged and "C " or "D ", val)
 		self.barrepr.value = val
 		self.barrepr.charged = charged
 

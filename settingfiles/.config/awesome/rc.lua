@@ -17,6 +17,7 @@ shortcuts = require("shortcuts")
 autostart = require("autostart")
 battery = require"battery"
 volumectrl = require"volumectrl"
+
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
 
@@ -31,6 +32,11 @@ local function notify_error(err, notifyarg)
       },
       notifyarg))
 end
+
+local net_widgets
+xpcall(function()
+	net_widgets =  require("net_widgets")
+end, notify_error)
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -65,7 +71,7 @@ local theme_lua = awful.util.checkfile(awful.util.get_themes_dir() .. "default/t
 
 if type(theme_lua) == "function" then
   local theme = theme_lua()
-  theme.font = "Comfortaa 8"
+  theme.font = "sans 8"
   naughty.config.defaults.font = theme.font
   beautiful.init(theme)
 end
@@ -74,7 +80,7 @@ naughty.config.defaults.timeout = 5
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
--- local terminal = "lilyterm"
+local terminal = "urxvt"
 -- local editor = os.getenv("EDITOR") or "vim"
 -- local editor_cmd = terminal .. " -e " .. editor
 
@@ -229,6 +235,10 @@ do
 	if scr.index == 1 then
 		table.insert(right_widget, wibox.widget.systray())
 		table.insert(right_widget, wibox.widget.textclock())
+
+		table.insert(right_widget, net_widgets.wireless{
+			   interface="wlp58s0",
+			   onclick = ("%s -e sudo wifi-menu --obscure"):format(terminal)})
 
 		if volumectrl.widget then
 			table.insert(right_widget, volumectrl.widget)

@@ -24,6 +24,14 @@ if [[ -d "${ZSH}" ]]; then
 		plugins+=('stack')
 	fi
 
+	if command -v docker > /dev/null 2>&1; then
+		plugins+=('docker')
+	fi
+
+	if command -v docker-compose > /dev/null 2>&1; then
+		plugins+=('docker-compose')
+	fi
+
 	export plugins
 
 	DISABLE_AUTO_TITLE=true
@@ -33,6 +41,8 @@ if [[ -d "${ZSH}" ]]; then
 	# shellcheck disable=1090
 	source "${ZSH}/oh-my-zsh.sh"
 fi
+
+autoload -U compinit && compinit -u
 ## }}}
 
 # shellcheck disable=1036

@@ -149,11 +149,23 @@ return loadstring(src)()
 	# }}}
 # }}}
 
+# docker {{{
+	# alias docker-imageid='docker container ls --format "{{.ID}}"'
+	docker-id-cname() {
+		docker ps -a --filter "ancestor=$1" --format "{{.ID}}"
+	}
+
+	docker-logs-cname() {
+		docker logs $(docker-id-cname $1)
+	}
+
+# }}}
+
 # (Arch) Linux {{{
 	if_have uname && [[ "$(uname -s)"  = "Linux" ]] && {
 	alias pacs='sudo pacman -S --noconfirm'
-	alias yaous='yaourt -S --noconfirm'
-	alias pkgsearch='yaourt -Ss'
+	alias yaous='yay -S --noconfirm'
+	alias pkgsearch='yay -Ss'
 
 	if_have nvim && \
 		vimupdate() {
@@ -167,7 +179,7 @@ return loadstring(src)()
 	renew(){
 		sudo pacman -Sc --noconfirm &&
 		gem update >/dev/null 2>&1 &
-		( yaourt -Syua --devel --noconfirm &&\
+		( yay -Syua --devel --noconfirm &&\
 			# sudo pacman-optimize &&\
 			((command -v pacman-optimize >/dev/null 2>&1 && sudo pacman-optimize); (command -v pacman-db-upgrade >/dev/null 2>&1 && sudo pacman-db-upgrade)   )
 			sudo updatedb) &
