@@ -50,11 +50,11 @@ autoload -U compinit && compinit -u
 path=(
 	${HOME}/bin
 	${HOME}/local/bin
-	${HOME}/.local/bin(N-/)
+	${HOME}/.local/bin
 	$path
 	/usr/bin/vendor_perl
-	/usr/bin/core_perl(N-/)
-	/usr/lib/ccache/bin(N-/)
+	/usr/bin/core_perl
+	/usr/lib/ccache/bin
 )
 
 [[ "$(command -v ruby)" ]] && path+=$(ruby -e 'print Gem.user_dir')/bin
