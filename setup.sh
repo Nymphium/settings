@@ -30,6 +30,8 @@ for f in ${THDIR}/dots/.*; () {
 # bin
 (){
 	local dst; dst="${TARGET}/bin/"
+	mkdir -p "${TARGET}/.local/bin"
+
 	if [[ ! -a "${dst}" ]]; then
 		mkdir -p "${dst}"
 	fi
