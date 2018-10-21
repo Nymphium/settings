@@ -11,14 +11,14 @@ for f in ${THDIR}/dots/.*; () {
 
 # install oh-my-zsh unless installed
 () {
-	local dst; dst="${TARGET}/.oh-my-zsh"
-	[[ ! -a "${dst}" ]] && git clone https://github.com/robbyrussell/oh-my-zsh "${dst}"
-} || :
+	local omz; omz="${TARGET}/.oh-my-zsh"
+	[[ ! -a "${omz}" ]] && git clone https://github.com/robbyrussell/oh-my-zsh "${omz}"
 
-# add my theme
-() {
+	# install theme
 	local dst; dst="${TARGET}/.oh-my-zsh/custom/themes/"
-	[[ ! -a "${dst}" ]] && mkdir -p "${dst}" && ln -s "${THDIR}/nymphium.zsh-theme" "${dst}"
+	[[ ! -d "${dst}" ]] && mkdir -p "${dst}"
+
+	ln -s "${THDIR}/nymphium.zsh-theme" "${dst}"
 } || :
 
 # gtk keybind

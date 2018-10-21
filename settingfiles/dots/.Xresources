@@ -59,7 +59,7 @@ URxvt.matcher.button: 1
 URxvt.fading: 30
 
 URxvt.inputMethod: ibus
-URxvt.preeditType: OnTheSpot
+URxvt.preeditType: OverTheSpot
 
 URxvt.resize-font.smaller: C-F1
 URxvt.resize-font.bigger: C-F2

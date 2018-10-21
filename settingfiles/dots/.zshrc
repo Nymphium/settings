@@ -178,7 +178,6 @@ return loadstring(src)()
 
 	renew(){
 		sudo pacman -Sc --noconfirm &&
-		gem update >/dev/null 2>&1 &
 		( yay -Syua --devel --noconfirm &&\
 			# sudo pacman-optimize &&\
 			((command -v pacman-optimize >/dev/null 2>&1 && sudo pacman-optimize); (command -v pacman-db-upgrade >/dev/null 2>&1 && sudo pacman-db-upgrade)   )

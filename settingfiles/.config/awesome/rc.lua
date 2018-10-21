@@ -238,7 +238,11 @@ do
 
 		table.insert(right_widget, net_widgets.wireless{
 			   interface="wlp58s0",
-			   onclick = ("%s -e sudo wifi-menu --obscure"):format(terminal)})
+			   onclick = ("%s -e nmtui"):format(terminal)})
+
+		table.insert(right_widget, net_widgets.indicator({
+												   interfaces={"enp0s31f6"},
+												   onclick = ("%s -e nmtui"):format(terminal)}))
 
 		if volumectrl.widget then
 			table.insert(right_widget, volumectrl.widget)
