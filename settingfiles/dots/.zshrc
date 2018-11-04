@@ -169,7 +169,7 @@ return loadstring(src)()
 
 	if_have nvim && \
 		vimupdate() {
-			nvim --headless +NeoBundleUpdate +q
+			nvim --headless +'call dein#update()' +q
 		}
 
 		nvwrap() {
