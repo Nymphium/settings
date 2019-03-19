@@ -10,16 +10,9 @@ if_have() {
 		export TERM
 	}
 
-	if_have nvim && {
-		MANPAGER="/bin/sh -c \"col -b -x|nvim -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
-		export MANPAGER
-		EDITOR=nvim
-		export EDITOR
-	}
 # }}}
 
 # pipe filter {{{
-	alias -g L='| nvim - -R'
 	alias -g G='| grep -iE --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
 	alias -g ぷり='|lolcat'
 # }}}
@@ -108,13 +101,14 @@ return loadstring(src)()
 				local typ; typ=${1:-article}
 				shift
 
-
 				cat <<-TEX > "${filename}"
 \documentclass[$(echo "${@}" | sed -e 's/\s\+/,/g')]{${typ}}
 \begin{document}
-\maketitle
+% \maketitle
 \end{document}
 				TEX
+
+				touch "${filename}.latexmain"
 			fi
 		}
 
@@ -169,7 +163,7 @@ return loadstring(src)()
 
 	if_have nvim && \
 		vimupdate() {
-			nvim --headless +'call dein#update()' +q
+			nvim --headless +'call dein#update()' +message +q
 		}
 
 		nvwrap() {
@@ -201,17 +195,31 @@ return loadstring(src)()
 		alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
 		alias psg='ps aux | grep -v grep | grep'
 		alias rmf='rm -rf'
-		alias visudo='sudo VISUAL=nvim visudo'
 		alias ibus-reload='ibus-daemon -drx && sleep 0.2 && killall ibus-ui-gtk3'
 		alias C='cat'
 		alias P='ping 8.8.8.8 -c 3'
 		alias S='sudo'
-		alias V='nvim'
-		alias VD='nvim -d'
+		# alias V='nvim'
+		alias SV='sudoedit'
 		alias vscode='code'
 		alias executable='chmod 755'
 		alias xin='xclip -i -selection clipboard'
 		alias xout='xclip -o -selection clipboard'
+
+		if [[ "${NVIM_LISTEN_ADDRESS}" ]]; then
+			EDITOR='nvr -cc sp'
+		else
+			EDITOR='nvim'
+		fi
+
+		export EDITOR
+		V() { eval "${EDITOR}" "${@}" }
+
+		alias -g L='| V -'
+		alias VD='V -d'
+		alias visudo='sudo VISUAL=V visudo'
+		MANPAGER="/bin/sh -c \"col -b -x | V -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
+		export MANPAGER
 
 		weather() {
 			curl -4 "wttr.in/${1}"
@@ -247,7 +255,8 @@ return loadstring(src)()
 }
 
 if_have add_comp_ignores && {
-	add_comp_ignores class
+	add_comp_ignores class \
+		bcf run.xml
 }
 # }}}
 

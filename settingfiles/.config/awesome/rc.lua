@@ -18,6 +18,8 @@ autostart = require("autostart")
 battery = require"battery"
 volumectrl = require"volumectrl"
 
+local xrandr = require("xrandr")
+
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
 
@@ -35,7 +37,7 @@ end
 
 local net_widgets
 xpcall(function()
-	net_widgets =  require("net_widgets")
+  net_widgets =  require("net_widgets")
 end, notify_error)
 
 -- {{{ Error handling
@@ -201,71 +203,79 @@ local screen_init
 
 do
   local wallpapers = {
+    "wallpaper2.png",
+    "wallpaper3.png",
+    "wallpaper4.png",
+    "wallpaper5.png",
+    "wallpaper6.png",
+    "wallpaper7.png",
     "wallpaper1.png",
-    "wallpaper2.png"
   }
 
   local function set_wallpaper(wallpaper_path, screen_or_screenidx)
     if file_readable(wallpaper_path) then
+      -- notify_error(wallpaper_path, {title = tostring(screen_or_screenidx)})
       xpcall(gears.wallpaper.fit, notify_error, wallpaper_path, screen_or_screenidx)
     end
   end
 
   screen_init = function(scr--[[screen object]])
-    local wallpaper = conf_dir .. wallpapers[(scr.index - 1) % 2 + 1]
+    local wallpaper = conf_dir .. wallpapers[(scr.index + tonumber(tostring(scr):match("0x[0-9]+")))^2  % #wallpapers + 1]
     set_wallpaper(wallpaper, scr)
 
     awful.tag({1, 2, 3, 4, 5}, scr, awful.layout.layouts[1])
     scr.mypromptbox = awful.widget.prompt()
     scr.mylayoutbox = awful.widget.layoutbox(scr)
     scr.mylayoutbox:buttons(awful.util.table.join(
-      awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
-      awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-      awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-      awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+    awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
+    awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
+    awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
+    awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
 
     scr.mytaglist = awful.widget.taglist(scr, awful.widget.taglist.filter.all, mytaglist.buttons)
     scr.mytasklist = awful.widget.tasklist(scr, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
     scr.mywibox = awful.wibox({position = "top", screen = scr})
 
-	local right_widget = {
-		layout = wibox.layout.fixed.horizontal
-	}
+    local right_widget = {
+      layout = wibox.layout.fixed.horizontal
+    }
 
-	if scr.index == 1 then
-		table.insert(right_widget, wibox.widget.systray())
-		table.insert(right_widget, wibox.widget.textclock())
+    if scr.index == 1 then
+      table.insert(right_widget, wibox.widget.systray())
+      table.insert(right_widget, wibox.widget.textclock())
 
-		table.insert(right_widget, net_widgets.wireless{
-			   interface="wlp58s0",
-			   onclick = ("%s -e nmtui"):format(terminal)})
+      -- table.insert(right_widget, )
 
-		table.insert(right_widget, net_widgets.indicator({
-												   interfaces={"enp0s31f6"},
-												   onclick = ("%s -e nmtui"):format(terminal)}))
+      table.insert(right_widget, net_widgets.wireless{
+        interface="wlp58s0",
+        onclick = ("%s -e nmtui"):format(terminal)})
 
-		if volumectrl.widget then
-			table.insert(right_widget, volumectrl.widget)
-		end
+        table.insert(right_widget, net_widgets.indicator({
+          interfaces={"enp0s31f6"},
+          onclick = ("%s -e nmtui"):format(terminal)}))
 
-		if battery.widget then
-			table.insert(right_widget, battery.widget)
-		end
-	end
+          if volumectrl.widget then
+            table.insert(right_widget, volumectrl.widget)
+          end
 
-	table.insert(right_widget, scr.mylayoutbox)
+          if battery.widget then
+            table.insert(right_widget, battery.widget)
+          end
+        end
 
-    scr.mywibox:setup {
-      layout = wibox.layout.align.horizontal,
-      { -- left widgets
-        layout = wibox.layout.fixed.horizontal,
-        mylauncher,
-        scr.mytaglist,
-        scr.mypromptbox
-      },
-      scr.mytasklist, -- middle widgets
-      right_widget}
-  end
+        table.insert(right_widget, scr.mylayoutbox)
+
+        scr.mywibox:setup {
+          layout = wibox.layout.align.horizontal,
+          { -- left widgets
+          layout = wibox.layout.fixed.horizontal,
+          mylauncher,
+          scr.mytaglist,
+          scr.mypromptbox
+        },
+        scr.mytasklist, -- middle widgets
+        right_widget}
+      end
 end
 
 awful.screen.connect_for_each_screen(screen_init)
@@ -299,12 +309,36 @@ globalkeys = awful.util.table.join(
 
   -- Standard program
   awful.key({ modkey, "Control" }, "r", awesome.restart),
-  awful.key({ modkey, "Shift"   }, "l", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile.left) end),
-  awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.tile) end),
+  awful.key({ modkey, "Shift"   }, "l", function ()
+    local layout = awful.layout.suit.tile.left
+
+    if awful.layout.get() == layout then
+      awful.client.cycle()
+    else
+      awful.layout.set(layout)
+    end
+
+    awful.client.focus.bydirection("left")
+  end),
+  awful.key({ modkey, "Shift"   }, "h", function ()
+    local layout = awful.layout.suit.tile
+
+    if awful.layout.get() == layout then
+      awful.client.cycle()
+    else
+      awful.layout.set(layout)
+    end
+
+    awful.client.focus.bydirection("right")
+  end),
+  awful.key({ modkey , "Control" }, "l", function() awful.client.cycle() end --[[anti-clockwise]] ),
+  awful.key({ modkey , "Control" }, "h", function() awful.client.cycle(true) end --[[clockwise]] ),
   awful.key({ modkey}, "l", function(c) return myfuncs.halfsize(c, "l") end),
   awful.key({ modkey}, "h", function(c) return myfuncs.halfsize(c, "h") end),
   awful.key({ modkey,       }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
   awful.key({ modkey,       }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
+
+  awful.key({ modkey, }, "w" , xrandr.xrandr),
 
   -- Prompt
   awful.key({ modkey },      "r",   function () awful.screen.focused().mypromptbox:run() end))
@@ -378,13 +412,16 @@ local clientbuttons = awful.util.table.join(
   awful.button({ modkey,  }, 3, awful.mouse.client.resize))
 
 pcall(function()
-	local terminal = require("dropdownterminal")("urxvt")
-	awesome.connect_signal("startup", function() terminal:set() end)
-	awesome.connect_signal("exit", function() if terminal.client then terminal.client:kill() end end)
+  local terminal = require("dropdownterminal")(terminal)
 
-	globalkeys = awful.util.table.join(globalkeys,
-									awful.key({"Mod1", "Shift"}, "j", terminal:view_toggle()),
-									awful.key({"Mod1", "Control"}, "j", function() terminal.show_always = not terminal.show_always end))
+  screen.connect_signal("removed", function()
+    terminal.show_always = false
+    terminal:set()
+  end)
+
+  globalkeys = awful.util.table.join(globalkeys,
+                  awful.key({"Mod1", "Shift"}, "j", terminal:view_toggle()),
+                  awful.key({"Mod1", "Control"}, "j", terminal:show_always_toggle()))
 end)
 
 -- Set keys
@@ -419,7 +456,7 @@ awful.rules.rules = {
       buttons = clientbuttons,
       screen = awful.screen.preferred,
       placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-	  maximized = false,
+    maximized = false,
     },
     callback = awful.rules.rules.callback
   },
@@ -561,13 +598,13 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 xpcall(function()
-	local autostart_ini = conf_dir .. "autostart"
+  local autostart_ini = conf_dir .. "autostart"
 
-	if file_readable(autostart_ini) then
-		awesome.connect_signal("startup", function()
-			autostart(autostart_ini)
-		end)
-	end
+  if file_readable(autostart_ini) then
+    awesome.connect_signal("startup", function()
+      autostart(autostart_ini)
+    end)
+  end
 
 end, notify_error)
 

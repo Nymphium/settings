@@ -23,8 +23,8 @@ zstyle ":vcs_info:*" enable git
 zstyle ":vcs_info:git:*" check-for-changes true
 zstyle ":vcs_info:git:*" stagedstr 'm'
 zstyle ":vcs_info:git:*" unstagedstr 'a'
-zstyle ":vcs_info:*" formats "%u%c${_YELLOW}:${_RED}%b"
-zstyle ":vcs_info:*" actionformats "%F{red}[yabai]"
+zstyle ":vcs_info:git:*" formats "%u%c${_YELLOW}:${_RED}%b"
+zstyle ":vcs_info:git:*" actionformats "%F{red}[yabai]%{$reset_color%}"
 setopt prompt_subst
 
 function git_status() {

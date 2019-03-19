@@ -48,6 +48,7 @@ autoload -U compinit && compinit -u
 # shellcheck disable=1036
 # shellcheck disable=1088
 path=(
+	./node_modules/.bin
 	${HOME}/bin
 	${HOME}/local/bin
 	${HOME}/.local/bin

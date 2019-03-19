@@ -2,7 +2,7 @@ local awful = awful or require("awful")
 local screen = awful.screen
 
 return function(term)
-	return {
+	local t = {
 		cmd = term, client = nil, pid = nil,
 		properties = {
 			fullscreen = true,
@@ -65,7 +65,17 @@ return function(term)
 					self.client.hidden = true
 				end
 			end
+		end,
+		show_always_toggle = function(self)
+			return function()
+				self.show_always = not self.show_always
+			end
 		end
 	}
+
+	awesome.connect_signal("startup", function() t:set() end)
+	awesome.connect_signal("exit", function() if t.client then t.client:kill() end end)
+
+	return t
 end
 

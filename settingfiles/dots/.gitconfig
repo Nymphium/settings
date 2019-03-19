@@ -1,27 +1,50 @@
 [include]
-	path = ~/.gituser
-[color]
-	ui = auto
-[core]
-	editor = nvim
-[diff]
-	external = gitdiff
-[pager]
-	diff =
-[alias]
-	b = branch
-	d = diff
-	df = diff-files -p
-	l = log --graph --name-status --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
-	ln = log --graph --name-status --format=format:'%h - %aD (%ar)%d%n'' %s — %an' --abbrev-commit
-	st = status
-	co = checkout
-	empty = commit --allow-empty --allow-empty-message -m '' --all
-	submp = submodule foreach git pull
-	ls=ls-files
-	lsu = ls-files --others --exclude-standard
-	ignored = ls-files --others -i --exclude-standard
+path = ~/.gituser
 
-[user]
-	email = s1311350@gmail.com
-	name = Kawahara Satoru
+[color]
+ui = auto
+
+[core]
+editor = V
+excludesfile = /home/nymphium/.gitignore
+
+[diff]
+external = gitdiff
+
+[pager]
+diff =
+
+[alias]
+; abbreviate
+b = branch
+d = diff
+st = status
+co = checkout
+newb = checkout -b
+ls=ls-files
+submp = submodule foreach git pull
+
+; log
+l = log --graph --name-status --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+lonly = l master..
+ln = log --graph --name-status --format=format:'%h - %aD (%ar)%d%n'' %s — %an' --abbrev-commit
+
+; diff
+df = diff-files -p
+conflicts = diff --name-only --diff-filter=U
+
+; ls
+lsu = ls-files --others --exclude-standard
+untracked = lsu
+ignored = ls-files --others -i --exclude-standard
+
+; commit
+fixup = commit --amend --no-edit
+empty = commit --allow-empty --allow-empty-message -m '' --all
+
+; checkout
+coo = "!f() { git checkout \"@{-$1}\"; }; f"
+
+; aliases
+aliases = !git --no-pager config --get-regexp alias
+

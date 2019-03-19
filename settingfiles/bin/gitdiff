@@ -1,13 +1,23 @@
-#!/bin/bash
+#!/bin/bash -eux
 
 echo "diff ${2} and ${5}"
 sleep 0.4
 
-if [ "$(command -v nvim)" ]; then
-	open="nvim -d"
-else
-	open="vimdiff"
-fi
+# if [ "$(command -v nvim)" ]; then
+	# open="nvim -d"
+# else
+	# open="vimdiff"
+# fi
+
+# open=V
+
+# if [ "${NVIM_LISTEN_ADDRESS}" ]; then
+	# open='nvr -cc sp'
+# else
+	# open='nvim'
+# fi
+
+open="V -d"
 
 [ "$(file -bi "${2}" | sed -e "s/.*charset=\(.*\)$/\1/")" == binary ] && open=":"
 
