@@ -45,6 +45,15 @@ empty = commit --allow-empty --allow-empty-message -m '' --all
 ; checkout
 coo = "!f() { git checkout \"@{-$1}\"; }; f"
 
+; clone
+chub = "\
+!f() {\
+  repo=$1;\
+  shift;\
+  git clone git@github.com:$repo $@;\
+};\
+f"
+
 ; aliases
 aliases = !git --no-pager config --get-regexp alias
 
