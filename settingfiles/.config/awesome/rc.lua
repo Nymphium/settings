@@ -40,6 +40,20 @@ xpcall(function()
   net_widgets =  require("net_widgets")
 end, notify_error)
 
+local get_tag_clients = function()
+  return awful.screen.focused().selected_tag:clients()
+end
+
+local unmaximize_clients = function(tag_clients)
+    for _, c in pairs(tag_clients) do
+      if not c.hidden and (c.maximized_vertical or c.maximized_horizontal) then
+        c.maximized_vertical = false
+        c.maximized_horizontal = false
+      end
+    end
+end
+
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -335,7 +349,12 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey , "Control" }, "h", function() awful.client.cycle(true) end --[[clockwise]] ),
   awful.key({ modkey}, "l", function(c) return myfuncs.halfsize(c, "l") end),
   awful.key({ modkey}, "h", function(c) return myfuncs.halfsize(c, "h") end),
-  awful.key({ modkey,       }, "s", function () awful.client.swap.byidx(1) awful.layout.set(awful.layout.suit.fair) end),
+  awful.key({ modkey,       }, "s", function ()
+    unmaximize_clients(get_tag_clients())
+
+    awful.client.swap.byidx(1)
+    awful.layout.set(awful.layout.suit.fair)
+  end),
   awful.key({ modkey,       }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
   awful.key({ modkey, }, "w" , xrandr.xrandr),

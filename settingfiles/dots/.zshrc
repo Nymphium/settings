@@ -84,6 +84,7 @@ return loadstring(src)()
 		alias lualatexmk='latexmk -halt-on-error -pdf'
 		alias xelatex='xelatex -halt-on-error'
 		alias luajitlatex='luajittex --fmt=luajitlatex.fmt'
+		alias mozillacurl='curl --user-agent "Mozilla/5.0"'
 
 		touchlatex () {
 			if [ "${1}" = "" ]; then
