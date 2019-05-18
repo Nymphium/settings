@@ -6,11 +6,19 @@ local awful = awful or require'awful'
 local batmax = 0
 local filenametmp = "/sys/class/power_supply/"
 
+local file_prefix = "energy"
+
 for i = 0, 9 do
-	local capacity_full_file = io.open(("%s/BAT%d/energy_full"):format(filenametmp, i))
+	local capacity_full_file = io.open(("%s/BAT%d/%s_full"):format(filenametmp, i, file_prefix))
 
 	if not capacity_full_file then
-		break
+		file_prefix = "charge"
+
+		capacity_full_file = io.open(("%s/BAT%d/charge_full"):format(filenametmp, i))
+
+		if not capacity_full_file then
+			break
+		end
 	end
 
 	local batmaxi = capacity_full_file:read("*a")
@@ -30,7 +38,7 @@ local get_battery = function() -- {{{
 	local batnow =  0
 
 	for i = 0, 9 do
-		local capacity_file = io.open(("%s/BAT%d/energy_now"):format(filenametmp, i))
+		local capacity_file = io.open(("%s/BAT%d/%s_now"):format(filenametmp, i, file_prefix))
 
 		if not capacity_file then
 			break
