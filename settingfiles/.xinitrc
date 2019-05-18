@@ -19,8 +19,14 @@ xset r rate 190 20 s off -b -dpms
 xmodmap $HOME/.xmodmap
 # xbindkeys
 
+xrdb -merge ~/.Xresources
+
+if [[ -e ~/.Xresources.local ]]; then
+	xrdb -merge ~/.Xresources.local
+fi
+
+
 exec xcompmgr &
-exec tilda &
 
 export INIT_AWESOME_LOCK; INIT_AWESOME_LOCK='/tmp/init_awesome.lock'
 touch "${INIT_AWESOME_LOCK}"

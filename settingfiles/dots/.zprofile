@@ -82,3 +82,7 @@ if [[ -d /usr/share/nvm ]]; then
 	source /usr/share/nvm/bash_completion
 	source /usr/share/nvm/install-nvm-exec
 fi
+
+if command -v yarn > /dev/null 2>&1; then
+	path+=(~/'.config/yarn/global/node_modules/.bin')
+fi

@@ -16,9 +16,8 @@ myfuncs = require("myfuncs")
 shortcuts = require("shortcuts")
 autostart = require("autostart")
 battery = require"battery"
-volumectrl = require"volumectrl"
 
-local xrandr = require("xrandr")
+-- local xrandr = require("xrandr")
 
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
@@ -34,11 +33,6 @@ local function notify_error(err, notifyarg)
       },
       notifyarg))
 end
-
-local net_widgets
-xpcall(function()
-  net_widgets =  require("net_widgets")
-end, notify_error)
 
 local get_tag_clients = function()
   return awful.screen.focused().selected_tag:clients()
@@ -258,38 +252,40 @@ do
       table.insert(right_widget, wibox.widget.systray())
       table.insert(right_widget, wibox.widget.textclock())
 
-      -- table.insert(right_widget, )
-
-      table.insert(right_widget, net_widgets.wireless{
-        interface="wlp58s0",
-        onclick = ("%s -e nmtui"):format(terminal)})
+      local has_netwidget, net_widgets = pcall(require, "net_widgets")
+      if has_netwidget then
+        table.insert(right_widget, net_widgets.wireless{
+          interface="wlp58s0",
+          onclick = ("%s -e nmtui"):format(terminal)})
 
         table.insert(right_widget, net_widgets.indicator({
           interfaces={"enp0s31f6"},
           onclick = ("%s -e nmtui"):format(terminal)}))
-
-          if volumectrl.widget then
-            table.insert(right_widget, volumectrl.widget)
-          end
-
-          if battery.widget then
-            table.insert(right_widget, battery.widget)
-          end
-        end
-
-        table.insert(right_widget, scr.mylayoutbox)
-
-        scr.mywibox:setup {
-          layout = wibox.layout.align.horizontal,
-          { -- left widgets
-          layout = wibox.layout.fixed.horizontal,
-          mylauncher,
-          scr.mytaglist,
-          scr.mypromptbox
-        },
-        scr.mytasklist, -- middle widgets
-        right_widget}
       end
+
+      local ok, volumectrl = pcall(require, "volumectrl")
+      if volumectrl.widget then
+        table.insert(right_widget, volumectrl.widget)
+      end
+
+      if battery.widget then
+        table.insert(right_widget, battery.widget)
+      end
+    end
+
+    table.insert(right_widget, scr.mylayoutbox)
+
+    scr.mywibox:setup {
+      layout = wibox.layout.align.horizontal,
+      { -- left widgets
+        layout = wibox.layout.fixed.horizontal,
+        mylauncher,
+        scr.mytaglist,
+        scr.mypromptbox
+      },
+      scr.mytasklist, -- middle widgets
+      right_widget}
+  end
 end
 
 awful.screen.connect_for_each_screen(screen_init)
@@ -383,7 +379,7 @@ globalkeys = awful.util.table.join(
   end),
   awful.key({ modkey,       }, "Return", function () awful.layout.set(awful.layout.suit.floating) end),
 
-  awful.key({ modkey, }, "w" , xrandr.xrandr),
+  -- awful.key({ modkey, }, "w" , xrandr.xrandr),
 
   -- Prompt
   awful.key({ modkey },      "r",   function () awful.screen.focused().mypromptbox:run() end))
