@@ -263,8 +263,10 @@ do
           onclick = ("%s -e nmtui"):format(terminal)}))
       end
 
-      local ok, volumectrl = pcall(require, "volumectrl")
-      if volumectrl.widget then
+      local has_volumectrl, _volumectrl = pcall(require, "volumectrl")
+      if has_volumectrl and _volumectrl.widget then
+        volumectrl = _volumectrl
+
         table.insert(right_widget, volumectrl.widget)
       end
 
