@@ -1,0 +1,60 @@
+[include]
+  path = ~/.gituser
+
+[color]
+  ui = auto
+
+[core]
+  editor = V
+
+[diff]
+  external = gitdiff
+
+[pager]
+  diff =
+
+[alias]
+; abbreviate
+  b = branch
+  d = diff
+  st = status
+  co = checkout
+  newb = checkout -b
+  ls=ls-files
+  submp = submodule foreach git pull
+
+; log
+  l = log --graph --name-status --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(bold white)— %an%C(reset)' --abbrev-commit
+  lonly = l master..
+  ln = log --graph --name-status --format=format:'%h - %aD (%ar)%d%n'' %s — %an' --abbrev-commit
+
+; diff
+  df = diff-files -p
+  conflicts = diff --name-only --diff-filter=U
+  modifieds = diff --name-only
+
+; ls
+  lsu = ls-files --others --exclude-standard
+  untracked = lsu
+  ignored = ls-files --others -i --exclude-standard
+
+; commit
+  fixup = commit --amend --no-edit
+  empty = commit --allow-empty --allow-empty-message -m '' --all
+
+; checkout
+  coo = "!f() { git checkout \"@{$((-$1))}\"; }; f"
+
+; clone
+  chub = "!f() {\
+    repo=$1;\
+    shift;\
+    git clone git@github.com:$repo $@;\
+  };\
+  f";
+
+  localconfig = !git config --local include.path ,gitconfig
+
+; aliases
+  aliases = !git --no-pager config --get-regexp alias
+

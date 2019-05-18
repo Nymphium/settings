@@ -32,6 +32,10 @@ if [[ -d "${ZSH}" ]]; then
 		plugins+=('docker-compose')
 	fi
 
+	if command -v docker-compose > /dev/null 2>&1; then
+		plugins+=('github')
+	fi
+
 	export plugins
 
 	DISABLE_AUTO_TITLE=true
@@ -71,3 +75,10 @@ if [[ "$(command -v luarocks)" ]]; then
 	eval "$(luarocks path --bin)"
 fi
 
+if [[ -d /usr/share/nvm ]]; then
+	source /usr/share/nvm/init-nvm.sh
+	[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.config/nvm"
+	source /usr/share/nvm/nvm.sh
+	source /usr/share/nvm/bash_completion
+	source /usr/share/nvm/install-nvm-exec
+fi

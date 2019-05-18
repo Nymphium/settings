@@ -159,7 +159,6 @@ return loadstring(src)()
 # (Arch) Linux {{{
 	if_have uname && [[ "$(uname -s)"  = "Linux" ]] && {
 	alias pacs='sudo pacman -S --noconfirm'
-	alias yaous='yay -S --noconfirm'
 	alias pkgsearch='yay -Ss'
 
 	if_have nvim && \
@@ -173,7 +172,7 @@ return loadstring(src)()
 
 	renew(){
 		sudo pacman -Sc --noconfirm &&
-		( yay -Syua --devel --noconfirm &&\
+		( yay -Syu --nouseask &&\
 			# sudo pacman-optimize &&\
 			((command -v pacman-optimize >/dev/null 2>&1 && sudo pacman-optimize); (command -v pacman-db-upgrade >/dev/null 2>&1 && sudo pacman-db-upgrade)   )
 			sudo updatedb) &

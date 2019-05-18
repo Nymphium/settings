@@ -315,10 +315,36 @@ globalkeys = awful.util.table.join(
   -- Layout manipulation
   awful.key({ modkey,       }, "Tab",
        function ()
-         awful.client.focus.history.previous()
-         if client.focus then
-           client.focus:raise()
+         local clients = get_tag_clients()
+         local num = #clients
+
+         if num > 1 then
+           for i = num, 1, -1 do
+             if clients[i] == client.focus then
+               client.focus = clients[(num + i - 2) % num + 1]
+               client.focus:raise()
+               return
+             end
+           end
          end
+
+       end),
+
+    awful.key({ modkey, "Shift"}, "Tab",
+       function ()
+         local clients = get_tag_clients()
+         local num = #clients
+
+         if num > 1 then
+           for i = 1, num do
+             if clients[i] == client.focus then
+               client.focus = clients[i % num + 1]
+               client.focus:raise()
+               return
+             end
+           end
+         end
+
        end),
 
   -- Standard program
