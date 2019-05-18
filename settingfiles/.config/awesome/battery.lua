@@ -12,11 +12,15 @@ for i = 0, 9 do
 	local capacity_full_file = io.open(("%s/BAT%d/%s_full"):format(filenametmp, i, file_prefix))
 
 	if not capacity_full_file then
-		file_prefix = "charge"
+		if batmax == 0 then
+			file_prefix = "charge"
 
-		capacity_full_file = io.open(("%s/BAT%d/charge_full"):format(filenametmp, i))
+			capacity_full_file = io.open(("%s/BAT%d/charge_full"):format(filenametmp, i))
 
-		if not capacity_full_file then
+			if not capacity_full_file then
+				break
+			end
+		else
 			break
 		end
 	end
