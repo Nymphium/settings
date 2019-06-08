@@ -25,13 +25,13 @@ local conf_dir = awful.util.get_configuration_dir()
 function notify_error(err, notifyarg)
   notifyarg = notifyarg or {}
   naughty.notify(
-    awful.util.table.join(
-      {
-        preset = naughty.config.presets.critical,
-        title = "Oops, an error happened!",
-        text = tostring(err)
-      },
-      notifyarg))
+      awful.util.table.join(
+          {
+            preset = naughty.config.presets.critical,
+            title = "Oops, an error happened!",
+            text = tostring(err)
+          },
+          notifyarg))
 end
 
 local get_tag_clients = function()
@@ -39,12 +39,12 @@ local get_tag_clients = function()
 end
 
 local unmaximize_clients = function(tag_clients)
-    for _, c in pairs(tag_clients) do
-      if not c.hidden and (c.maximized_vertical or c.maximized_horizontal) then
-        c.maximized_vertical = false
-        c.maximized_horizontal = false
-      end
+  for _, c in pairs(tag_clients) do
+    if not c.hidden and (c.maximized_vertical or c.maximized_horizontal) then
+      c.maximized_vertical = false
+      c.maximized_horizontal = false
     end
+  end
 end
 
 
@@ -311,42 +311,54 @@ root.buttons(awful.util.table.join(
   awful.button({ }, 5, awful.tag.viewprev)))
 -- }}}
 
+local filter = function(t, p)
+  local t_ = {}
+
+  for i = 1, #t do
+    if p(t[i]) then
+      table.insert(t_, t[i])
+    end
+  end
+
+  return t_
+end
+
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
   -- Layout manipulation
   awful.key({ modkey,       }, "Tab",
-       function ()
-         local clients = get_tag_clients()
-         local num = #clients
+     function()
+       local clients = filter(get_tag_clients(),
+                              function(e) return e ~= dropdownterminal.client end)
+       local num = #clients
 
-         if num > 1 then
-           for i = num, 1, -1 do
-             if clients[i] == client.focus then
-               client.focus = clients[(num + i - 2) % num + 1]
-               client.focus:raise()
-               return
-             end
+       if num > 1 then
+         for i = num, 1, -1 do
+           if clients[i] == client.focus then
+             client.focus = clients[(num + i - 2) % num + 1]
+             client.focus:raise()
+             return
            end
          end
+       end
+     end),
 
-       end),
+  awful.key({ modkey, "Shift"}, "Tab",
+     function()
+       local clients = filter(get_tag_clients(),
+                              function(e) return e ~= dropdownterminal.client end)
+       local num = #clients
 
-    awful.key({ modkey, "Shift"}, "Tab",
-       function ()
-         local clients = get_tag_clients()
-         local num = #clients
-
-         if num > 1 then
-           for i = 1, num do
-             if clients[i] == client.focus then
-               client.focus = clients[i % num + 1]
-               client.focus:raise()
-               return
-             end
+       if num > 1 then
+         for i = 1, num do
+           if clients[i] == client.focus then
+             client.focus = clients[i % num + 1]
+             client.focus:raise()
+             return
            end
          end
-
-       end),
+       end
+     end),
 
   -- Standard program
   awful.key({ modkey, "Control" }, "r", awesome.restart),
@@ -458,11 +470,11 @@ local clientbuttons = awful.util.table.join(
   awful.button({ modkey,  }, 3, awful.mouse.client.resize))
 
 xpcall(function()
-  local terminal = require("dropdownterminal")(terminal)
+  dropdownterminal = require("dropdownterminal")(terminal)
 
   globalkeys = awful.util.table.join(globalkeys,
-                  awful.key({"Mod1", "Shift"}, "j", function() return terminal:view_toggle() end),
-                  awful.key({"Mod1", "Control"}, "j", function() return terminal:show_always_toggle() end))
+                  awful.key({"Mod1", "Shift"}, "j", function() return dropdownterminal:view_toggle() end),
+                  awful.key({"Mod1", "Control"}, "j", function() return dropdownterminal:show_always_toggle() end))
 end, notify_error)
 
 -- Set keys
@@ -646,6 +658,5 @@ xpcall(function()
       autostart(autostart_ini)
     end)
   end
-
 end, notify_error)
 

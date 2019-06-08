@@ -9,8 +9,17 @@ local await = function(f)
 	return perform(Await(f))
 end
 
-local imperative = handlers{
-	function(v) return v end,
+local imperative_k = function(body, k)
+	return handlers{
+		k,
+		[Await] = function(k, f)
+			return f(k)
+		end
+	}(body)
+end
+
+local imperative = handlers {
+	function(x) return x end,
 	[Await] = function(k, f)
 		return f(k)
 	end
@@ -23,23 +32,20 @@ return function(term)
 			fullscreen = true,
 			hidden = true,
 			ontop = true,
+			ignore_toggle = true,
 			skip_taskbar = true
 		},
 		show_always = false,
 
 		init = function(self, k)
-			return imperative(function()
+			return imperative_k(function()
 				local client = await(function(k)
 					return awful.spawn(self.cmd, self.properties, k)
 				end)
 
 				self.pid = client.pid
 				self.client = client
-
-				if k then
-					return k()
-				end
-			end)
+			end, k)
 		end,
 		view_toggle = function(self)
 			return imperative(function()

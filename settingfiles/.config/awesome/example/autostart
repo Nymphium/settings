@@ -1,7 +1,4 @@
-o pkill ibus-ui-gtk3
 o nm-applet &
 o dropbox &
 o keepass &
-o xmodmap $HOME/.xmodmap
-o xset r rate 190 20 s off -b -dpms
 
