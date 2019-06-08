@@ -1,6 +1,21 @@
 local awful = awful or require("awful")
 local screen = awful.screen
 
+local eff = require('eff')
+local perform, handlers, inst = eff.perform, eff.handlers, eff.inst
+
+local Await = inst()
+local await = function(f)
+	return perform(Await(f))
+end
+
+local imperative = handlers{
+	function(v) return v end,
+	[Await] = function(k, f)
+		return f(k)
+	end
+}
+
 return function(term)
 	local t = {
 		cmd = term, client = nil, pid = nil,
@@ -12,30 +27,26 @@ return function(term)
 		},
 		show_always = false,
 
-		-- methods
-		get = function(self)
-			for _, c in pairs(client.get()) do
-				if c.pid == self.pid then
-					return c
+		init = function(self, k)
+			return imperative(function()
+				local client = await(function(k)
+					return awful.spawn(self.cmd, self.properties, k)
+				end)
+
+				self.pid = client.pid
+				self.client = client
+
+				if k then
+					return k()
 				end
-			end
-		end,
-		set = function(self)
-			local c = self:get()
-
-			if not c then
-				self.pid = awful.spawn(self.cmd, self.properties)
-
-				c = self:get()
-			end
-
-			self.client = c
+			end)
 		end,
 		view_toggle = function(self)
-			return function()
+			return imperative(function()
 				if not (self.client and self.client.valid) then
-					self:set()
-					return
+					await(function(k)
+						return self:init(k)
+					end)
 				end
 
 				local current_screen = screen.focused()
@@ -64,16 +75,15 @@ return function(term)
 				else
 					self.client.hidden = true
 				end
-			end
+			end)
 		end,
+
 		show_always_toggle = function(self)
-			return function()
-				self.show_always = not self.show_always
-			end
+			self.show_always = not self.show_always
 		end
 	}
 
-	awesome.connect_signal("startup", function() t:set() end)
+	awesome.connect_signal("startup", function() t:init() end)
 	awesome.connect_signal("exit", function() if t.client then t.client:kill() end end)
 
 	return t

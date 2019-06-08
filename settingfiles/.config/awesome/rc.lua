@@ -22,7 +22,7 @@ battery = require"battery"
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
 
-local function notify_error(err, notifyarg)
+function notify_error(err, notifyarg)
   notifyarg = notifyarg or {}
   naughty.notify(
     awful.util.table.join(
@@ -211,13 +211,15 @@ local screen_init
 
 do
   local wallpapers = {
+    "wallpaper1.png",
     "wallpaper2.png",
     "wallpaper3.png",
     "wallpaper4.png",
     "wallpaper5.png",
     "wallpaper6.png",
     "wallpaper7.png",
-    "wallpaper1.png",
+    "wallpaper8.png",
+    "wallpaper9.png",
   }
 
   local function set_wallpaper(wallpaper_path, screen_or_screenidx)
@@ -253,9 +255,10 @@ do
       table.insert(right_widget, wibox.widget.textclock())
 
       local has_netwidget, net_widgets = pcall(require, "net_widgets")
-      if has_netwidget then
+      local has_netdev, device = pcall(require, 'net_device')
+      if has_netdev and has_netwidget then
         table.insert(right_widget, net_widgets.wireless{
-          interface="wlp58s0",
+          interface = device,
           onclick = ("%s -e nmtui"):format(terminal)})
 
         table.insert(right_widget, net_widgets.indicator({
@@ -454,18 +457,13 @@ local clientbuttons = awful.util.table.join(
   awful.button({ "Shift" }, 1,  awful.mouse.client.move),
   awful.button({ modkey,  }, 3, awful.mouse.client.resize))
 
-pcall(function()
+xpcall(function()
   local terminal = require("dropdownterminal")(terminal)
 
-  screen.connect_signal("removed", function()
-    terminal.show_always = false
-    terminal:set()
-  end)
-
   globalkeys = awful.util.table.join(globalkeys,
-                  awful.key({"Mod1", "Shift"}, "j", terminal:view_toggle()),
-                  awful.key({"Mod1", "Control"}, "j", terminal:show_always_toggle()))
-end)
+                  awful.key({"Mod1", "Shift"}, "j", function() return terminal:view_toggle() end),
+                  awful.key({"Mod1", "Control"}, "j", function() return terminal:show_always_toggle() end))
+end, notify_error)
 
 -- Set keys
 if file_readable(conf_dir .. 'shortcuts') then

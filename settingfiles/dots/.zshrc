@@ -158,7 +158,7 @@ return loadstring(src)()
 
 # (Arch) Linux {{{
 	if_have uname && [[ "$(uname -s)"  = "Linux" ]] && {
-	alias pacs='sudo pacman -S --noconfirm'
+	alias pacs='yay --nouseask'
 	alias pkgsearch='yay -Ss'
 
 	if_have nvim && \

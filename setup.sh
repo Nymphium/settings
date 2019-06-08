@@ -40,9 +40,11 @@ for f in ${THDIR}/dots/.*; () {
 
 # .config
 ## fontconfig
+THCONFIG="${THDIR}/.config"
+
 () {
 	local dst; dst="${TARGET}/.config/fontconfig"
-	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.config/" && ln -s "${THDIR}/.config/fontconfig" "${dst}"
+	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.config/" && ln -s "${THCONFIG}/fontconfig" "${dst}"
 } || :
 
 ## awesome
@@ -55,6 +57,17 @@ for f in ${THDIR}/dots/.*; () {
 		[[ ! -a "${dst}" ]] && ln -s "${file}"  "${dst}"
 	}
 } || :
+
+## git
+() {
+	mkdir -p "${TARGET}/.config/git/"
+	for file in "${THCONFIG}/git"/*; (){
+		basefile="$(basename ${file})"
+		local dst; dst="${TARGET}/.config/git/${basefile}"
+		[[ ! -a "${dst}" ]] && ln -s "${file}"  "${dst}"
+	}
+} || :
+
 
 # .xinitrc
 ## it is COPIED
