@@ -39,7 +39,8 @@
   ignored = ls-files --others -i --exclude-standard
 
 ; commit
-  fixup = commit --amend --no-edit
+  fixup = commit --fixup=HEAD
+  fixup-nolabel = commit --amend --no-edit
   empty = commit --allow-empty --allow-empty-message -m '' --all
 
 ; checkout

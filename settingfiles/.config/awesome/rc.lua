@@ -230,7 +230,7 @@ do
   end
 
   screen_init = function(scr--[[screen object]])
-    local wallpaper = conf_dir .. wallpapers[(scr.index + tonumber(tostring(scr):match("0x[0-9]+")))^2  % #wallpapers + 1]
+    local wallpaper = conf_dir .. wallpapers[scr.index + tonumber(tostring(scr):match("0x[0-9]+"))  % #wallpapers]
     set_wallpaper(wallpaper, scr)
 
     awful.tag({1, 2, 3, 4, 5}, scr, awful.layout.layouts[1])
@@ -329,7 +329,13 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey,       }, "Tab",
      function()
        local clients = filter(get_tag_clients(),
-                              function(e) return e ~= dropdownterminal.client end)
+                              function(e)
+                                if dropdownterminal ~= nil then
+                                  return e ~= dropdownterminal.client
+                                else
+                                  return true
+                                end
+                              end)
        local num = #clients
 
        if num > 1 then
@@ -346,7 +352,13 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey, "Shift"}, "Tab",
      function()
        local clients = filter(get_tag_clients(),
-                              function(e) return e ~= dropdownterminal.client end)
+                              function(e)
+                                if dropdownterminal ~= nil then
+                                  return e ~= dropdownterminal.client
+                                else
+                                  return true
+                                end
+                              end)
        local num = #clients
 
        if num > 1 then

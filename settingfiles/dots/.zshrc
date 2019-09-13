@@ -308,5 +308,9 @@ bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}}
 
+if_have direnv && eval "$(direnv hook zsh)"
+
 unset -f if_have
 
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

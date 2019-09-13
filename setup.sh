@@ -51,7 +51,7 @@ THCONFIG="${THDIR}/.config"
 () {
 	mkdir -p "${TARGET}/.config/awesome/"
 	local THDIR2; THDIR2="${THDIR}/.config/awesome"
-	for file in "${THDIR2}"/*.lua .luacheckrc; (){
+	for file in "${THDIR2}"/*.lua "${THDIR2}"/.luacheckrc; (){
 		basefile="$(basename ${file})"
 		local dst; dst="${TARGET}/.config/awesome/${basefile}"
 		[[ ! -a "${dst}" ]] && ln -s "${file}"  "${dst}"

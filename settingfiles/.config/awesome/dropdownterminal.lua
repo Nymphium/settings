@@ -9,7 +9,7 @@ local await = function(f)
 	return perform(Await(f))
 end
 
-local imperative_k = function(body, k)
+local do_await = function(body, k)
 	return handlers{
 		k,
 		[Await] = function(k, f)
@@ -38,7 +38,7 @@ return function(term)
 		show_always = false,
 
 		init = function(self, k)
-			return imperative_k(function()
+			return do_await(function()
 				local client = await(function(k)
 					return awful.spawn(self.cmd, self.properties, k)
 				end)
