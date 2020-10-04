@@ -207,10 +207,12 @@ return loadstring(src)()
 		alias xout='xclip -o -selection clipboard'
 
 		if [[ "${NVIM_LISTEN_ADDRESS}" ]]; then
-			EDITOR='nvr -cc sp'
+			EDITOR='nvr -s -cc sp'
 		else
 			EDITOR='nvim'
 		fi
+		# EDITOR='nvr -s'
+		# alias V='nvr -s'
 
 		export EDITOR
 		V() { eval "${EDITOR}" "${@}" }

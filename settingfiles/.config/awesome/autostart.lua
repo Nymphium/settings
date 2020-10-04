@@ -53,7 +53,8 @@ function autostart.read(filepath)
 end
 
 local function spawn_oneshot(cmd)
-	awful.spawn.easy_async_with_shell(([=[[ ! $(pgrep %s) ] && %s]=]):format(cmd, cmd), function() end)
+	local cmd_noarg = cmd:match("^(%S+)")
+	awful.spawn.easy_async_with_shell(([=[[ ! $(pgrep %s) ] && %s]=]):format(cmd_noarg, cmd), function() end)
 end
 
 setmetatable(autostart, {

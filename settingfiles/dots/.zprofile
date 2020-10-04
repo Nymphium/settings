@@ -36,6 +36,10 @@ if [[ -d "${ZSH}" ]]; then
 		plugins+=('github')
 	fi
 
+	if command -v yarn > /dev/null 2>&1; then
+		plugins+=('yarn')
+	fi
+
 	export plugins
 
 	DISABLE_AUTO_TITLE=true
@@ -53,6 +57,7 @@ autoload -U compinit && compinit -u
 # shellcheck disable=1088
 path=(
 	./node_modules/.bin
+	${HOME}/node_modules/.bin
 	${HOME}/bin
 	${HOME}/local/bin
 	${HOME}/.local/bin
@@ -86,3 +91,7 @@ fi
 if command -v dotnet > /dev/null 2>&1; then
 	path+=(~/'.dotnet/tools')
 fi
+
+# if command -v nix > /dev/null 2>&1; then
+	# export NIX_PATH=$HOME/.nix-defexpr/channels
+# fi
