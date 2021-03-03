@@ -13,7 +13,7 @@ if_have() {
 # }}}
 
 # pipe filter {{{
-	alias -g G='| grep -iE --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
+	# alias -g G='| grep -iE --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
 	alias -g ぷり='|lolcat'
 # }}}
 
@@ -52,10 +52,12 @@ return loadstring(src)()
 
 		alias luaco='luac -o /dev/null -l -l'
 		alias luacl='luac -l -l'
+		if_have luarocks && eval "$(luarocks path --bin)"
 	# }}}
 
 	# ruby {{{
 		alias irb='pry'
+		if_have ruby && path+=$(ruby -e 'print Gem.user_dir')/bin
 	# }}}
 
 	# racket {{{
@@ -64,15 +66,32 @@ return loadstring(src)()
 
 	# ocaml {{{
 		if_have opam && {
-			eval $(opam config env)
+	source ~/.opam/opam-init/init.zsh 1>&2 /dev/null
+	eval "$(opam config env)"
+
 		}
 	# }}}
 
 	# java {{{
 		if_have java && {
-			export JAVA_HOME; JAVA_HOME=/usr/lib/jvm/default
+			JAVA_HOME=${JAVA_HOME:-/opt/java}; export JAVA_HOME
 		}
 	# }}}
+
+	# js {{{
+		[[ -d /usr/share/nvm ]] && source /usr/share/nvm/init-nvm.sh
+
+		if_have node && {
+			path+=(./node_modules/.bin);
+			path+=(${HOME}/node_modules/.bin)
+		}
+
+		if_have yarn && path+=(~/'.config/yarn/global/node_modules/.bin')
+	# }}}
+
+	# dotnet {{{
+		if_have dotnet && path+=(~/'.dotnet/tools')
+	#
 
 	# haskell {{{
 		alias rh='runhaskell'
@@ -207,10 +226,12 @@ return loadstring(src)()
 		alias xout='xclip -o -selection clipboard'
 
 		if [[ "${NVIM_LISTEN_ADDRESS}" ]]; then
-			EDITOR='nvr -cc sp'
+			EDITOR='nvr -s -cc sp'
 		else
 			EDITOR='nvim'
 		fi
+		# EDITOR='nvr -s'
+		# alias V='nvr -s'
 
 		export EDITOR
 		V() { eval "${EDITOR}" "${@}" }
@@ -243,6 +264,7 @@ return loadstring(src)()
 	# }}}
 	}
 # }}}
+### }}}
 
 # load personal preferences {{{
 () {
@@ -261,25 +283,6 @@ if_have add_comp_ignores && {
 # }}}
 
 # interactive shell settings {{{
-zstyle ':completion:*' list-colors "${LS_COLORS}"
-zstyle ':completion::complete:*' use-cache true
-zstyle ':completion:*:default' menu select=1
-
-setopt prompt_subst
-setopt magic_equal_subst
-setopt hist_ignore_all_dups
-setopt hist_verify
-setopt hist_expand
-setopt hist_ignore_space
-setopt no_hup
-setopt numeric_glob_sort
-setopt auto_param_keys
-
-autoload -Uz compinit promptinit
-autoload -Uz promptinit
-# autoload -Uz add-zsh-hook
-compinit -u -C
-
 # no flow control
 stty -ixon
 
@@ -310,7 +313,8 @@ bindkey -r '^[l'
 
 if_have direnv && eval "$(direnv hook zsh)"
 
+
+if [ -e /home/nymphium/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nymphium/.nix-profile/etc/profile.d/nix.sh; fi
+
 unset -f if_have
 
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

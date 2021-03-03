@@ -1,23 +1,27 @@
 -- Standard awesome library
 gears = require("gears")
+local gears = gears
 awful = require("awful")
-awful.rules = require("awful.rules")
+local awful = awful
+rules = require("awful.rules")
+local rules = rules
 require("awful.autofocus")
--- Widget and layout library
 wibox = require("wibox")
--- Theme handling library
+local wibox = wibox
 beautiful = require("beautiful")
--- Notification library
+local beautiful = beautiful
 naughty = require("naughty")
--- local menubar = require("menubar")
--- local hotkeys_popup = require("awful.hotkeys_popup").widget
--- myfunc
+local naughty = naughty
 myfuncs = require("myfuncs")
-shortcuts = require("shortcuts")
-autostart = require("autostart")
-battery = require"battery"
+local myfuncs = myfuncs
+local shortcuts = require("shortcuts")
+local autostart = require("autostart")
+local battery = require"battery"
+cairo = require('lgi').cairo
+local cairo = cairo
 
--- local xrandr = require("xrandr")
+local client = client
+local screen = screen
 
 local file_readable = awful.util.file_readable
 local conf_dir = awful.util.get_configuration_dir()
@@ -46,7 +50,6 @@ local unmaximize_clients = function(tag_clients)
     end
   end
 end
-
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -90,7 +93,7 @@ naughty.config.defaults.timeout = 5
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "urxvt"
+local terminal = "urxvtc"
 -- local editor = os.getenv("EDITOR") or "vim"
 -- local editor_cmd = terminal .. " -e " .. editor
 
@@ -100,6 +103,19 @@ local terminal = "urxvt"
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+
+local dropdownterminal
+
+xpcall(function()
+  local ddt = require("dropdownterminal")
+  local term = ddt(terminal)
+  dropdownterminal = term
+
+  globalkeys = globalkeys or {}
+  globalkeys = awful.util.table.join(globalkeys,
+                  awful.key({"Mod1", "Shift"}, "j", function() return term:view_toggle() end),
+                  awful.key({"Mod1", "Control"}, "j", function() return term:show_always_toggle() end))
+end, notify_error)
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts = {
@@ -222,19 +238,28 @@ do
     "wallpaper9.png",
   }
 
-  local function set_wallpaper(wallpaper_path, screen_or_screenidx)
-    if file_readable(wallpaper_path) then
-      -- notify_error(wallpaper_path, {title = tostring(screen_or_screenidx)})
-      xpcall(gears.wallpaper.fit, notify_error, wallpaper_path, screen_or_screenidx)
+
+
+  local function set_wallpaper(scr, wallpaper)
+    if file_readable(wallpaper) then
+      xpcall(function()
+        gears.wallpaper.maximized(wallpaper, scr)
+      end, notify_error)
     end
   end
 
+  -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+  screen.connect_signal("property::geometry", function(s)
+    local wallpaper = conf_dir .. wallpapers[(tonumber(tostring(s):match("0x[0-9]+")) % #wallpapers) + 1]
+    set_wallpaper(s, wallpaper)
+  end)
+
   screen_init = function(scr--[[screen object]])
-    local wallpaper = conf_dir .. wallpapers[scr.index + tonumber(tostring(scr):match("0x[0-9]+"))  % #wallpapers]
-    set_wallpaper(wallpaper, scr)
+    local wallpaper = conf_dir .. wallpapers[(tonumber(tostring(scr):match("0x[0-9]+")) % #wallpapers) + 1]
+    set_wallpaper(scr, wallpaper)
 
     awful.tag({1, 2, 3, 4, 5}, scr, awful.layout.layouts[1])
-    scr.mypromptbox = awful.widget.prompt()
+    scr.mypromptbox = awful.widget.prompt({with_shell = true})
     scr.mylayoutbox = awful.widget.layoutbox(scr)
     scr.mylayoutbox:buttons(awful.util.table.join(
     awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
@@ -244,27 +269,15 @@ do
 
     scr.mytaglist = awful.widget.taglist(scr, awful.widget.taglist.filter.all, mytaglist.buttons)
     scr.mytasklist = awful.widget.tasklist(scr, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
-    scr.mywibox = awful.wibox({position = "top", screen = scr})
+    scr.mywibox = awful.wibar({position = "top", screen = scr})
 
     local right_widget = {
       layout = wibox.layout.fixed.horizontal
     }
 
-    if scr.index == 1 then
+    if scr == screen.primary then
       table.insert(right_widget, wibox.widget.systray())
       table.insert(right_widget, wibox.widget.textclock())
-
-      local has_netwidget, net_widgets = pcall(require, "net_widgets")
-      local has_netdev, device = pcall(require, 'net_device')
-      if has_netdev and has_netwidget then
-        table.insert(right_widget, net_widgets.wireless{
-          interface = device,
-          onclick = ("%s -e nmtui"):format(terminal)})
-
-        table.insert(right_widget, net_widgets.indicator({
-          interfaces={"enp0s31f6"},
-          onclick = ("%s -e nmtui"):format(terminal)}))
-      end
 
       local has_volumectrl, _volumectrl = pcall(require, "volumectrl")
       if has_volumectrl and _volumectrl.widget then
@@ -323,54 +336,296 @@ local filter = function(t, p)
   return t_
 end
 
+local filter_ddt = function(clients)
+  if not dropdownterminal then return clients
+  else
+    return filter(clients,
+                  function(e)
+                    return e ~= dropdownterminal.client
+                  end)
+  end
+end
+
+local toggleclient do --{{{
+  local global_popup
+  local new_widget = require('preview_widget')
+  toggleclient = function()
+    if global_popup then
+      global_popup.visible = false
+      global_popup = nil
+
+      return
+    end
+
+    local clients = filter_ddt(get_tag_clients())
+    local num_of_clients = #clients
+    local columns = num_of_clients <= 5 and num_of_clients or 5
+    local multipl = 1 / ((num_of_clients + 2) / num_of_clients)
+
+    local wiboxes = {
+      layout = wibox.layout.grid,
+      homogeneous = true,
+      spacing = 1,
+      orientation = 'vertical',
+      forced_num_cols = columns
+    }
+
+    local on_destroy = function()
+      for i = 1, num_of_clients do
+        wiboxes[i].preview._private.srf[1]:finish()
+      end
+    end
+
+    if num_of_clients == 0 then
+      if global_popup then
+        global_popup.visible = false
+        on_destroy()
+        global_popup = nil
+      end
+
+      return
+    end
+
+    local font do
+      local font_orig = beautiful.font:match('^(.*)( %d+)?$')
+      local font_size = 14
+      font = ('%s %d'):format(font_orig, font_size)
+    end
+
+    local current_screen = awful.screen.focused()
+
+    local size_base = current_screen.geometry.width / 16 / (columns * 1.3) * multipl
+    local grid_width = size_base * 16
+    local grid_height = size_base * 9
+
+    for _, c in ipairs(clients) do
+      local box = wibox.widget {
+        {
+          id = "title",
+          {
+            text = c.class,
+            font = font,
+            align = 'center',
+            forced_width = grid_width,
+            widget = wibox.widget.textbox,
+          },
+          fg = 'gray',
+          widget = wibox.container.background
+        },
+        {
+          id = "preview",
+          widget = new_widget,
+          client = c,
+          forced_height = grid_height,
+          forced_width = grid_width
+        },
+        client = c,
+        layout = wibox.layout.align.vertical,
+        widget = wibox.container.background,
+      }
+
+      table.insert(wiboxes, box)
+    end
+
+    local popup = awful.popup {
+      widget = {
+        wiboxes,
+        widget  = wibox.container.margin
+      },
+      screen = current_screen,
+      placement = awful.placement.centered,
+      hide_on_right_click = true,
+      shape = gears.shape.rounded_rect,
+      opacity = 0.95,
+      ontop = true,
+      on_destroy = on_destroy
+    }
+
+    if global_popup then
+      global_popup.visible = false
+      global_popup = nil
+    end
+
+    global_popup = popup
+
+    for i = 1, num_of_clients do
+      local c = wiboxes[i].client
+
+      wiboxes[i]:connect_signal("button::press", function()
+        client.focus = c
+        client.focus:raise()
+        global_popup = nil
+        popup.visible = false
+        on_destroy()
+      end)
+
+      local timer; timer = gears.timer {
+        timeout = 0.05,
+        callback = function()
+          local popuped = not not global_popup
+
+          if popuped then
+            wiboxes[i].preview:emit_signal("widget::redraw_needed")
+          else
+            timer:stop()
+          end
+        end
+      }
+
+      timer:start()
+    end
+  end
+end
+--}}}
+
+local mouse_client_rotate = function(_)
+  return function(is_backward)
+    local screen_index_under_mouse = mouse.screen.index
+    local screen_index_focused = client.focus and client.focus.screen.index or nil
+    local num_of_screens = screen:count()
+
+    if screen_index_focused and screen_index_under_mouse ~= screen_index_focused then
+      client.focus = mouse.current_client
+      return
+    end
+
+    local next_idx = is_backward and
+        (screen_index_under_mouse ~= 1 and (screen_index_under_mouse - 1) or num_of_screens)
+      or
+        (screen_index_under_mouse ~= num_of_screens and (screen_index_under_mouse + 1) or 1)
+
+    local scr_geom = screen[next_idx].geometry
+    local mouse_geom = {
+      x = scr_geom.x + scr_geom.width / 2,
+      y = scr_geom.y + scr_geom.height / 2
+    }
+
+    mouse.coords(mouse_geom)
+  end
+end
+
 -- {{{ Key bindings
-globalkeys = awful.util.table.join(
+globalkeys = awful.util.table.join(globalkeys or {},
+  awful.key({modkey}, "m", mouse_client_rotate(false)),
+  awful.key({modkey, "Shift"}, "m", mouse_client_rotate(true)),
+
   -- Layout manipulation
   awful.key({ modkey,       }, "Tab",
-     function()
-       local clients = filter(get_tag_clients(),
-                              function(e)
-                                if dropdownterminal ~= nil then
-                                  return e ~= dropdownterminal.client
-                                else
-                                  return true
-                                end
-                              end)
-       local num = #clients
+    function()
+      local clients = filter_ddt(get_tag_clients())
+      local num = #clients
 
-       if num > 1 then
-         for i = num, 1, -1 do
-           if clients[i] == client.focus then
-             client.focus = clients[(num + i - 2) % num + 1]
-             client.focus:raise()
-             return
-           end
-         end
-       end
-     end),
+      if dropdownterminal and client.focus == dropdownterminal.client then
+        dropdownterminal:view_toggle()
+        return
+      elseif num > 1 then
+        local theclient
+
+        if not client.focus then
+          theclient = clients[1]
+        else
+          for i = num, 1, -1 do
+            if clients[i] == client.focus then
+              theclient = clients[(num + i - 2) % num + 1]
+              break
+            end
+          end
+        end
+
+        client.focus = theclient
+        theclient.first_tag:view_only()
+        theclient:raise()
+      end
+    end),
+
+  awful.key({ modkey }, 't', toggleclient),
 
   awful.key({ modkey, "Shift"}, "Tab",
-     function()
-       local clients = filter(get_tag_clients(),
-                              function(e)
-                                if dropdownterminal ~= nil then
-                                  return e ~= dropdownterminal.client
-                                else
-                                  return true
-                                end
-                              end)
-       local num = #clients
+    function()
+      local clients = filter_ddt(get_tag_clients())
+      local num = #clients
 
-       if num > 1 then
-         for i = 1, num do
-           if clients[i] == client.focus then
-             client.focus = clients[i % num + 1]
-             client.focus:raise()
-             return
-           end
-         end
-       end
-     end),
+      if dropdownterminal and client.focus == dropdownterminal.client then
+        dropdownterminal:view_toggle()
+      end
+
+      if num > 1 then
+        local theclient
+
+        if not client.focus then
+          theclient = clients[1]
+        else
+          for i = 1, num do
+            if clients[i] == client.focus then
+              theclient = clients[i % num + 1]
+              break
+            end
+          end
+        end
+
+        client.focus = theclient
+        theclient.first_tag:view_only()
+        theclient:raise()
+      end
+    end),
+
+  awful.key({ modkey, "Control"}, "Tab",
+    function()
+      local clients = filter_ddt(client.get())
+      local num = #clients
+
+      if dropdownterminal and client.focus == dropdownterminal.client then
+        dropdownterminal:view_toggle()
+      end
+
+      if num > 1 then
+        local theclient
+
+        if not client.focus then
+          theclient = clients[1]
+        else
+          for i = num, 1, -1 do
+            if clients[i] == client.focus then
+              theclient = clients[(num + i - 2) % num + 1]
+              break
+            end
+          end
+        end
+
+        client.focus = theclient
+        theclient.first_tag:view_only()
+        theclient:raise()
+      end
+    end),
+
+  awful.key({ modkey, "Shift", "Control"}, "Tab",
+    function()
+      local clients = filter_ddt(client.get())
+      local num = #clients
+
+      if dropdownterminal and client.focus == dropdownterminal.client then
+        dropdownterminal:view_toggle()
+      end
+
+      if num > 1 then
+        local theclient
+
+        if not client.focus then
+          theclient = clients[1]
+        else
+          for i = 1, num do
+            if clients[i] == client.focus then
+              theclient = clients[i % num + 1]
+              break
+            end
+          end
+        end
+
+        client.focus = theclient
+        theclient.first_tag:view_only()
+        theclient:raise()
+      end
+    end),
 
   -- Standard program
   awful.key({ modkey, "Control" }, "r", awesome.restart),
@@ -417,7 +672,7 @@ local clientkeys = awful.util.table.join(
   awful.key({ modkey,       }, "f",    function (c) myfuncs.toggle(c, "f")  end),
   awful.key({ "Mod1"      }, "q",    function (c) c:kill()             end),
   awful.key({ modkey,       }, "k", function (c) if not c.fullscreen then myfuncs.toggle(c, "hv") end end),
-  awful.key({modkey, "Mod1"}, "l", function(c) return myfuncs.setwindowsize(c, "l") end, {description = "set client to be half of the screen", group = "client"}),
+  awful.key({modkey, "Mod1"}, "l", function(c) return myfuncs.setwindowsize(c, "l") end),
   awful.key({modkey, "Mod1"}, "k", function(c) return myfuncs.setwindowsize(c, "k") end),
   awful.key({modkey, "Mod1"}, "j", function(c) return myfuncs.setwindowsize(c, "j") end),
   awful.key({modkey, "Mod1"}, "h", function(c) return myfuncs.setwindowsize(c, "h") end),
@@ -425,7 +680,7 @@ local clientkeys = awful.util.table.join(
   awful.key({modkey, "Mod1", "Shift"}, "k", function(c) return myfuncs.setwindowsize(c, "k", true) end),
   awful.key({modkey, "Mod1", "Shift"}, "j", function(c) return myfuncs.setwindowsize(c, "j", true) end),
   awful.key({modkey, "Mod1", "Shift"}, "h", function(c) return myfuncs.setwindowsize(c, "h", true) end),
-  awful.key({modkey}, "e", function(c) return awful.titlebar.toggle(c) end))
+  awful.key({modkey}, "e", awful.titlebar.toggle))
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
@@ -435,8 +690,8 @@ for i = 1, 9 do
     -- View tag only.
     awful.key({ modkey }, "#" .. i + 9,
           function ()
-            local screen = awful.screen.focused()
-            local tag = screen.tags[i]
+            local scr = awful.screen.focused()
+            local tag = scr.tags[i]
             if tag then
                tag:view_only()
             end
@@ -445,8 +700,8 @@ for i = 1, 9 do
     -- Toggle tag display.
     awful.key({ modkey, "Control" }, "#" .. i + 9,
           function ()
-            local screen = awful.screen.focused()
-            local tag = screen.tags[i]
+            local scr = awful.screen.focused()
+            local tag = scr.tags[i]
             if tag then
              awful.tag.viewtoggle(tag)
             end
@@ -481,13 +736,6 @@ local clientbuttons = awful.util.table.join(
   awful.button({ "Shift" }, 1,  awful.mouse.client.move),
   awful.button({ modkey,  }, 3, awful.mouse.client.resize))
 
-xpcall(function()
-  dropdownterminal = require("dropdownterminal")(terminal)
-
-  globalkeys = awful.util.table.join(globalkeys,
-                  awful.key({"Mod1", "Shift"}, "j", function() return dropdownterminal:view_toggle() end),
-                  awful.key({"Mod1", "Control"}, "j", function() return dropdownterminal:show_always_toggle() end))
-end, notify_error)
 
 -- Set keys
 if file_readable(conf_dir .. 'shortcuts') then
@@ -503,7 +751,7 @@ myfuncs.domyconf("extkey.lua")
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
-awful.rules.rules = {
+rules.rules = {
   callback = function (c)
     awful.placement.centered(c, nil)
   end,
@@ -523,7 +771,7 @@ awful.rules.rules = {
       placement = awful.placement.no_overlap+awful.placement.no_offscreen,
     maximized = false,
     },
-    callback = awful.rules.rules.callback
+    callback = rules.rules.callback
   },
   -- {
     -- rule = {class = "Mplayer"},
@@ -651,11 +899,15 @@ client.connect_signal("request::titlebars", function(c)
   awful.titlebar.hide(c)
 end)
 
+-- client.connect_signal("mouse::enter", function(c)
+  -- if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+    -- and awful.client.focus.filter(c) then
+    -- client.focus = c
+  -- end
+-- end)
+
 client.connect_signal("mouse::enter", function(c)
-  if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-    and awful.client.focus.filter(c) then
-    client.focus = c
-  end
+    c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)

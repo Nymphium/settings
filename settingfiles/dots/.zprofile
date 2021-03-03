@@ -36,6 +36,10 @@ if [[ -d "${ZSH}" ]]; then
 		plugins+=('github')
 	fi
 
+	if command -v yarn > /dev/null 2>&1; then
+		plugins+=('yarn')
+	fi
+
 	export plugins
 
 	DISABLE_AUTO_TITLE=true
@@ -44,45 +48,31 @@ if [[ -d "${ZSH}" ]]; then
 	export ZSH_THEME
 	# shellcheck disable=1090
 	source "${ZSH}/oh-my-zsh.sh"
-fi
 
-autoload -U compinit && compinit -u
+	zstyle ':completion:*' list-colors "${LS_COLORS}"
+	zstyle ':completion::complete:*' use-cache true
+	zstyle ':completion:*:default' menu select=1
+
+	setopt prompt_subst
+	setopt magic_equal_subst
+	setopt hist_ignore_all_dups
+	setopt hist_verify
+	setopt hist_expand
+	setopt hist_ignore_space
+	setopt no_hup
+	setopt numeric_glob_sort
+	setopt auto_param_keys
+
+	autoload -Uz compinit promptinit add-zsh-hook
+	compinit -u -C
+fi
 ## }}}
 
 # shellcheck disable=1036
 # shellcheck disable=1088
 path=(
-	./node_modules/.bin
 	${HOME}/bin
 	${HOME}/local/bin
 	${HOME}/.local/bin
 	$path
-	/usr/bin/vendor_perl
-	/usr/bin/core_perl
-	/usr/lib/ccache/bin
 )
-
-[[ "$(command -v ruby)" ]] && path+=$(ruby -e 'print Gem.user_dir')/bin
-
-if [[ "$(command -v opam)" ]]; then
-	eval "$(opam config env)"
-	source ~/.opam/opam-init/init.zsh 1>&2 /dev/null
-fi
-
-export JAVA_HOME=${JAVA_HOME:-/opt/java}
-
-if [[ "$(command -v luarocks)" ]]; then
-	eval "$(luarocks path --bin)"
-fi
-
-if [[ -d /usr/share/nvm ]]; then
-	source /usr/share/nvm/init-nvm.sh
-fi
-
-if command -v yarn > /dev/null 2>&1; then
-	path+=(~/'.config/yarn/global/node_modules/.bin')
-fi
-
-if command -v dotnet > /dev/null 2>&1; then
-	path+=(~/'.dotnet/tools')
-fi
