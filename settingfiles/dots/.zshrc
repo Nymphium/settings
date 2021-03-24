@@ -13,7 +13,7 @@ if_have() {
 # }}}
 
 # pipe filter {{{
-	# alias -g G='| grep -iE --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
+	alias -g G='| grep'
 	alias -g ぷり='|lolcat'
 # }}}
 
