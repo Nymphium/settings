@@ -1,24 +1,22 @@
 @binding-set gtk-vi-text-entry {
-	bind "<alt>w" {"move-cursor" (words, -1, 0)};
-	bind "<alt>e" {"move-cursor" (words, 1, 0)};
-	bind "<shift><alt>w" {"move-cursor" (words, -1, 1)};
-	bind "<shift><alt>e" {"move-cursor" (words, 1, 1)};
-	bind "<alt>c" {"copy-clipboard" ()};
-	bind "<alt>d" {"delete-from-cursor" (word-ends, 1)};
-	bind "<shift><alt>d" {"delete-from-cursor" (word-ends, 1)};
-	bind "<alt>v" {"paste-clipboard" ()};
-	bind "<ait>r" {"redo" ()};
-	bind "<alt>u" {"undo" ()};
+  bind "<alt>w" {"move-cursor" (words, -1, 0)};
+  bind "<alt>e" {"move-cursor" (words, 1, 0)};
+  bind "<shift><alt>w" {"move-cursor" (words, -1, 1)};
+  bind "<shift><alt>e" {"move-cursor" (words, 1, 1)};
+  bind "<alt>c" {"copy-clipboard" ()};
+  bind "<alt>d" {"delete-from-cursor" (word-ends, 1)};
+  bind "<shift><alt>d" {"delete-from-cursor" (word-ends, 1)};
+  bind "<alt>v" {"paste-clipboard" ()};
 }
 
 @binding-set gtk-vi-text-view {
-	bind "<alt>c" {"copy-clipboard" ()};
-	bind "<alt>v" {"paste-clipboard" ()};
+  bind "<alt>c" {"copy-clipboard" ()};
+  bind "<alt>v" {"paste-clipboard" ()};
 }
 
 @binding-set gtk-vi-tree-view {
-	bind "<alt>c" {"copy-clipboard" ()};
-	bind "<alt>v" {"paste-clipboard" ()};
+  bind "<alt>c" {"copy-clipboard" ()};
+  bind "<alt>v" {"paste-clipboard" ()};
 }
 
 @binding-set gtk-vi-menu
@@ -26,19 +24,19 @@
 }
 
 GtkEntry {
-	-gtk-key-bindings: gtk-vi-text-entry;
+  -gtk-key-bindings: gtk-vi-text-entry;
 }
 
 GtkTextView {
-	-gtk-key-bindings: gtk-vi-text-entry, gtk-vi-text-view;
+  -gtk-key-bindings: gtk-vi-text-entry, gtk-vi-text-view;
 }
 
 GtkTreeView {
-	-gtk-key-bindings: gtk-vi-tree-view;
+  -gtk-key-bindings: gtk-vi-tree-view;
 }
 
 GtkMenuShell {
-	-gtk-key-bindings: gtk-vi-menu;
+  -gtk-key-bindings: gtk-vi-menu;
 }
 
 
