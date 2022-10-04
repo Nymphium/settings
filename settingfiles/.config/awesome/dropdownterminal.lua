@@ -27,7 +27,9 @@ return function(term)
         self.show_always = self.default.show_always
 
         local client = cont(function(k)
-          return awful.spawn(self.cmd, self.properties, k)
+          return awful.spawn(self.cmd, self.properties, function(client)
+            return k(client)
+          end)
         end)
 
         self.pid = client.pid
@@ -86,9 +88,9 @@ return function(term)
       self.show_always = not self.show_always
 
       naughty.notify({ preset = naughty.config.presets.normal
-                     , title = "DropDownTerminal"
-                     , text = ("toggle show_always(%q)"):format(self.show_always)
-                     })
+        , title = "DropDownTerminal"
+        , text = ("toggle show_always(%q)"):format(self.show_always)
+      })
     end
   }
 
@@ -97,4 +99,3 @@ return function(term)
 
   return t
 end
-

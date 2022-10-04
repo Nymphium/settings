@@ -14,6 +14,8 @@ z[	『
 z]	』
 [	「
 ]	」
+l(	（
+l)	）
 va	ゔぁ
 vi	ゔぃ
 vu	ゔ
@@ -305,7 +307,3 @@ whi	うぃ
 whu	う
 whe	うぇ
 who	うぉ
-zb	?
-\t	っ
-\wa	和英
-\fun	function

@@ -4,7 +4,7 @@
 ZSH=$HOME/.oh-my-zsh
 
 if [[ -d "${ZSH}" ]]; then
-	plugins=(git history zsh_reload)
+	plugins=(git history)
 
 	if [[ $(uname -s) = 'Darwin' ]]; then
 		plugins+=('brew')

@@ -12,24 +12,46 @@ if io.popen("pactl"):close() then
 end
 
 -- {{{
-local sinks = {} -- {{{
-local sink
-local sinkch
-
 local get_rawinfo_ref = function()
+	local sinks = {}
+	local sink
+	local sinkch
+
 	for line in io.popen("env LC_ALL=C pactl list sinks"):lines() do
 		if line:match("^Sink%s*#%d+") then
 			sinkch = tonumber(line:match("^Sink%s*#(%d+)"))
 			sink = {}
+			sink.channel = sinkch
 			sinks[sinkch] = sink
 		else
 			local k, v = line:match("^%s*([^:]-):%s+(.-)%s*$")
 			if k and v and #v > 0 then
-				if k:lower() == "mute" then
-					v = not v:match("no")
+				if k == "State" then
+					sink.is_running = v == "RUNNING"
+				elseif k == "Active Port" then
+					sink.port = v
+				elseif k == "Mute" then
+					v = not (v == "no")
+					sink.mute = v
+				elseif k == "Volume" then
+					local voll, volr = v:match("(%d+)%%")
+
+					-- if stereo
+					if volr then
+						voll = tonumber(voll)
+						volr = tonumber(volr)
+						sink.volume = (voll + volr)
+					else
+						sink.volume = tonumber(voll)
+					end
 				end
-				sink[k:lower()] = v
 			end
+		end
+	end
+
+	for _, sink in pairs(sinks) do
+		if sink.is_running then
+			return sink
 		end
 	end
 end
@@ -47,7 +69,7 @@ end
 
 local volumebar = wibox.widget { -- {{{
 	{
-		color = toggled_color(sinks[sinkch].mute),
+		color = muted_color,
 		background_color = "black",
 
 		min_value = 0,
@@ -56,7 +78,7 @@ local volumebar = wibox.widget { -- {{{
 		border_width= 0,
 		forced_width = 60,
 		id = "barrepr",
-		muted = sinks[sinkch].mute,
+		muted = true,
 		widget = wibox.widget.progressbar
 	},
 	{
@@ -82,10 +104,11 @@ local tooltip = awful.tooltip{ -- {{{
 	delay_show = 1
 }
 
-local update_tooltip = function(vol, muted)
+local update_tooltip = function(port, vol, muted)
 	local txt = ([[
+Port: %s
 Volume: %d%%
-Muted: %s]]):format(vol, muted)
+Muted: %s]]):format(port, vol, muted)
 
 	tooltip:set_text(txt)
 end -- }}}
@@ -93,20 +116,15 @@ end -- }}}
 
 -- {{{
 local get_volume = function(ch)
-	get_rawinfo_ref()
-	local vols = sinks[ch].volume
-	local vleft, vright = vols:match("(%d+%.?%d+)%%(.*)")
-	vright = vright:match("(%d+%.?%d+)%%")
-	vleft, vright = tonumber(vleft), tonumber(vright)
+	local sink = get_rawinfo_ref()
 
-	return vleft, vright, sinks[ch].mute
+	return sink.port, sink.volume, sink.mute
 end
 
 local vol_callback = function()
-	local vleft, vright, muted = get_volume(sinkch)
-	local vol = (vleft + vright) / 2
+	local port, vol, muted = get_volume(sinkch)
 	volumebar:set_volume(vol, muted)
-	update_tooltip(vol, muted)
+	update_tooltip(port, vol, muted)
 end
 
 local update_volume = function(ch, vol, up)
@@ -135,11 +153,16 @@ end)
 return {
 	widget = volumebar,
 	volup = function(vol)
-		update_volume(sinkch, vol, true)
+		local sink = get_rawinfo_ref()
+		update_volume(sink.channel, vol, true)
 	end,
 	voldown = function(vol)
-		update_volume(sinkch, vol, false)
+		local sink = get_rawinfo_ref()
+		update_volume(sink.channel, vol, false)
 	end,
-	toggle = function()  toggle_volume(sinkch) end
+	toggle = function()
+		local sink = get_rawinfo_ref()
+		toggle_volume(sink.channel)
+	end
 }
 

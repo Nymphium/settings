@@ -17,12 +17,12 @@
   prompt = false
 
 [difftool "nvr"]
-  cmd = nvr -s -d $LOCAL $REMOTE
+  cmd = nvim -d $LOCAL $REMOTE
 
 [merge]
     tool = nvr
 [mergetool "nvr"]
-    cmd = nvr -s -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
+    cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
 
 [pager]
   diff =

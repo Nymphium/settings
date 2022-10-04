@@ -1,8 +1,12 @@
-[[ ! "${ZSH}" ]] && source "${HOME}/.zprofile"
-
 if_have() {
 	command -v "${1}" > /dev/null 2>&1
 }
+
+if_have direnv && eval "$(direnv hook zsh)"
+
+if [ -e /home/nymphium/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nymphium/.nix-profile/etc/profile.d/nix.sh; fi
+
+[[ ! "${ZSH}" ]] && source "${HOME}/.zprofile"
 
 # variables {{{
 	if_have tmux && {
@@ -239,7 +243,7 @@ return loadstring(src)()
 		alias -g L='| V -'
 		alias VD='V -d'
 		alias visudo='sudo VISUAL=V visudo'
-		MANPAGER="/bin/sh -c \"col -b -x | V -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
+		MANPAGER="/bin/sh -c \"col -b -x | ${EDITOR} -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 		export MANPAGER
 
 		weather() {
@@ -310,11 +314,6 @@ bindkey '^[e' forward-word
 bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}}
-
-if_have direnv && eval "$(direnv hook zsh)"
-
-
-if [ -e /home/nymphium/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nymphium/.nix-profile/etc/profile.d/nix.sh; fi
 
 unset -f if_have
 
