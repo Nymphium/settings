@@ -4,7 +4,7 @@ if_have() {
 
 if_have direnv && eval "$(direnv hook zsh)"
 
-if [ -e /home/nymphium/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nymphium/.nix-profile/etc/profile.d/nix.sh; fi
+if [ -e "${HOME}"/.nix-profile/etc/profile.d/nix.sh ]; then . "${HOME}"/.nix-profile/etc/profile.d/nix.sh; fi
 
 [[ ! "${ZSH}" ]] && source "${HOME}/.zprofile"
 
@@ -70,7 +70,7 @@ return loadstring(src)()
 
 	# ocaml {{{
 		if_have opam && {
-	source ~/.opam/opam-init/init.zsh 1>&2 /dev/null
+	source "${HOME}"/.opam/opam-init/init.zsh 1>&2 /dev/null
 	eval "$(opam config env)"
 
 		}
@@ -90,11 +90,11 @@ return loadstring(src)()
 			path+=(${HOME}/node_modules/.bin)
 		}
 
-		if_have yarn && path+=(~/'.config/yarn/global/node_modules/.bin')
+		if_have yarn && path+=("${HOME}"/'.config/yarn/global/node_modules/.bin')
 	# }}}
 
 	# dotnet {{{
-		if_have dotnet && path+=(~/'.dotnet/tools')
+		if_have dotnet && path+=("${HOME}"/'.dotnet/tools')
 	#
 
 	# haskell {{{

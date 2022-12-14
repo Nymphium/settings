@@ -42,32 +42,23 @@ for f in ${THDIR}/dots/.*; () {
 ## fontconfig
 THCONFIG="${THDIR}/.config"
 
-() {
-	local dst; dst="${TARGET}/.config/fontconfig"
-	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.config/" && ln -s "${THCONFIG}/fontconfig" "${dst}"
-} || :
-
-## awesome
-() {
-	mkdir -p "${TARGET}/.config/awesome/"
-	local THDIR2; THDIR2="${THDIR}/.config/awesome"
+migrate() {
+	local content; content=$1
+	local dstdir; dstdir="${TARGET}/.config/${content}/"
+	mkdir -p "${dstdir}"
+	local THDIR2; THDIR2="${THCONFIG}/${content}"
 	for file in "${THDIR2}"/*.lua "${THDIR2}"/.luacheckrc; (){
 		basefile="$(basename ${file})"
-		local dst; dst="${TARGET}/.config/awesome/${basefile}"
-		[[ ! -a "${dst}" ]] && ln -s "${file}"  "${dst}"
+		local dst; dst="${dstdir}/${basefile}"
+		[[ ! -a "${dst}" ]] && ln -s "${file}" "${dst}"
 	}
-} || :
+}
 
-## git
 () {
-	mkdir -p "${TARGET}/.config/git/"
-	for file in "${THCONFIG}/git"/*; (){
-		basefile="$(basename ${file})"
-		local dst; dst="${TARGET}/.config/git/${basefile}"
-		[[ ! -a "${dst}" ]] && ln -s "${file}"  "${dst}"
-	}
+	for target in awesome git karabiner fontconfig; do
+		migrate $target
+	done
 } || :
-
 
 # .xinitrc
 ## it is COPIED

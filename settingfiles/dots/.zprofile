@@ -8,7 +8,6 @@ if [[ -d "${ZSH}" ]]; then
 
 	if [[ $(uname -s) = 'Darwin' ]]; then
 		plugins+=('brew')
-		plugins+=('brew-cask')
 	fi
 
 	if [[ -e "${ZSH}/plugins/racket" ]]; then
