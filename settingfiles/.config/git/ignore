@@ -2,3 +2,4 @@ Session.vim
 ,*
 .vimrc
 .direnv/
+.env.local
