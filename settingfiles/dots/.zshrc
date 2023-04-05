@@ -9,10 +9,10 @@ if [ -e "${HOME}"/.nix-profile/etc/profile.d/nix.sh ]; then . "${HOME}"/.nix-pro
 [[ ! "${ZSH}" ]] && source "${HOME}/.zprofile"
 
 # variables {{{
-	if_have tmux && {
-		TERM="tmux-256color"
-		export TERM
-	}
+	#  if_have tmux && {
+	#  	TERM="tmux-256color"
+	#  	export TERM
+	#  }
 
 # }}}
 

@@ -47,15 +47,15 @@ migrate() {
 	local dstdir; dstdir="${TARGET}/.config/${content}/"
 	mkdir -p "${dstdir}"
 	local THDIR2; THDIR2="${THCONFIG}/${content}"
-	for file in "${THDIR2}"/*.lua "${THDIR2}"/.luacheckrc; (){
+	for file in "${THDIR2}"; (){
 		basefile="$(basename ${file})"
-		local dst; dst="${dstdir}/${basefile}"
+		local dst; dst="${dstdir}${basefile}"
 		[[ ! -a "${dst}" ]] && ln -s "${file}" "${dst}"
 	}
 }
 
 () {
-	for target in awesome git karabiner fontconfig; do
+	for target in $(ls "${THDIR2}"); do
 		migrate $target
 	done
 } || :
