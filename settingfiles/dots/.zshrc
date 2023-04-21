@@ -5,16 +5,11 @@ if_have() {
 if_have direnv && eval "$(direnv hook zsh)"
 
 if [ -e "${HOME}"/.nix-profile/etc/profile.d/nix.sh ]; then . "${HOME}"/.nix-profile/etc/profile.d/nix.sh; fi
+if [ -e "${HOME}/.nix-profile/share/nix-direnv/direnvrc" ]; then . "${HOME}/.nix-profile/share/nix-direnv/direnvrc"; fi
 
 [[ ! "${ZSH}" ]] && source "${HOME}/.zprofile"
 
-# variables {{{
-	#  if_have tmux && {
-	#  	TERM="tmux-256color"
-	#  	export TERM
-	#  }
-
-# }}}
+export LANG=${LANG:-en_US.UTF-8}
 
 # pipe filter {{{
 	alias -g G='| grep'
@@ -317,3 +312,4 @@ bindkey -r '^[l'
 
 unset -f if_have
 
+function gitignore() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
