@@ -3,6 +3,14 @@
 THDIR=$PWD/settingfiles
 TARGET=$HOME
 
+if_darwin() {
+	[[ $(uname -s) = "Darwin" ]]
+}
+
+if_linux() {
+	[[ $(uname -s) = "Linux" ]]
+}
+
 # set dotfiles
 for f in ${THDIR}/dots/.*; () {
 	local dst; dst="${TARGET}/$(basename "${f}")"
@@ -23,8 +31,10 @@ for f in ${THDIR}/dots/.*; () {
 
 # gtk keybind
 () {
-	local dst; dst="${TARGET}/.themes/Vi"
-	[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.themes/" && ln -s "${THDIR}/Vi/" "${dst}"
+	if_linux && {
+		local dst; dst="${TARGET}/.themes/Vi"
+		[[ ! -a "${dst}" ]] && mkdir -p "${TARGET}/.themes/" && ln -s "${THDIR}/Vi/" "${dst}"
+	}
 } || :
 
 # bin
@@ -36,6 +46,13 @@ for f in ${THDIR}/dots/.*; () {
 		mkdir -p "${dst}"
 	fi
 	ln -s "${THDIR}/bin/"* "${dst}"
+} || :
+
+() {
+	if_darwin && {
+		curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz
+		/usr/bin/tic -xe tmux-256color terminfo.src
+	}
 } || :
 
 # .config
@@ -55,7 +72,7 @@ migrate() {
 }
 
 () {
-	for target in $(ls "${THDIR2}"); do
+	for target in $(ls "${THDIR}"); do
 		migrate $target
 	done
 } || :

@@ -292,11 +292,15 @@ fi
 ## tmux attach {{{
 if [[ "$(command -v tmux)" ]] && [[ ! "${TMUX}" ]]; then
 	() {
+		if [[ "$(infocmp -x tmux-256color >/dev/null 2>&1)" ]]; then
+			export TERM=tmux-256color
+		fi
+
 		local unused
 		unused=$(tmux list-sessions | awk '$11!~/.+/{sub(/[^0-9]/,"");print $1;exit}')
 
 		if [[ ! -z "${unused}" ]]; then
-			tmux -u -2 attach -t "${unused}"
+			tmux -u -2 -CC attach -t "${unused}"
 		else
 			exec tmux -u -2 -l
 		fi
