@@ -1,0 +1,23 @@
+# build and run docker and detect exit code
+name: CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push images
+        uses: docker/build-push-action@v3
+        with:
+          push: false
+          context: .
+          file: ./Dockerfile
+          tags: test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Run docker
+        run: |
+          docker run --rm -i -v ${PWD}:/home test
