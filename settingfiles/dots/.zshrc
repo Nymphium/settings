@@ -4,6 +4,23 @@ if_have() {
 
 if_have direnv && eval "$(direnv hook zsh)"
 
+if_have tmux && {
+	setterm() {
+		if [[ $(infocmp $1 >/dev/null 2>&1) ]]; then
+			echo $1
+			return 0
+		else
+			return 1
+		fi
+	}
+
+	# TERM=$(setterm tmux-256color || setterm screen-256color || setterm xterm-256color || echo $TERM)
+	TERM=tmux-256color
+	export TERM
+
+	unset setterm
+}
+
 if [ -e "${HOME}"/.nix-profile/etc/profile.d/nix.sh ]; then . "${HOME}"/.nix-profile/etc/profile.d/nix.sh; fi
 if [ -e "${HOME}/.nix-profile/share/nix-direnv/direnvrc" ]; then . "${HOME}/.nix-profile/share/nix-direnv/direnvrc"; fi
 

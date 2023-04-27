@@ -85,7 +85,9 @@
 	name = Nymphium
 	email = s1311350@gmail.com
 [credential]
-	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
+	helper = /mnt/c/Program\\ Files\\ \\(x86\\)/Git\\ Credential\\ Manager/git-credential-manager.exe
+	credentialStore = gpg
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+[safe]
+	directory = *

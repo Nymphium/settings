@@ -1,3 +1,5 @@
+#!/bin/env zsh
+
 batmax=0
 batnow=0
 

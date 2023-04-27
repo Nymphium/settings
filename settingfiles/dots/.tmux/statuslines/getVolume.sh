@@ -1,3 +1,5 @@
+#!/bin/env zsh
+
 amixer -c "${SNDC}" | awk '
 	BEGIN {
 		mcnt = 0; scnt = 0; hcnt = 0;

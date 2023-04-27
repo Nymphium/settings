@@ -1,3 +1,5 @@
+#!/bin/env zsh
+
 free=$(which free)
 if [[ "${#free}" -gt 1 ]]; then
 	# memory
