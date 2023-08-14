@@ -22,11 +22,14 @@ for f in ${THDIR}/dots/.*; () {
 	local omz; omz="${TARGET}/.oh-my-zsh"
 	[[ ! -a "${omz}" ]] && git clone https://github.com/robbyrussell/oh-my-zsh "${omz}"
 
-	# install theme
-	local dst; dst="${TARGET}/.oh-my-zsh/custom/themes/"
-	[[ ! -d "${dst}" ]] && mkdir -p "${dst}"
+	local dst; dst="${TARGET}/.oh-my-zsh/custom/"
+	local src; src="${THDIR}/dots/.oh-my-zsh/custom/"
 
-	ln -s "${THDIR}/nymphium.zsh-theme" "${dst}"
+	for tgt in themes plugins; () {
+		for f in "${src}${tgt}"/*; () {
+			[[ ! -a "${dst}${tgt}/$(basename "${f}")" ]] && ln -s "${f}" "${dst}${tgt}/"
+		}
+	}
 } || :
 
 # gtk keybind
@@ -75,7 +78,12 @@ migrate() {
 	for target in $(ls "${THDIR}"); do
 		migrate $target
 	done
+
+	# karabiner
+	rm -rf "${TARGET}/.config/karabiner/karabiner.json"
+	cp "${THCONFIG}/karabiner/karabiner.json" "${TARGET}/.config/karabiner/karabiner.json"
 } || :
+
 
 # .xinitrc
 ## it is COPIED
