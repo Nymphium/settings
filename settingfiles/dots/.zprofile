@@ -102,7 +102,7 @@ setopt no_hup
 setopt numeric_glob_sort
 setopt auto_param_keys
 
-autoload -Uz compinit promptinit add-zsh-hook
+autoload -Uz compinit promptinit
 compinit -u -C
 
 # shellcheck disable=1091
