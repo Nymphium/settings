@@ -7,8 +7,13 @@ local fg_white=${FG[254]}
 local bg_blue=${BG[033]}
 local fg_blue=${FG[026]}
 local fg_orange=${FG[208]}
-local fg_red=${FG[009]}
+local fg_red=${FG[196]}
 local fg_green=${FG[084]}
+local fg_vim=${FG[155]}
+local bg_vim=${BG[017]}
+
+local icon_vim=${VIM:+"%{${fg_vim}%}%{${fg_white}%}"}
+local prompt_start="%{${fg_white}%}${icon_vim}"
 
 autoload -Uz add-zsh-hook vcs_info
 add-zsh-hook precmd vcs_info
@@ -62,10 +67,12 @@ _my_prompt() {
 
   # shellcheck disable=2154
   # shellcheck disable=2034
-  PROMPT="%{${bg_blue}%}%{${fg_white}%}%B"
-  PROMPT+=" %c"
+  PROMPT="%B%{${bg_blue}%}"
+
+  PROMPT+="${prompt_start} %c"
   PROMPT+="${vcs_info_msg_0_}"
   PROMPT+="%{${bg_blue}%} %{${reset_color}%}%{${fg_blue}%}"
+
   PROMPT+="%b%{${reset_color}%} "
 }
 

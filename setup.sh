@@ -1,4 +1,4 @@
-#!/bin/zsh -ux
+#!/bin/zsh -u
 
 THDIR=$PWD/settingfiles
 TARGET=$HOME
