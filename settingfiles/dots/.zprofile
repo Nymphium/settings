@@ -1,15 +1,6 @@
 # vim:ft=sh
 # shellcheck shell=bash
 
-path=(
-	"${HOME}"/bin
-	"${HOME}"/local/bin
-	"${HOME}"/.local/bin
-	"${path[@]}"
-)
-
-export path
-
 RCD=$HOME/.zsh.d
 if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]] ; then
 	for f in "${RCD}"/*; do
@@ -31,8 +22,7 @@ if [[ $(uname -s) = 'Darwin' ]]; then
 fi
 
 if command -v sbt > /dev/null 2>&1; then
-	plugins+=('sbt')
-	plugins+=('scala')
+	plugins+=('sbt' 'scala')
 fi
 
 if command -v stack > /dev/null 2>&1; then
@@ -71,6 +61,10 @@ if command -v opam >/dev/null 2>&1; then
 	plugins+=('opam')
 fi
 
+if command -v rbenv >/dev/null 2>&1; then
+	plugins+=('rbenv')
+fi
+
 plugins+=(yarn nvm tmux)
 
 export plugins
@@ -107,3 +101,13 @@ compinit -u -C
 
 # shellcheck disable=1091
 source "${ZSH}/oh-my-zsh.sh"
+
+# prefer to use local bin
+path=(
+	"${HOME}"/bin
+	"${HOME}"/local/bin
+	"${HOME}"/.local/bin
+	"${path[@]}"
+)
+
+export path

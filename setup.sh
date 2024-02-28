@@ -11,12 +11,6 @@ if_linux() {
 	[[ $(uname -s) = "Linux" ]]
 }
 
-# set dotfiles
-for f in ${THDIR}/dots/.*; () {
-	local dst; dst="${TARGET}/$(basename "${f}")"
-	[[ ! -a "${dst}" ]] && ln -s "${f}" "${dst}"
-} || :
-
 # install oh-my-zsh unless installed
 () {
 	local omz; omz="${TARGET}/.oh-my-zsh"
@@ -80,9 +74,17 @@ migrate() {
 	done
 
 	# karabiner
-	rm -rf "${TARGET}/.config/karabiner/karabiner.json"
+	# rm -rf "${TARGET}/.config/karabiner/karabiner.json"
 	cp "${THCONFIG}/karabiner/karabiner.json" "${TARGET}/.config/karabiner/karabiner.json"
 } || :
+
+# set dotfiles
+for f in ${THDIR}/dots/.*; () {
+	local dst; dst="${TARGET}/$(basename "${f}")"
+	[[ ! -a "${dst}" ]] && ln -s "${f}" "${dst}"
+} || :
+
+
 
 
 # .xinitrc

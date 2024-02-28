@@ -48,17 +48,17 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-info
       contents+="${dirty_icon}"
     fi
 
-    if [[ "${ginfo}" =~ '[[:space:]]A[[:space:]]' ]]; then
+    if [[ "${ginfo}" =~ '^[[:space:]]*A[[:space:]]' ]]; then
       # shellcheck disable=2154
       contents+="${staged_icon}"
     fi
 
-    if [[ "${ginfo}" =~ '[[:space:]]M[[:space:]]' ]]; then
+    if [[ "${ginfo}" =~ '^[[:space:]]*(M|D)(M|D)?[[:space:]]' ]]; then
       # shellcheck disable=2154
       contents+="${unstaged_icon}"
     fi
 
-    if [[ "${ginfo}" =~ '[[:space:]]\?\?[[:space:]]' ]]; then
+    if [[ "${ginfo}" =~ '^[[:space:]]*\?\?[[:space:]]' ]]; then
       contents+="${untracked_icon}"
     fi
 
@@ -77,8 +77,7 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-info
         hook_com[misc]+="(${rebase_icon}${done_}/${entire})"
       fi
 
-      hook_com[misc]+="${fg_vcs_status}"
-      hook_com[misc]+="${(j::)contents}"
+      hook_com[misc]+="${fg_vcs_status}${(j::)contents} "
     fi
   fi
 }
@@ -91,9 +90,7 @@ _my_prompt() {
   # shellcheck disable=2034
   PROMPT="${bg_normal}"
 
-  PROMPT+="${prompt_start} %c${fg_normal_sep}"
-  PROMPT+="${vcs_info_msg_0_}%{${reset_color}%}"
-  PROMPT+="${bg_normal} %{${reset_color}%}${fg_normal_sep}${sep}%{${reset_color}%} "
+  PROMPT+="${prompt_start} %c${fg_normal_sep}${vcs_info_msg_0_}%{${reset_color}%}${bg_normal} %{${reset_color}%}${fg_normal_sep}${sep}%{${reset_color}%} "
 }
 
 add-zsh-hook precmd _my_prompt

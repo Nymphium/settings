@@ -11,17 +11,18 @@
   editor = $EDITOR
 
 [diff]
-  tool = nvr
+  tool = nvim
 
 [difftool]
   prompt = false
 
-[difftool "nvr"]
+[difftool "nvim"]
   cmd = nvim -d $LOCAL $REMOTE
 
 [merge]
-    tool = nvr
-[mergetool "nvr"]
+    tool = nvim
+    conflictstyle = zdiff3
+[mergetool "nvim"]
     cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
 
 [pager]
@@ -84,10 +85,5 @@
 [user]
 	name = Nymphium
 	email = s1311350@gmail.com
-[credential]
-	helper = /mnt/c/Program\\ Files\\ \\(x86\\)/Git\\ Credential\\ Manager/git-credential-manager.exe
-	credentialStore = gpg
-[credential "https://dev.azure.com"]
-	useHttpPath = true
 [safe]
 	directory = *
