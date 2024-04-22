@@ -8,22 +8,22 @@
   ui = auto
 
 [core]
-  editor = $EDITOR
+  editor = nvr --remote-wait-silent
 
 [diff]
-  tool = nvim
+  tool = nvr
 
 [difftool]
   prompt = false
 
-[difftool "nvim"]
-  cmd = nvim -d $LOCAL $REMOTE
+[difftool "nvr"]
+  cmd = nvr -s -d $LOCAL $REMOTE
 
 [merge]
-    tool = nvim
+    tool = nvr
     conflictstyle = zdiff3
-[mergetool "nvim"]
-    cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
+[mergetool "nvr"]
+    cmd = nvr -s -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
 
 [pager]
   diff =

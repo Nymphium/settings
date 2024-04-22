@@ -1,14 +1,14 @@
 # vim:ft=zsh
 
 # see `spectrum_ls`
-local bg_vcs="%{${BG[244]}%}"
-local fg_vcs_sep="%{${FG[241]}%}"
+local bg_vcs="%{${bg[gray]}%}"
+local fg_vcs_sep="%{${fg[gray]}%}"
 local fg_normal="%{${FG[254]}%}"
-local bg_normal="%{${BG[033]}%}"
-local fg_normal_sep="%{${FG[026]}%}"
+local bg_normal="%{${bg[blue]}%}"
+local fg_normal_sep="%{${fg[blue]}%}"
 local fg_vcs_branch="%{${FG[208]}%}"
 local fg_vcs_action="%{${FG[203]}%}"
-local fg_vcs_status="%{${FG[084]}%}"
+local fg_vcs_status="%{${fg[green]}%}"
 local fg_vim="%{${FG[155]}%}"
 
 local vim_icon=''
@@ -84,7 +84,7 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-info
 
 # | settings > master [3] > ↵
 _my_prompt() {
-  vcs_info
+   vcs_info
 
   # shellcheck disable=2154
   # shellcheck disable=2034

@@ -29,7 +29,7 @@
       ]
     },
     {
-      "description": "Change copy/paste to command+{c,v} except in iTerm2",
+      "description": "Change copy/paste to command+{c,v} except in terminals",
       "manipulators": [
         {
           "type": "basic",
@@ -45,7 +45,9 @@
             {
               "type": "frontmost_application_unless",
               "bundle_identifiers": [
-                "^com\\.googlecode\\.iterm2$"
+                "^com\\.apple\\.Terminal$",
+                "^com\\.googlecode\\.iterm2$",
+                "^org\\.alacritty$"
               ]
             }
           ],
