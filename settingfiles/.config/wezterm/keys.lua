@@ -91,12 +91,17 @@ local keys = {
     key = 'Enter',
     mods = 'ALT',
     action = act.ToggleFullScreen
+  },
+  {
+    key = 'y',
+    mods = 'ALT',
+    action = act.ActivateCopyMode
+  },
+  {
+    key = ':',
+    mods = 'LEADER',
+    action = act.ActivateCommandPalette
   }
-  -- {
-  --   key = 'y',
-  --   mods = 'ALT',
-  --   action = act.CopyMode('EditPattern')
-  -- }
 }
 
 return keys
