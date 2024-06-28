@@ -47,7 +47,8 @@
               "bundle_identifiers": [
                 "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
-                "^org\\.alacritty$"
+                "^org\\.alacritty$",
+                "^com\\.github\\.wez\\.wezterm$"
               ]
             }
           ],
