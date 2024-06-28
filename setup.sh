@@ -14,7 +14,10 @@ if_linux() {
 # install oh-my-zsh unless installed
 () {
 	local omz; omz="${TARGET}/.oh-my-zsh"
-	[[ ! -a "${omz}" ]] && git clone https://github.com/robbyrussell/oh-my-zsh "${omz}"
+	if [[ ! -a "${omz}" ]]; then
+    git clone https://github.com/robbyrussell/oh-my-zsh "${omz}"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${omz}/custom/plugins/zsh-syntax-highlighting"
+  fi
 
 	local dst; dst="${TARGET}/.oh-my-zsh/custom/"
 	local src; src="${THDIR}/dots/.oh-my-zsh/custom/"
@@ -55,6 +58,7 @@ if_linux() {
 # .config
 ## fontconfig
 THCONFIG="${THDIR}/.config"
+mkdir -p "${TARGET}/.config/karabiner/assets/complex_modifications/"
 
 migrate() {
 	local content; content=$1

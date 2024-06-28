@@ -65,7 +65,7 @@ if command -v rbenv >/dev/null 2>&1; then
 	plugins+=('rbenv')
 fi
 
-plugins+=(yarn nvm tmux)
+plugins+=(yarn nvm zsh-syntax-highlighting)
 
 export plugins
 
