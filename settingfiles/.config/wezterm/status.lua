@@ -8,12 +8,15 @@ local solid_left_arrow = utf8.char(0xe0d7)
 local status_text_fg = 'white'
 
 local basename = function(s)
+  if not s then
+    return ''
+  end
+
   return s:gsub('(.*[/\\])(.*)', '%2')
 end
 
 wezterm.on('format-tab-title', function(tab, _, _, config, _, _)
   local elements = {}
-  print(config.resolved_palette)
 
   if tab.is_active then
     table.insert(elements, { Background = { Color = 'none' } })
