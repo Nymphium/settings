@@ -1,5 +1,7 @@
 local wezterm = require('wezterm')
 
+wezterm.GLOBAL.is_windows = wezterm.target_triple:find('windows') ~= nil
+
 local config = wezterm.config_builder()
 
 config.font_size = 14
@@ -11,12 +13,8 @@ local font = wezterm.font_with_fallback {
 }
 config.font = font
 config.window_frame = {
-  font = wezterm.font({ family = "MonaspiceAr Nerd Font Propo", weight = 'Bold' }),
+  font = wezterm.font("MonaspiceAr Nerd Font Propo", { weight = 'Bold' }),
   border_bottom_height = '0.3cell'
-}
-config.colors = {
-  cursor_bg = '#ffffff',
-  cursor_fg = '#ffffff'
 }
 
 config.window_padding = {
@@ -25,10 +23,11 @@ config.window_padding = {
   top = 0,
   bottom = 1
 }
+
 config.tab_bar_at_bottom = true
 config.show_new_tab_button_in_tab_bar = false
 config.use_fancy_tab_bar = false
--- config.tab_max_width = 100
+config.tab_max_width = 40
 
 config.leader = { key = 'b', mods = 'ALT' }
 config.keys = require('./keys')
@@ -36,7 +35,7 @@ config.keys = require('./keys')
 config.animation_fps = 1
 
 wezterm.on('gui-startup', function(cmd)
-  local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+  local _, _, window = wezterm.mux.spawn_window(cmd or {})
   window:gui_window():maximize()
 end)
 

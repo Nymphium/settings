@@ -138,4 +138,3 @@ bindkey -r '^[l'
 # }}}
 
 unset -f if_have
-
