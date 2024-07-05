@@ -133,7 +133,7 @@ wezterm.on('update-status', function(window, pane)
   end
 
   for _, p in pairs(tab:panes_with_info()) do
-    if p.is_active and tab:active_pane().is_zoomed then
+    if p.is_active and p.is_zoomed then
       table.insert(left_cells, wezterm.nerdfonts.fa_arrows_alt)
     end
   end

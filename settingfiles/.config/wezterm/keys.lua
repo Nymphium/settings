@@ -14,22 +14,22 @@ local keys = {
   },
   {
     key = 'h',
-    mods = 'LEADER|ALT|SHIFT',
+    mods = 'LEADER|ALT',
     action = act.AdjustPaneSize({ 'Left', 5 })
   },
   {
     key = 'j',
-    mods = 'LEADER|ALT|SHIFT',
+    mods = 'LEADER|ALT',
     action = act.AdjustPaneSize({ 'Down', 5 })
   },
   {
     key = 'k',
-    mods = 'LEADER|ALT|SHIFT',
+    mods = 'LEADER|ALT',
     action = act.AdjustPaneSize({ 'Up', 5 })
   },
   {
     key = 'l',
-    mods = 'LEADER|ALT|SHIFT',
+    mods = 'LEADER|ALT',
     action = act.AdjustPaneSize({ 'Right', 5 })
   },
   {
@@ -118,15 +118,26 @@ local keys = {
     action = act.ActivateCommandPalette
   },
   {
-    key = '+',
-    mods = 'ALT',
+    key = '=',
+    mods = 'ALT|SHIFT',
     action = act.IncreaseFontSize,
   },
   {
-    key = '+',
-    mods = 'ALT|SHIFT',
+    key = '0',
+    mods = 'ALT',
+    action = act.ResetFontSize,
+  },
+  {
+    key = '-',
+    mods = 'ALT',
     action = act.DecreaseFontSize,
+  },
+  {
+    key = '/',
+    mods = 'LEADER',
+    action = act.Sarch { CaseSensitiveString = '' }
   }
+
 }
 
 return keys
