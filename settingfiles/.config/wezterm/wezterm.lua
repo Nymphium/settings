@@ -30,6 +30,8 @@ config.use_fancy_tab_bar = false
 config.tab_max_width = 40
 
 config.leader = { key = 'b', mods = 'ALT' }
+config.disable_default_key_bindings = true
+config.disable_default_mouse_bindings = true
 config.keys = require('./keys')
 
 config.animation_fps = 1

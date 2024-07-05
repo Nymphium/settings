@@ -6,7 +6,9 @@ local right_arrow = utf8.char(0xe0b0)
 local solid_right_arrow = utf8.char(0xe0d7)
 
 local status_text_fg = 'white'
-local home = (os.getenv('HOME') or os.getenv('USERPROFILE') or wezterm.home_dir or ""):gsub('\\', '/')
+local home = (os.getenv('HOME')
+  or os.getenv('USERPROFILE')
+  or wezterm.home_dir or ""):gsub('\\', '/')
 
 local basename = function(s)
   if not s then

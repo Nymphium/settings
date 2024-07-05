@@ -13,17 +13,24 @@ local keys = {
     action = act.SplitVertical { domain = "CurrentPaneDomain" }
   },
   {
+    key = 'h',
+    mods = 'LEADER|ALT',
+    action = act.AdjustPaneSize({ 'Left', 5 })
+  },
+  {
+    key = 'j',
+    mods = 'LEADER|ALT',
+    action = act.AdjustPaneSize({ 'Down', 5 })
+  },
+  {
+    key = 'k',
+    mods = 'LEADER|ALT',
+    action = act.AdjustPaneSize({ 'Up', 5 })
+  },
+  {
     key = 'l',
     mods = 'LEADER|ALT',
     action = act.AdjustPaneSize({ 'Right', 5 })
-  },
-  {
-    key = 'g',
-    mods = 'LEADER|ALT',
-    action = act.SpawnCommandInNewTab {
-      args = { os.getenv('TERM') },
-      cwd = os.getenv('HOME')
-    }
   },
   {
     key = 'd',

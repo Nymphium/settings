@@ -15,28 +15,13 @@ if [[ ! -d "${ZSH}" ]]; then
 	return
 fi
 
-plugins=(git history ignore-completions gitignore traildots docker docker-compose direnv golang gopath nix yarn nvm zsh-syntax-highlighting)
-
-if [[ $(uname -s) = 'Darwin' ]]; then
-	plugins+=('brew' 'brew-coreutils')
-fi
-
-if command -v sbt > /dev/null 2>&1; then
-	plugins+=('sbt' 'scala')
-fi
-
-if command -v stack > /dev/null 2>&1; then
-	plugins+=('stack')
-fi
-
-if command -v yarn > /dev/null 2>&1; then
-	plugins+=('yarn')
-fi
-
-
-if command -v rbenv >/dev/null 2>&1; then
-	plugins+=('rbenv')
-fi
+plugins=(git history gitignore
+  traildots ignore-completions
+  direnv nix zsh-syntax-highlighting
+  brew brew-coreutils
+  docker docker-compose
+  golang gopath yarn nvm
+  sbt scala stack rbenv)
 
 export plugins
 
