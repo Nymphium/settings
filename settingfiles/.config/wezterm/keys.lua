@@ -33,6 +33,14 @@ local keys = {
     action = act.AdjustPaneSize({ 'Right', 5 })
   },
   {
+    key = 'g',
+    mods = 'LEADER|ALT',
+    action = act.SpawnCommandInNewTab {
+      args = { os.getenv('TERM') },
+      cwd = os.getenv('HOME')
+    }
+  },
+  {
     key = 'd',
     mods = 'LEADER|ALT',
     action = act.CloseCurrentTab({ confirm = false })
