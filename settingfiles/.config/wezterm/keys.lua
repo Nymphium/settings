@@ -14,22 +14,22 @@ local keys = {
   },
   {
     key = 'h',
-    mods = 'LEADER|ALT',
+    mods = 'LEADER|ALT|SHIFT',
     action = act.AdjustPaneSize({ 'Left', 5 })
   },
   {
     key = 'j',
-    mods = 'LEADER|ALT',
+    mods = 'LEADER|ALT|SHIFT',
     action = act.AdjustPaneSize({ 'Down', 5 })
   },
   {
     key = 'k',
-    mods = 'LEADER|ALT',
+    mods = 'LEADER|ALT|SHIFT',
     action = act.AdjustPaneSize({ 'Up', 5 })
   },
   {
     key = 'l',
-    mods = 'LEADER|ALT',
+    mods = 'LEADER|ALT|SHIFT',
     action = act.AdjustPaneSize({ 'Right', 5 })
   },
   {
@@ -116,6 +116,16 @@ local keys = {
     key = ':',
     mods = 'LEADER',
     action = act.ActivateCommandPalette
+  },
+  {
+    key = '+',
+    mods = 'ALT',
+    action = act.IncreaseFontSize,
+  },
+  {
+    key = '+',
+    mods = 'ALT|SHIFT',
+    action = act.DecreaseFontSize,
   }
 }
 

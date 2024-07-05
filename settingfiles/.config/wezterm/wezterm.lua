@@ -3,6 +3,7 @@ local wezterm = require('wezterm')
 wezterm.GLOBAL.is_windows = wezterm.target_triple:find('windows') ~= nil
 
 local config = wezterm.config_builder()
+config.show_update_window = wezterm.GLOBAL.is_windows
 
 config.font_size = 14
 local font = wezterm.font_with_fallback {

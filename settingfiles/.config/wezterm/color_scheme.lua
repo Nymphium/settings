@@ -15,7 +15,6 @@ wezterm.on('update-status', function(window, _)
     scheme = color_schemes.light
   end
   if overrides.color_scheme ~= scheme then
-    wezterm.GLOBAL.scheme = scheme
     overrides.color_scheme = scheme
     window:set_config_overrides(overrides)
   end

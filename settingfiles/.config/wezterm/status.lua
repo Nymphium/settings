@@ -19,6 +19,7 @@ local basename = function(s)
     return '~'
   end
 
+
   return s:gsub('(.*[/\\])(.*)', '%2')
 end
 
@@ -123,27 +124,33 @@ wezterm.on('format-tab-title', function(tab, _, _, config, _, _)
   }
 end)
 
-wezterm.on('update-right-status', function(window, pane)
-  local cells = {}
+wezterm.on('update-status', function(window, pane)
+  local left_cells = {}
+  local tab = window:active_tab()
 
   if window:leader_is_active() then
-    table.insert(cells, utf8.char(0xebac))
+    table.insert(left_cells, utf8.char(0xebac))
   end
 
-  table.insert(cells, (wezterm:hostname()):upper())
+  for _, p in pairs(tab:panes_with_info()) do
+    if p.is_active and tab:active_pane().is_zoomed then
+      table.insert(left_cells, wezterm.nerdfonts.fa_arrows_alt)
+    end
+  end
+
+  table.insert(left_cells, wezterm:hostname():upper())
 
   do
-    local tab = window:active_tab()
     local proc_name = basename(pane:get_foreground_process_name())
     tab:set_title(proc_name)
   end
 
   if not wezterm.GLOBAL.is_windows then
     local usage, max, max_proc = get_mem()
-    table.insert(cells, ('MEM %.1f%%┃%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
+    table.insert(left_cells, ('MEM %.1f%%┃%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
 
     usage, max, max_proc = get_cpu()
-    table.insert(cells, ('CPU %.1f%%┃%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
+    table.insert(left_cells, ('CPU %.1f%%┃%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
   end
 
   -- Color palette for the backgrounds of each cell
@@ -160,7 +167,7 @@ wezterm.on('update-right-status', function(window, pane)
     { Text = ' ' },
   }
 
-  for i = 1, #cells do
+  for i = 1, #left_cells do
     local symbol_bg = colors[i % #colors + 1]
 
     table.insert(elements, { Foreground = { Color = symbol_bg } })
@@ -168,9 +175,9 @@ wezterm.on('update-right-status', function(window, pane)
 
     table.insert(elements, { Background = { Color = symbol_bg } })
     table.insert(elements, { Foreground = { Color = status_text_fg } })
-    table.insert(elements, { Text = ' ' .. cells[i] .. ' ' })
+    table.insert(elements, { Text = ' ' .. left_cells[i] .. ' ' })
 
-    if i == #cells then
+    if i == #left_cells then
       table.insert(elements, { Background = { Color = 'none' } })
       table.insert(elements, { Foreground = { Color = symbol_bg } })
       table.insert(elements, { Text = right_arrow })
