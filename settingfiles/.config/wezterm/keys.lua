@@ -135,7 +135,7 @@ local keys = {
   {
     key = '/',
     mods = 'LEADER',
-    action = act.Sarch { CaseSensitiveString = '' }
+    action = act.Search { CaseSensitiveString = '' }
   }
 
 }
