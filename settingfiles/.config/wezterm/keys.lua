@@ -99,7 +99,7 @@ local keys = {
   },
   {
     key = 'v',
-    mods = 'SUPER',
+    mods = 'CTRL',
     action = act.PasteFrom('Clipboard')
   },
   {
