@@ -1,9 +1,7 @@
 local wezterm = require('wezterm')
 
--- The powerline < symbol
-local right_arrow = utf8.char(0xe0b0)
--- The filled in variant of the >| symbol
-local solid_right_arrow = utf8.char(0xe0d7)
+local sep_right = wezterm.nerdfonts.pl_left_hard_divider
+local sep_left = wezterm.nerdfonts.ple_trapezoid_top_bottom_mirrored
 
 local status_text_fg = 'white'
 local home = (os.getenv('HOME')
@@ -112,7 +110,7 @@ wezterm.on('format-tab-title', function(tab, _, _, config, _, _)
   return {
     { Background = { Color = 'none' } },
     { Foreground = { Color = symbol_fg } },
-    { Text = solid_right_arrow },
+    { Text = sep_left },
 
     { Background = { Color = text_bg } },
     { Foreground = { Color = text_fg } },
@@ -120,7 +118,7 @@ wezterm.on('format-tab-title', function(tab, _, _, config, _, _)
 
     { Background = { Color = 'none' } },
     { Foreground = { Color = symbol_fg } },
-    { Text = right_arrow },
+    { Text = sep_right },
   }
 end)
 
@@ -147,10 +145,10 @@ wezterm.on('update-status', function(window, pane)
 
   if not wezterm.GLOBAL.is_windows then
     local usage, max, max_proc = get_mem()
-    table.insert(left_cells, ('MEM %.1f%%┃%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
+    table.insert(left_cells, ('MEM %.1f%%│%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
 
     usage, max, max_proc = get_cpu()
-    table.insert(left_cells, ('CPU %.1f%%┃%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
+    table.insert(left_cells, ('CPU %.1f%%│%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
   end
 
   -- Color palette for the backgrounds of each cell
@@ -171,7 +169,7 @@ wezterm.on('update-status', function(window, pane)
     local symbol_bg = colors[i % #colors + 1]
 
     table.insert(elements, { Foreground = { Color = symbol_bg } })
-    table.insert(elements, { Text = solid_right_arrow })
+    table.insert(elements, { Text = sep_left })
 
     table.insert(elements, { Background = { Color = symbol_bg } })
     table.insert(elements, { Foreground = { Color = status_text_fg } })
@@ -180,7 +178,7 @@ wezterm.on('update-status', function(window, pane)
     if i == #left_cells then
       table.insert(elements, { Background = { Color = 'none' } })
       table.insert(elements, { Foreground = { Color = symbol_bg } })
-      table.insert(elements, { Text = right_arrow })
+      table.insert(elements, { Text = sep_right })
     end
   end
 

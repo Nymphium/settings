@@ -3,7 +3,6 @@ local wezterm = require('wezterm')
 wezterm.GLOBAL.is_windows = wezterm.target_triple:find('windows') ~= nil
 
 local config = wezterm.config_builder()
-config.show_update_window = wezterm.GLOBAL.is_windows
 
 config.font_size = 14
 local font = wezterm.font_with_fallback {
@@ -26,6 +25,7 @@ config.window_padding = {
 }
 
 config.tab_bar_at_bottom = true
+config.show_close_tab_button_in_tabs = false
 config.show_new_tab_button_in_tab_bar = false
 config.use_fancy_tab_bar = false
 config.tab_max_width = 40
