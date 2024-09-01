@@ -1,4 +1,4 @@
-#!/bin/zsh -u
+#!/bin/zsh -eux
 
 THDIR=$PWD/settingfiles
 TARGET=$HOME
@@ -87,9 +87,6 @@ for f in ${THDIR}/dots/.*; () {
 	local dst; dst="${TARGET}/$(basename "${f}")"
 	[[ ! -a "${dst}" ]] && ln -s "${f}" "${dst}"
 } || :
-
-
-
 
 # .xinitrc
 ## it is COPIED

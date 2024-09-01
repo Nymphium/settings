@@ -25,7 +25,6 @@ config.window_padding = {
 }
 
 config.tab_bar_at_bottom = true
-config.show_close_tab_button_in_tabs = false
 config.show_new_tab_button_in_tab_bar = false
 config.use_fancy_tab_bar = false
 config.tab_max_width = 40
