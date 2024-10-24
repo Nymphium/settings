@@ -2,7 +2,9 @@ if_have() {
   command -v "${1}" > /dev/null 2>&1
 }
 
-[[ ! "${ZSH}" ]] && source "${HOME}/.zprofile"
+if [[ -o login ]] || [[ ! "${ZSH}" ]]; then
+  source "${HOME}/.zprofile"
+fi
 
 export LANG=${LANG:-en_US.UTF-8}
 

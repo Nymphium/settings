@@ -1,6 +1,4 @@
 Session.vim
 ,*
 .vimrc
-.direnv/
-.env.local
 .DS_Store

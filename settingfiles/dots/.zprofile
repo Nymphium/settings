@@ -16,18 +16,18 @@ if [[ ! -d "${ZSH}" ]]; then
 fi
 
 plugins=(git history gitignore
-  traildots ignore-completions
+  traildots
   direnv nix zsh-syntax-highlighting
   brew brew-coreutils
   docker docker-compose
-  golang gopath yarn nvm
+  golang yarn nvm
   sbt scala stack rbenv)
 
 export plugins
 
 DISABLE_AUTO_TITLE=true
 export DISABLE_AUTO_TITLE
-ZSH_THEME="nymphium"
+ZSH_THEME=nymphium
 export ZSH_THEME
 
 zstyle ':completion:*' list-colors "${LS_COLORS}"
