@@ -29,16 +29,22 @@ config.show_new_tab_button_in_tab_bar = false
 config.use_fancy_tab_bar = false
 config.tab_max_width = 40
 
-config.leader = { key = 'b', mods = 'ALT' }
 config.disable_default_key_bindings = true
-config.disable_default_mouse_bindings = true
-config.keys = require('./keys')
+-- config.disable_default_mouse_bindings = true
+local keys = require('./keys')
+config.leader = keys.leader
+config.keys = keys.keys
+config.key_tables = keys.key_tables
 
 config.animation_fps = 1
 
 wezterm.on('gui-startup', function(cmd)
   local _, _, window = wezterm.mux.spawn_window(cmd or {})
   window:gui_window():maximize()
+end)
+
+wezterm.on('user-var-changed', function(win, pane, name, value)
+  print(win, pane, name, value)
 end)
 
 require('./color_scheme')

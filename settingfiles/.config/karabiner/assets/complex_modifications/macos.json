@@ -49,6 +49,9 @@
                 "^com\\.googlecode\\.iterm2$",
                 "^org\\.alacritty$",
                 "^com\\.github\\.wez\\.wezterm$"
+              ],
+              "file_paths": [
+                "wezterm"
               ]
             }
           ],
@@ -91,7 +94,7 @@
       ]
     },
     {
-      "description": "Change Mac mappings for Firefox",
+      "description": "Change Mac mappings for Browsers",
       "manipulators": [
         {
           "type": "basic",
@@ -107,7 +110,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -134,7 +138,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -161,7 +166,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -188,7 +194,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -215,7 +222,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -242,7 +250,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -269,7 +278,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -296,7 +306,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -323,7 +334,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -350,7 +362,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -380,7 +393,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -407,7 +421,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -434,7 +449,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -461,7 +477,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -488,7 +505,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -515,7 +533,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -542,7 +561,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -572,7 +592,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -602,7 +623,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -632,7 +654,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -662,7 +685,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
@@ -692,7 +716,8 @@
             {
               "type": "frontmost_application_if",
               "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$"
+                "^org\\.mozilla\\.firefox$",
+                "^com\\.google\\.Chrome$"
               ]
             }
           ],
