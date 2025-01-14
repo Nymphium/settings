@@ -69,13 +69,16 @@ local keys = {
     paneadjust.right,
     paneadjust.up,
     paneadjust.down,
+    panemove.left,
+    panemove.right,
+    panemove.up,
+    panemove.down,
     {
       key = 'g',
       mods = 'LEADER|ALT',
-      action = act.SpawnCommandInNewTab {
-        args = { os.getenv('SHELL'), '-l' },
-        cwd = os.getenv('HOME')
-      }
+      action = wezterm.action_callback(function(win, _)
+        return win:mux_window():spawn_tab { cwd = wezterm.home_dir }
+      end),
     },
     {
       key = 'd',
@@ -97,10 +100,6 @@ local keys = {
       mods = 'ALT',
       action = act.ActivateTabRelative(1)
     },
-    panemove.left,
-    panemove.right,
-    panemove.up,
-    panemove.down,
     {
       key = 's',
       mods = 'LEADER|ALT',
@@ -177,15 +176,18 @@ local keys = {
   },
   key_tables = {
     copy_mode = {
-      panemove.left,
-      panemove.right,
-      panemove.up,
-      panemove.down,
       paneadjust.left,
       paneadjust.right,
       paneadjust.up,
       paneadjust.down,
 
+      {
+        key = 'e',
+        action = act.CopyMode 'MoveForwardWord',
+      }, {
+      key = 'b',
+      action = act.CopyMode 'MoveBackwardWord',
+    },
       {
         key = 'i',
         action = act.Multiple {
@@ -308,36 +310,6 @@ local keys = {
       },
     },
     search_mode = {
-      -- {
-      --   key = 'Escape',
-      --   action = act.ActivateCopyMode
-      -- },
-      -- {
-      --   key = 'Enter',
-      --   action = act.Multiple {
-      --     act.CopyMode 'NextMatch',
-      --     { CopyMode = 'ClearSelectionMode' },
-      --   }
-      -- },
-      -- {
-      --   key = 'Enter',
-      --   mods = 'SHIFT',
-      --   action = act.Multiple {
-      --     act.CopyMode 'PriorMatch',
-      --     { CopyMode = 'ClearSelectionMode' },
-      --   }
-      -- },
-      -- {
-      --   key = 'v',
-      --   mods = 'SHIFT',
-      --   action = act.CopyMode { SetSelectionMode = 'Block' }
-      -- },
-      -- {
-      --   key = 'v',
-      --   action = act.Multiple {
-      --     act.CopyMode { SetSelectionMode = 'Cell' },
-      --   }
-      -- },
       {
         key = 'Enter',
         action = act.CopyMode 'AcceptPattern'

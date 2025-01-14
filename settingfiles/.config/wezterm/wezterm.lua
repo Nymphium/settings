@@ -14,14 +14,14 @@ local font = wezterm.font_with_fallback {
 config.font = font
 config.window_frame = {
   font = wezterm.font("MonaspiceAr Nerd Font Propo", { weight = 'Bold' }),
-  border_bottom_height = '0.3cell'
+  border_bottom_height = '0cell'
 }
 
 config.window_padding = {
   left = 0,
   right = 0,
   top = 0,
-  bottom = 1
+  bottom = 0
 }
 
 config.tab_bar_at_bottom = true
@@ -41,10 +41,6 @@ config.animation_fps = 1
 wezterm.on('gui-startup', function(cmd)
   local _, _, window = wezterm.mux.spawn_window(cmd or {})
   window:gui_window():maximize()
-end)
-
-wezterm.on('user-var-changed', function(win, pane, name, value)
-  print(win, pane, name, value)
 end)
 
 require('./color_scheme')

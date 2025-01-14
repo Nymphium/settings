@@ -1,7 +1,8 @@
 local wezterm = require('wezterm')
 
 local sep_right = wezterm.nerdfonts.pl_left_hard_divider
-local sep_left = wezterm.nerdfonts.ple_trapezoid_top_bottom_mirrored
+-- local sep_left = wezterm.nerdfonts.pl_left_hard_divider_inverse
+local sep_left = utf8.char(0xe0d7)
 
 local status_text_fg = 'white'
 local home = (os.getenv('HOME')
@@ -79,33 +80,48 @@ local get_cpu = function()
   return usage, max, max_proc
 end
 
-wezterm.on('format-tab-title', function(tab, _, _, config, _, _)
+wezterm.on('format-tab-title', function(tab, _, _, config, _, max_width)
+  if not config.resolved_palette.tab_bar then
+    return
+  end
+
   local muxtab = wezterm.mux.get_tab(tab.tab_id)
   local panes = muxtab:panes_with_info()
 
-  local cwd = ''
-  do
-    local cwd_uri = muxtab:active_pane():get_current_working_dir()
-    if cwd_uri then
-      cwd = wezterm.truncate_right(basename(cwd_uri.file_path), 15)
-    end
+  local text = (' %%%s'):format(#panes)
+  local next_sep = ') '
+
+  local title = wezterm.truncate_right(tab.tab_title, max_width // 2)
+  if title and #title > 0 then
+    text = ('%s%s%s'):format(text, next_sep, title)
+    next_sep = '┃'
   end
-
-  local title = wezterm.truncate_right(tab.tab_title, 15)
-
-  local text = (' %d) %s┃%s '):format(#panes, title, cwd)
 
   local symbol_fg, text_fg, text_bg
 
-  if tab.is_active and config.resolved_palette.tab_bar then
+  if tab.is_active then
     symbol_fg = config.resolved_palette.tab_bar.active_tab.bg_color
     text_fg = config.resolved_palette.tab_bar.active_tab.fg_color
     text_bg = config.resolved_palette.tab_bar.active_tab.bg_color
+
+    local active_pane = muxtab:active_pane()
+    local ok, cwd_uri, err = pcall(active_pane.get_current_working_dir, active_pane)
+    if not ok then
+      wezterm.log_error(cwd_uri, err)
+      return
+    end
+
+    if cwd_uri then
+      local cwd = wezterm.truncate_right(basename(cwd_uri.file_path), max_width // 2)
+      text = ('%s%s%s'):format(text, next_sep, cwd)
+    end
   else
     symbol_fg = config.resolved_palette.tab_bar.inactive_tab.bg_color
     text_fg = config.resolved_palette.tab_bar.inactive_tab.fg_color
     text_bg = config.resolved_palette.tab_bar.inactive_tab.bg_color
   end
+
+  text = wezterm.truncate_right(text .. ' ', max_width)
 
   return {
     { Background = { Color = 'none' } },
@@ -119,10 +135,13 @@ wezterm.on('format-tab-title', function(tab, _, _, config, _, _)
     { Background = { Color = 'none' } },
     { Foreground = { Color = symbol_fg } },
     { Text = sep_right },
+
+    { Foreground = { Color = 'none' } },
   }
 end)
 
 wezterm.on('update-status', function(window, pane)
+  local right_cells = {}
   local left_cells = {}
   local tab = window:active_tab()
 
@@ -136,19 +155,26 @@ wezterm.on('update-status', function(window, pane)
     end
   end
 
-  table.insert(left_cells, wezterm:hostname():upper())
+  table.insert(right_cells, wezterm:hostname():upper())
 
   do
-    local proc_name = basename(pane:get_foreground_process_name())
-    tab:set_title(proc_name)
+    local ok, proc_name, err = pcall(pane.get_foreground_process_name, pane)
+    if not ok then
+      wezterm.log_error(err)
+      return
+    end
+
+    tab:set_title(basename(proc_name))
   end
 
   if not wezterm.GLOBAL.is_windows then
     local usage, max, max_proc = get_mem()
-    table.insert(left_cells, ('MEM %.1f%%│%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
+    table.insert(right_cells,
+      ('MEM %.1f%%│%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
 
     usage, max, max_proc = get_cpu()
-    table.insert(left_cells, ('CPU %.1f%%│%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
+    table.insert(right_cells,
+      ('CPU %.1f%%│%s(%.1f%%)'):format(usage, wezterm.truncate_right(basename(max_proc), 10), max))
   end
 
   -- Color palette for the backgrounds of each cell
@@ -160,7 +186,27 @@ wezterm.on('update-status', function(window, pane)
     '#b491c8',
   }
 
-  local elements = {
+  local right_status = {
+    { Background = { Color = 'none' } },
+  }
+
+  for i = 1, #right_cells do
+    local symbol_bg = colors[i % #colors + 1]
+
+    table.insert(right_status, { Foreground = { Color = symbol_bg } })
+    table.insert(right_status, { Text = sep_left })
+
+    table.insert(right_status, { Background = { Color = symbol_bg } })
+    table.insert(right_status, { Foreground = { Color = status_text_fg } })
+    table.insert(right_status, { Text = ' ' .. right_cells[i] .. ' ' })
+
+
+    table.insert(right_status, { Background = { Color = 'none' } })
+    table.insert(right_status, { Foreground = { Color = symbol_bg } })
+    table.insert(right_status, { Text = sep_right })
+  end
+
+  local left_status = {
     { Background = { Color = 'none' } },
     { Text = ' ' },
   }
@@ -168,19 +214,20 @@ wezterm.on('update-status', function(window, pane)
   for i = 1, #left_cells do
     local symbol_bg = colors[i % #colors + 1]
 
-    table.insert(elements, { Foreground = { Color = symbol_bg } })
-    table.insert(elements, { Text = sep_left })
+    table.insert(left_status, { Foreground = { Color = symbol_bg } })
+    table.insert(left_status, { Text = sep_left })
 
-    table.insert(elements, { Background = { Color = symbol_bg } })
-    table.insert(elements, { Foreground = { Color = status_text_fg } })
-    table.insert(elements, { Text = ' ' .. left_cells[i] .. ' ' })
+    table.insert(left_status, { Background = { Color = symbol_bg } })
+    table.insert(left_status, { Foreground = { Color = status_text_fg } })
+    table.insert(left_status, { Text = ' ' .. left_cells[i] .. ' ' })
 
     if i == #left_cells then
-      table.insert(elements, { Background = { Color = 'none' } })
-      table.insert(elements, { Foreground = { Color = symbol_bg } })
-      table.insert(elements, { Text = sep_right })
+      table.insert(left_status, { Background = { Color = 'none' } })
+      table.insert(left_status, { Foreground = { Color = symbol_bg } })
+      table.insert(left_status, { Text = sep_right })
     end
   end
 
-  window:set_left_status(wezterm.format(elements))
+  window:set_left_status(wezterm.format(left_status))
+  window:set_right_status(wezterm.format(right_status))
 end)
