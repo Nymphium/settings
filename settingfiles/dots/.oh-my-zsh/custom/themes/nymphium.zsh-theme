@@ -11,7 +11,7 @@ local fg_vcs_action="%{${FG[203]}%}"
 local fg_vcs_status="%{${fg[green]}%}"
 local fg_vim="%{${FG[155]}%}"
 
-local vim_icon=''
+local nvim_icon=''
 local sep=''
 local branch_icon=''
 local dirty_icon='󰋔'
@@ -21,8 +21,8 @@ local untracked_icon='󰧏'
 local stash_icon=''
 local rebase_icon=''
 
-local icon_vim=${VIM:+"${fg_vim}${vim_icon}${fg_normal}"}
-local prompt_start="${fg_normal}${icon_vim}"
+local icon_nvim=${NVIM:+"${fg_vim}${nvim_icon}${fg_normal}"}
+local prompt_start="${fg_normal}${icon_nvim}"
 
 local vcs_info_git_format=" ${bg_vcs}${sep} "
 vcs_info_git_format+="${fg_vcs_branch}${branch_icon}%b "

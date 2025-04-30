@@ -1,6 +1,6 @@
 local wezterm = require('wezterm')
 
-local color_schemes = {
+wezterm.GLOBAL.theme = {
   dark = 'tokyonight-storm',
   light = 'tokyonight-day'
 }
@@ -10,9 +10,9 @@ wezterm.on('update-status', function(window, _)
   local appearance = wezterm.gui.get_appearance()
   local scheme
   if appearance:find 'Dark' then
-    scheme = color_schemes.dark
+    scheme = wezterm.GLOBAL.theme.dark
   else
-    scheme = color_schemes.light
+    scheme = wezterm.GLOBAL.theme.light
   end
   if overrides.color_scheme ~= scheme then
     overrides.color_scheme = scheme

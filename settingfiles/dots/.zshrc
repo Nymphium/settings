@@ -139,4 +139,8 @@ bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}}
 
+if_have gh && gh copilot --help > /dev/null 2>&1 && {
+  eval "$(gh copilot alias -- zsh)"
+}
+
 unset -f if_have
