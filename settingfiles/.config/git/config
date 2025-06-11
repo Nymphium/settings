@@ -7,23 +7,23 @@
 [color]
   ui = auto
 
-[core]
-  editor = nvr --remote-wait-silent
-
-[diff]
-  tool = nvr
+; [core]
+;   editor = nvr --remote-wait-silent
+;
+; [diff]
+;   tool = nvr
 
 [difftool]
   prompt = false
 
-[difftool "nvr"]
-  cmd = nvr -s -d $LOCAL $REMOTE
+; [difftool "nvr"]
+;   cmd = nvr -s -d $LOCAL $REMOTE
 
 [merge]
-    tool = nvr
+    ; tool = nvr
     conflictstyle = zdiff3
-[mergetool "nvr"]
-    cmd = nvr -s -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
+; [mergetool "nvr"]
+;     cmd = nvr -s -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
 
 [pager]
   diff =

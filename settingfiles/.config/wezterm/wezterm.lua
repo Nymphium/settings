@@ -7,13 +7,16 @@ local config = wezterm.config_builder()
 config.font_size = 12
 
 local font = wezterm.font_with_fallback {
-  { family = 'MonaspiceAr Nerd Font Mono', weight = 'Medium' },
+  { family = 'MonaspiceAr Nerd Font Mono' },
   { family = 'Hiragino Sans', },
   { family = 'Source Han Sans JP', },
-  { family = 'Apple Color Emoji' }
+  { family = 'Apple Color Emoji',         assume_emoji_presentation = true }
 }
 
 config.font = font
+-- config.treat_east_asian_ambiguous_width_as_wide = true
+-- https://monaspace.githubnext.com/#code-ligatures
+config.harfbuzz_features = { 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'liga', 'calt', 'dlig' }
 
 config.window_frame = {
   font = wezterm.font('MonaspiceAr Nerd Font Propo', { weight = 'Bold' }),
@@ -46,7 +49,7 @@ config.keys = keys.keys
 config.key_tables = keys.key_tables
 
 require('./color_scheme')
-require('./commands')
+require('./command_palette')
 require('./status')
 require('./plugins')
 

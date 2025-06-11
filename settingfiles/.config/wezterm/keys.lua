@@ -1,6 +1,8 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
 
+local commands = require('./commands')
+
 local panemove = {
   left = {
     key = 'LeftArrow',
@@ -171,6 +173,20 @@ local keys = {
         win:perform_action(act.CopyMode 'ClearSelectionMode', pane)
         win:perform_action(act.ScrollToPrompt(1), pane)
         -- win:perform_action(act.ActivateCopyMode, pane)
+      end)
+    },
+    {
+      key = 'w',
+      mods = 'LEADER|SHIFT',
+      action = wezterm.action_callback(function(win, pane)
+        win:perform_action(commands.list_window(win).action, pane)
+      end)
+    },
+    {
+      key = 't',
+      mods = 'LEADER|SHIFT',
+      action = wezterm.action_callback(function(win, pane)
+        win:perform_action(commands.list_tab(win).action, pane)
       end)
     }
   },

@@ -4,4 +4,6 @@ path=(
   "${path[@]}"
 )
 
+alias awk=gawk
+
 export path
