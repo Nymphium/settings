@@ -4,22 +4,22 @@ wezterm.GLOBAL.is_windows = wezterm.target_triple:find('windows') ~= nil
 
 local config = wezterm.config_builder()
 
-config.font_size = 12
+config.font_size = 10
 
-local font = wezterm.font_with_fallback {
-  { family = 'MonaspiceAr Nerd Font Mono' },
+config.font = wezterm.font_with_fallback {
+  { family = 'MonaspiceNe Nerd Font Mono' },
   { family = 'Hiragino Sans', },
   { family = 'Source Han Sans JP', },
   { family = 'Apple Color Emoji',         assume_emoji_presentation = true }
 }
 
-config.font = font
 -- config.treat_east_asian_ambiguous_width_as_wide = true
 -- https://monaspace.githubnext.com/#code-ligatures
-config.harfbuzz_features = { 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'liga', 'calt', 'dlig' }
+config.harfbuzz_features = { 'ss01', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'ss10', 'cv01=2', 'cv02',
+  'cv10', 'cv11', 'cv30', 'cv31', 'cv32', 'cv62', 'liga', 'calt', 'case' }
 
 config.window_frame = {
-  font = wezterm.font('MonaspiceAr Nerd Font Propo', { weight = 'Bold' }),
+  font = wezterm.font('MonaspiceNe Nerd Font Propo', { weight = 'Bold' }),
   border_bottom_height = '0.3cell'
 }
 
@@ -29,6 +29,12 @@ config.window_padding = {
   top = 0,
   bottom = 0
 }
+
+-- if os.getenv('WEZTERM_UNIX_SOCKET') then
+-- idk why need at `wezterm connect`
+config.webgpu_power_preference = "HighPerformance"
+config.webgpu_force_fallback_adapter = true
+-- end
 
 config.tab_bar_at_bottom = true
 config.show_new_tab_button_in_tab_bar = false
@@ -52,5 +58,10 @@ require('./color_scheme')
 require('./command_palette')
 require('./status')
 require('./plugins')
+
+local ok, ssh_domains = pcall(require, './ssh_domains')
+if ok then
+  config.ssh_domains = ssh_domains
+end
 
 return config
