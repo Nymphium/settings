@@ -18,6 +18,7 @@ fi
 plugins=(git history gitignore
   traildots
   direnv nix zsh-syntax-highlighting kubectl
+  nvim-nest
   brew brew-coreutils
   docker docker-compose
   golang yarn nvm
@@ -48,4 +49,4 @@ setopt auto_param_keys
 setopt hist_ignore_all_dups
 setopt inc_append_history
 setopt hist_save_no_dups
-
+unsetopt correct_all
