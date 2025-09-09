@@ -60,12 +60,12 @@ local keys = {
     {
       key = 'v',
       mods = 'SHIFT|ALT',
-      action = act.SplitHorizontal { domain = "CurrentPaneDomain" }
+      action = act.SplitHorizontal { domain = 'DefaultDomain' }
     },
     {
       key = 'w',
       mods = 'SHIFT|ALT',
-      action = act.SplitVertical { domain = "CurrentPaneDomain" }
+      action = act.SplitVertical { domain = 'DefaultDomain' }
     },
     paneadjust.left,
     paneadjust.right,
@@ -76,10 +76,16 @@ local keys = {
     panemove.up,
     panemove.down,
     {
+      key = 't',
+      mods = 'LEADER|ALT',
+      action = act.SpawnTab 'DefaultDomain',
+    },
+    {
       key = 'g',
       mods = 'LEADER|ALT',
-      action = wezterm.action_callback(function(win, _)
-        return win:mux_window():spawn_tab { cwd = wezterm.home_dir }
+      action = wezterm.action_callback(function(win, pane)
+        win:perform_action(act.SwitchToWorkspace { spawn = { cwd = wezterm.home_dir, domain = 'DefaultDomain' } }, pane)
+        wezterm.time.call_after(0.1, wezterm.reload_configuration)
       end),
     },
     {
@@ -176,6 +182,19 @@ local keys = {
       end)
     },
     {
+      key = 'c',
+      mods = 'LEADER|SHIFT',
+      action = act.PromptInputLine {
+        description = 'Change Window Name',
+        initial_value = '',
+        action = wezterm.action_callback(function(win, _, line)
+          if line and #line > 0 then
+            win:mux_window():set_title(line)
+          end
+        end),
+      }
+    },
+    {
       key = 'w',
       mods = 'LEADER|SHIFT',
       action = wezterm.action_callback(function(win, pane)
@@ -188,7 +207,7 @@ local keys = {
       action = wezterm.action_callback(function(win, pane)
         win:perform_action(commands.list_tab(win).action, pane)
       end)
-    }
+    },
   },
   key_tables = {
     copy_mode = {

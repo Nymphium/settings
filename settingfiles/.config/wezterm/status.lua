@@ -27,8 +27,11 @@ tabline.setup({
   }
 })
 
-wezterm.on('update-status', function(_, _)
-  local overrides = tabline.get_config() or {}
+local detect_dark_mode = function()
+  if not wezterm.gui then
+    return
+  end
+
   local appearance = wezterm.gui.get_appearance()
   local theme
   if appearance:find 'Dark' then
@@ -36,8 +39,22 @@ wezterm.on('update-status', function(_, _)
   else
     theme = wezterm.GLOBAL.theme.light
   end
+
+  local overrides = tabline.get_config() or {}
   if overrides.theme ~= theme then
     overrides.options.theme = theme
     tabline.setup(overrides)
   end
-end)
+end
+
+local function timer_detect_dark_mode()
+  detect_dark_mode()
+
+  wezterm.time.call_after(3, timer_detect_dark_mode)
+end
+
+wezterm.time.call_after(0, timer_detect_dark_mode)
+
+return {
+  detect_dark_mode = detect_dark_mode,
+}
