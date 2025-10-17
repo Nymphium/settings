@@ -78,13 +78,13 @@ local keys = {
     {
       key = 't',
       mods = 'LEADER|ALT',
-      action = act.SpawnTab 'DefaultDomain',
+      action = act.SpawnTab 'DefaultDomain'
     },
     {
       key = 'g',
       mods = 'LEADER|ALT',
       action = wezterm.action_callback(function(win, pane)
-        win:perform_action(act.SwitchToWorkspace { spawn = { cwd = wezterm.home_dir, domain = 'DefaultDomain' } }, pane)
+        win:perform_action(act.SwitchToWorkspace { spawn = { domain = 'DefaultDomain' } }, pane)
         wezterm.time.call_after(0.1, wezterm.reload_configuration)
       end),
     },

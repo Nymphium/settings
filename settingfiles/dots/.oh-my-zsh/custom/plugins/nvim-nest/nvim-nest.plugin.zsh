@@ -1,11 +1,7 @@
-() {
-  alias nvn=nvim-nest
-}
+function nvr() {
+  nvn="$NVIM"
 
-function nvim-nest() {
-  set -e
-
-  if [[ "$NVIM" == "" ]]; then
+  if [[ "$nvn" == "" ]]; then
     # shellcheck disable=SC2068
     command nvim "$@"
     return $?
@@ -13,24 +9,22 @@ function nvim-nest() {
 
   # --------------
 
-  set -u
-
   local esc_term='<C-\><C-n>'
-  nvr() {
+  _nvr_nvr() {
     # shellcheck disable=SC2068
-    command nvim --server "$NVIM" "$@"
+    command nvim --server "$nvn" "$@"
   }
 
-  unary_cmd() {
-    nvr --remote-send "$(printf '%s:%s %q<CR>' "$esc_term" "$1" "$2")"
+  _nvr_unary_cmd() {
+    _nvr_nvr --remote-send "$(printf '%s:%s %q<CR>' "$esc_term" "$1" "$2")"
   }
 
-  vnew() {
-    unary_cmd "vnew" "$1"
+  _nvr_vnew() {
+    _nvr_unary_cmd "vnew" "$1"
   }
 
-  hnew() {
-    unary_cmd "new" "$1"
+  _nvr_hnew() {
+    _nvr_unary_cmd "new" "$1"
   }
 
   # --- 引数処理 ---
@@ -55,7 +49,8 @@ function nvim-nest() {
 
   # 2. -- 以降の引数を処理
   if [[ ${#args_after_dash[@]} -gt 0 ]]; then
-    nvr --remote-tab "${args_after_dash[@]}"
+    _nvr_nvr --remote-tab "${args_after_dash[@]}"
+    return $?
   fi
 
   # 3. -- 以前の引数を getopts で処理
@@ -96,19 +91,22 @@ function nvim-nest() {
     # 最初のファイルは指定された（またはデフォルトの）分割で開く
     local first_file="${file_args[1]}"
     if [[ "$split_cmd" == "vnew" ]]; then
-      vnew "$first_file"
+      _nvr_vnew "$first_file"
+      return $?
     else
-      hnew "$first_file"
+      _nvr_hnew "$first_file"
+      return $?
     fi
 
     # 2つ目以降のファイルはデフォルトのvnewで開く
-    for (( i=1; i<${#file_args[@]}; i++ )); do
-      vnew "${file_args[$i]}"
-    done
+    # for (( i=1; i<${#file_args[@]}; i++ )); do
+    #   vnew "${file_args[$i]}"
+    # done
   else
     # ファイル引数がなく、-- 以降の引数もなければ、nvimをフォーカス
     if [[ ${#args_after_dash[@]} -eq 0 ]]; then
-      nvr --remote-send "${esc_term}"
+      _nvr_nvr --remote-send "${esc_term}"
+      return $?
     fi
   fi
 }

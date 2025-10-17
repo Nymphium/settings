@@ -21,8 +21,8 @@ local untracked_icon='󰧏'
 local stash_icon=''
 local rebase_icon=''
 
-local icon_nvim=${NVIM:+"${fg_vim}${nvim_icon}${fg_normal}"}
-local prompt_start="${fg_normal}${icon_nvim}"
+local icon_nvim=${NVIM:+"${fg_vim}${bg_normal}${nvim_icon}${reset_color}"}
+local prompt_start="${icon_nvim}${fg_normal}${bg_normal}"
 
 local vcs_info_git_format=" ${bg_vcs}${sep} "
 vcs_info_git_format+="${fg_vcs_branch}${branch_icon}%b "
@@ -84,14 +84,14 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-info
 
 # | settings > master [3] > ↵
 _my_prompt() {
-   vcs_info
+  vcs_info
+
+  # PROMPT="$(printf '\033]133;A\007\033]7;file://%s\033\\' "$PWD")"
 
   # shellcheck disable=2154
   # shellcheck disable=2034
-  PROMPT="${bg_normal}"
 
-  PROMPT+="${prompt_start} %c${fg_normal_sep}${vcs_info_msg_0_}%{${reset_color}%}${bg_normal} %{${reset_color}%}${fg_normal_sep}${sep}%{${reset_color}%} "
+  PROMPT="${prompt_start} %c${fg_normal_sep}${vcs_info_msg_0_}%{${reset_color}%}${bg_normal} %{${reset_color}%}${fg_normal_sep}${sep}%{${reset_color}%} "
 }
 
 add-zsh-hook precmd _my_prompt
-

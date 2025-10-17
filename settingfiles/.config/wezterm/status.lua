@@ -1,60 +1,76 @@
-local wezterm = require('wezterm')
+local wezterm = require("wezterm")
 
 local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
 
+local sections = {
+	tabline_a = { "mode" },
+	tabline_b = { "domain" },
+	tab_active = {
+		" ",
+		{ "zoomed", padding = 0 },
+		-- { 'index',   padding = 0 },
+		{ "process", padding = 0 },
+		"|",
+		{ "cwd", padding = 0 },
+		" ",
+	},
+	tab_inactive = {
+		{ "index", padding = 0 },
+		"cwd",
+	},
+
+	tabline_y = { "battery" },
+	tabline_z = {},
+}
+
+if not wezterm.GLOBAL.windows then
+	sections.tabline_x = { "ram", "cpu" }
+end
+
 tabline.setup({
-  sections = {
-    tabline_a = { 'mode' },
-    tabline_b = { 'domain' },
-    tab_active = {
-      ' ',
-      { 'zoomed',  padding = 0 },
-      -- { 'index',   padding = 0 },
-      { 'process', padding = 0 },
-      '|',
-      { 'cwd', padding = 0 },
-      ' '
-    },
-    tab_inactive = {
-      { 'index', padding = 0 },
-      'cwd',
-    },
-    tabline_x = {
-      'ram', 'cpu'
-    },
-    tabline_y = { 'battery' },
-    tabline_z = {}
-  }
+	sections = sections,
 })
 
-local detect_dark_mode = function()
-  if not wezterm.gui then
-    return
-  end
+local update_tab_appearance = function()
+	if not wezterm.gui then
+		return
+	end
 
-  local appearance = wezterm.gui.get_appearance()
-  local theme
-  if appearance:find 'Dark' then
-    theme = wezterm.GLOBAL.theme.dark
-  else
-    theme = wezterm.GLOBAL.theme.light
-  end
-
-  local overrides = tabline.get_config() or {}
-  if overrides.theme ~= theme then
-    overrides.options.theme = theme
-    tabline.setup(overrides)
-  end
+	local appearance = wezterm.gui.get_appearance()
+	local theme
+	if appearance:find("Dark") then
+		theme = wezterm.GLOBAL.theme.dark
+	else
+		theme = wezterm.GLOBAL.theme.light
+	end
+	tabline.set_theme(theme)
 end
 
-local function timer_detect_dark_mode()
-  detect_dark_mode()
+local function update_tab_appearance_forever()
+	update_tab_appearance()
 
-  wezterm.time.call_after(3, timer_detect_dark_mode)
+	return wezterm.time.call_after(3, update_tab_appearance_forever)
 end
 
-wezterm.time.call_after(0, timer_detect_dark_mode)
+wezterm.on("mux-startup", function(cmd)
+	local _, _, window = wezterm.mux.spawn_window(cmd or {})
+	window:gui_window():maximize()
+
+	update_tab_appearance_forever()
+end)
+
+wezterm.on("window-focus-changed", function(window)
+	if window then
+		update_tab_appearance()
+	end
+end)
+
+wezterm.on("window-config-reloaded", function(window)
+	if window then
+		update_tab_appearance()
+	end
+end)
 
 return {
-  detect_dark_mode = detect_dark_mode,
+	detect_dark_mode = update_tab_appearance,
 }

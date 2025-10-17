@@ -6,9 +6,13 @@ local config = wezterm.config_builder()
 
 if wezterm.GLOBAL.is_windows then
   config.font_size = 10
+  config.line_height = 1.08
+  config.cell_width = 0.95
 else
   config.font_size = 13
 end
+
+config.command_palette_font_size = config.font_size * 1.2
 
 config.font = wezterm.font_with_fallback {
   { family = 'MonaspiceNe Nerd Font Mono' },
@@ -39,32 +43,22 @@ config.window_padding = {
   bottom = -5
 }
 
--- config.mux_enable_ssh_agent = true
--- config.mux_output_parser_coalesce_delay_ms = 1
--- config.mux_output_parser_buffer_size = 8192
-
 config.tab_bar_at_bottom = true
 config.show_new_tab_button_in_tab_bar = false
 config.use_fancy_tab_bar = false
 config.tab_max_width = 40
 config.disable_default_key_bindings = true
-config.animation_fps = 1
+config.max_fps = 144
 
--- wezterm.on('gui-startup', function(cmd)
---   local _, _, window = wezterm.mux.spawn_window(cmd or {})
---   window:gui_window():maximize()
--- end)
---
 local keys = require('./keys')
 
 config.leader = keys.leader
 config.keys = keys.keys
 config.key_tables = keys.key_tables
---
+
 require('./color_scheme')
 require('./command_palette')
 require('./status')
--- require('./plugins')
 
 local ok, ssh_domains = pcall(require, './ssh_domains')
 if ok then
