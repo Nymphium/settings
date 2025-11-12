@@ -24,7 +24,7 @@ local sections = {
 }
 
 if not wezterm.GLOBAL.windows then
-	sections.tabline_x = { "ram", "cpu" }
+	sections.tabline_x = { "ram" }
 end
 
 tabline.setup({
