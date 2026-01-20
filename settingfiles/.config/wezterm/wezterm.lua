@@ -68,7 +68,9 @@ config.show_new_tab_button_in_tab_bar = false
 config.use_fancy_tab_bar = false
 config.tab_max_width = 40
 config.disable_default_key_bindings = true
-config.max_fps = 90
+config.max_fps = 144
+config.front_end = "OpenGL"
+config.prefer_egl = true
 
 local keys = require("./keys")
 
