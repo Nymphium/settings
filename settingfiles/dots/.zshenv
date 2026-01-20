@@ -7,6 +7,7 @@ export path=(
 	"${HOME}"/local/bin
 	"${HOME}"/.local/bin
   "/opt/homebrew/bin"
+  "/usr/local/bin"
 	"${path[@]}"
 )
 

@@ -17,8 +17,9 @@ ZSH=$HOME/.oh-my-zsh
 
 plugins=(git history gitignore
   traildots
-  direnv 
+  direnv
   nix
+  skim
   zsh-syntax-highlighting kubectl
   nvim-nest
   brew
@@ -53,3 +54,6 @@ setopt hist_ignore_all_dups
 setopt inc_append_history
 setopt hist_save_no_dups
 unsetopt correct_all
+
+autoload -Uz compinit
+compinit
