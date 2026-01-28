@@ -6,11 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install deps
         run: |
           sudo apt update
           sudo apt install zsh git curl -y
-      - run: |
-          ./setup.sh
+          curl -sS https://starship.rs/install.sh | sh -s 
+          curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Setup
+        run: ./setup.sh
+      - name: Check
+        run: |
           ls -fhal ~/.config ~/.zsh*
+          echo "Setup finished. Verifying .zshrc..."
+          zsh -c 'source ~/.zshrc && echo "PROMPT CHECK:" && print -P "$PROMPT"'
