@@ -135,6 +135,6 @@ bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}} 
 
-eval "$(zoxide init zsh --cmd cdv)"
+if_have zoxide && eval "$(zoxide init zsh --cmd cdv)"
 
 unset -f if_have
