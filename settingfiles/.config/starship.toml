@@ -1,0 +1,58 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+format = "$directory$git_branch$git_status${custom.git_stash}${custom.git_end}[ ](bg:light_blue)[](fg:light_blue) "
+
+[line_break]
+disabled = true
+
+# https://san9.me/transang-blog/2020/05/original/32.png
+[palettes.dark_mode]
+white = "#CCCCCC"
+light_blue = "#428CD4"
+blue = "#004E9A"
+pink = "#FF9CDA"
+violet = "#EA4492"
+
+[palettes.light_mode]
+white = "#FFFFFF"
+light_blue = "#A5CAD2"
+blue = "#758EB7"
+pink = "#FF7B89"
+violet = "#8A5082"
+
+[directory]
+style = "bold fg:white bg:light_blue"
+format = "[ $path ]($style)"
+truncation_length = 1
+truncate_to_repo = false
+truncation_symbol = ""
+
+[git_branch]
+style = "bold fg:pink bg:blue"
+format = '[](fg:light_blue bg:blue)[ $symbol$branch ]($style)'
+symbol = ""
+
+[git_status]
+style = "fg:violet bg:blue"
+format = '[$all_status$ahead_behind]($style)'
+staged = ""
+modified = ""
+untracked = "󰧏"
+stashed = ""
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+
+[custom.git_stash]
+description = "Show stash count"
+command = "git rev-parse --git-path logs/refs/stash 2>/dev/null | xargs wc -l 2>/dev/null | awk '{print $1}'"
+when = "git rev-parse --is-inside-work-tree 2>/dev/null && [ -f $(git rev-parse --git-path logs/refs/stash) ]"
+style = "fg:violet bg:blue"
+format = '[\[$output\]]($style)'
+
+[custom.git_end]
+command = "echo -n"
+when = "git rev-parse --is-inside-work-tree 2>/dev/null"
+format = "[](fg:blue bg:light_blue)"

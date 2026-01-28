@@ -11,4 +11,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt install zsh git curl -y
-      - run: ./setup.sh
+      - run: |
+          ./setup.sh
+          ls -fhal ~/.config ~/.zsh*

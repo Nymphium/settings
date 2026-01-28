@@ -13,7 +13,7 @@ ohmyzsh/ohmyzsh path:plugins/gh
 ohmyzsh/ohmyzsh path:plugins/kubectl
 
 # External Plugins
-zsh-users/zsh-syntax-highlighting
+zdharma-continuum/fast-syntax-highlighting
 zsh-users/zsh-completions kind:fpath path:src
 
 # Local Custom Plugins (Absolute paths)
