@@ -11,7 +11,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install zsh git curl -y
-          curl -sS https://starship.rs/install.sh | sh -s 
+          curl -sS https://starship.rs/install.sh | sh -s -- -y
           curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Setup
