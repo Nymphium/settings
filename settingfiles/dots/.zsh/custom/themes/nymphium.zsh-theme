@@ -33,7 +33,7 @@ vcs_info_git_format+="${fg_vcs_sep}${sep}"
 autoload -Uz add-zsh-hook vcs_info
 # add-zsh-hook precmd vcs_info # Removed: _my_prompt calls it
 zstyle ":vcs_info:*" enable git
-zstyle ":vcs_info:*" check-for-changes true
+zstyle ":vcs_info:*" check-for-changes false
 zstyle ":vcs_info:git:*" formats "${vcs_info_git_format}"
 zstyle ":vcs_info:git:*" actionformats "${vcs_info_git_format}"
 zstyle ":vcs_info:git:*" unstagedstr "${unstaged_icon}"
@@ -49,17 +49,32 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-info
   local stash_path=$paths[1]
   local rebase_path=$paths[2]
 
-  # Stash check (Fast: read log file line count directly)
+  # 1. Lightweight Status Check (Ignore untracked files for speed)
+  local git_status
+  git_status=$(git status --porcelain --untracked-files=no 2>/dev/null)
+  if [[ -n "${git_status}" ]]; then
+    local status_icons=""
+    if [[ "${git_status}" =~ '^[[:graph:]]' ]]; then
+      status_icons+="${staged_icon}"
+    fi
+    if [[ "${git_status}" =~ '^[[:space:]][[:graph:]]' ]] || [[ "${git_status}" =~ '^.[[:graph:]]' ]]; then
+      status_icons+="${unstaged_icon}"
+    fi
+    if [[ -n "${status_icons}" ]]; then
+       hook_com[misc]+="${fg_vcs_status}${status_icons}"
+    fi
+  fi
+
+  # 2. Stash check (Fast)
   if [[ -f "${stash_path}" ]]; then
     local stash_count=$(wc -l < "${stash_path}")
-    # Trim whitespace
     stash_count="${stash_count//[[:space:]]/}"
     if [[ "${stash_count}" -gt 0 ]]; then
       hook_com[misc]+="[${stash_icon}${stash_count}]"
     fi
   fi
 
-  # Rebase status check (Fast: just reading files)
+  # 3. Rebase status check (Fast)
   if [[ -n "${rebase_path}" ]] && [[ -e "${rebase_path}" ]]; then
     local done_=$(cat "${rebase_path}/msgnum" 2>/dev/null)
     local entire=$(cat "${rebase_path}/end" 2>/dev/null)

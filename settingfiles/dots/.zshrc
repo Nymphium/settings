@@ -5,41 +5,33 @@ if_have() {
   command -v "${1}" > /dev/null 2>&1
 }
 
-# --- Oh My Zsh & Interactive Settings ---
+# --- Antidote & Interactive Settings ---
 
-export ZSH=$HOME/.oh-my-zsh
+# 1. Environment & Helpers needed by plugins
+export ZSH_CACHE_DIR="${HOME}/.cache/zsh"
+[[ ! -d "$ZSH_CACHE_DIR/completions" ]] && mkdir -p "$ZSH_CACHE_DIR/completions"
 
-plugins=(git history gitignore
-  traildots
-  direnv
-  nix
-  skim
-  zsh-syntax-highlighting kubectl
-  nvim-nest
-  brew
-  brew-coreutils
-  docker docker-compose
-  golang yarn nvm
-  gh
-  sbt scala stack rbenv)
+# Initialize completion system early to provide 'compdef' for OMZ plugins
+autoload -Uz compinit
+compinit -C
 
-# export DISABLE_AUTO_TITLE=true
-export ZSH_THEME=nymphium
-# export ENABLE_CORRECTION="true"
+# 2. Antidote setup
+source "${HOME}/.antidote/antidote.zsh"
+antidote load
+
+# 3. Load Theme (Manual source)
+if [[ -f "${HOME}/.zsh/custom/themes/nymphium.zsh-theme" ]]; then
+  source "${HOME}/.zsh/custom/themes/nymphium.zsh-theme"
+fi
 
 # Load custom configurations
 RCD=$HOME/.zsh.d
 if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]]; then
-	for f in "${RCD}"/*; do
+	for f in "${RCD}"/*;
+    do
     # shellcheck disable=1090
     source "${f}"
   done
-fi
-
-# Load Oh My Zsh
-# shellcheck disable=1091
-if [[ -f "${ZSH}/oh-my-zsh.sh" ]]; then
-  source "${ZSH}/oh-my-zsh.sh"
 fi
 
 # Styles and Options
@@ -68,9 +60,9 @@ elif ls -G -d / >/dev/null 2>/dev/null; then
   alias ls='ls -G'
 fi
 
-# pipe filter {{{
+# pipe filter {{{ 
   alias -g G='| grep'
-# }}}
+# }}} 
 
 # latex/pdf {{{ 
   alias platex='platex -kanji=utf8 -halt-on-error'
@@ -78,7 +70,7 @@ fi
   alias xelatex='xelatex -halt-on-error'
   alias luajitlatex='luajittex --fmt=luajitlatex.fmt'
 
-# git {{{
+# git {{{ 
   alias gs='echo you mean `git status` ?'
   alias ghostscript='=gs'
   alias gpo='git push origin'
@@ -86,7 +78,7 @@ fi
   alias glo='git pull origin'
   alias glom='git pull origin master'
   alias gcom='git checkout master'
-# }}}
+# }}} 
 
 alias ps='ps auxfh'
 alias ag='ag --hidden -S --stats --ignore=.git'
@@ -97,9 +89,9 @@ if_have add_comp_ignores && {
   add_comp_ignores class \
     bcf run.xml
 }
-# }}}
+# }}} 
 
-# interactive shell settings {{{
+# interactive shell settings {{{ 
 # no flow control
 stty -ixon
 
@@ -111,6 +103,6 @@ fi
 bindkey '^[e' forward-word
 bindkey '^[w' backward-word
 bindkey -r '^[l'
-# }}}
+# }}} 
 
 unset -f if_have
