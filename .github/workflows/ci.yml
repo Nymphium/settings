@@ -20,4 +20,4 @@ jobs:
         run: |
           ls -fhal ~/.config ~/.zsh*
           echo "Setup finished. Verifying .zshrc..."
-          zsh -c 'source ~/.zshrc && echo "PROMPT CHECK:" && print -P "$PROMPT"'
+          zsh -c 'source ~/.zshrc && echo "PROMPT CHECK:" && echo "-----" && print -P "$PROMPT" && echo "-----"'
