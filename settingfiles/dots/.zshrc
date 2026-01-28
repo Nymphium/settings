@@ -5,11 +5,60 @@ if_have() {
   command -v "${1}" > /dev/null 2>&1
 }
 
-if [[ -o login ]] || [[ ! "${ZSH}" ]]; then
-  source "${HOME}/.zprofile"
+# --- Oh My Zsh & Interactive Settings ---
+
+export ZSH=$HOME/.oh-my-zsh
+
+plugins=(git history gitignore
+  traildots
+  direnv
+  nix
+  skim
+  zsh-syntax-highlighting kubectl
+  nvim-nest
+  brew
+  brew-coreutils
+  docker docker-compose
+  golang yarn nvm
+  gh
+  sbt scala stack rbenv)
+
+# export DISABLE_AUTO_TITLE=true
+export ZSH_THEME=nymphium
+# export ENABLE_CORRECTION="true"
+
+# Load custom configurations
+RCD=$HOME/.zsh.d
+if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]]; then
+	for f in "${RCD}"/*; do
+    # shellcheck disable=1090
+    source "${f}"
+  done
 fi
 
-export LANG=${LANG:-en_US.UTF-8}
+# Load Oh My Zsh
+# shellcheck disable=1091
+if [[ -f "${ZSH}/oh-my-zsh.sh" ]]; then
+  source "${ZSH}/oh-my-zsh.sh"
+fi
+
+# Styles and Options
+zstyle ':completion:*' list-colors "${LS_COLORS}"
+zstyle ':completion::complete:*' use-cache true
+zstyle ':completion:*:default' menu select=1
+
+setopt prompt_subst
+setopt magic_equal_subst
+setopt no_hup
+setopt numeric_glob_sort
+setopt auto_param_keys
+
+setopt hist_ignore_all_dups
+setopt inc_append_history
+setopt hist_save_no_dups
+unsetopt correct_all
+
+# --- End Interactive Settings ---
 
 if ls --color -d / >/dev/null 2>/dev/null; then
   # ls is GNU ls
@@ -23,14 +72,14 @@ fi
   alias -g G='| grep'
 # }}}
 
-# latex/pdf {{{
+# latex/pdf {{{ 
   alias platex='platex -kanji=utf8 -halt-on-error'
   alias lualatex='lualatex -halt-on-error'
   alias xelatex='xelatex -halt-on-error'
   alias luajitlatex='luajittex --fmt=luajitlatex.fmt'
 
 # git {{{
-  alias gs='echo you mean \`git status\` \?'
+  alias gs='echo you mean `git status` ?'
   alias ghostscript='=gs'
   alias gpo='git push origin'
   alias gpom='git push origin master'
@@ -43,13 +92,6 @@ alias ps='ps auxfh'
 alias ag='ag --hidden -S --stats --ignore=.git'
 alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
 alias C='cat'
-
-EDITOR='nvim'
-
-export EDITOR
-
-MANPAGER="/bin/sh -c \"col -b -x | ${EDITOR} -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
-export MANPAGER
 
 if_have add_comp_ignores && {
   add_comp_ignores class \
@@ -70,9 +112,5 @@ bindkey '^[e' forward-word
 bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}}
-
-if_have gh && gh copilot --help > /dev/null 2>&1 && {
-  eval "$(gh copilot alias -- zsh)"
-}
 
 unset -f if_have

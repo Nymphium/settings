@@ -26,58 +26,45 @@ local prompt_start="${icon_nvim}${fg_normal}${bg_normal}"
 
 local vcs_info_git_format=" ${bg_vcs}${sep} "
 vcs_info_git_format+="${fg_vcs_branch}${branch_icon}%b "
-vcs_info_git_format+="${fg_vcs_status}%m${bg_normal}"
+vcs_info_git_format+="${fg_vcs_status}%u%c%m"
+vcs_info_git_format+="${bg_normal}"
 vcs_info_git_format+="${fg_vcs_sep}${sep}"
 
 autoload -Uz add-zsh-hook vcs_info
-add-zsh-hook precmd vcs_info
+# add-zsh-hook precmd vcs_info # Removed: _my_prompt calls it
 zstyle ":vcs_info:*" enable git
-zstyle ":vcs_info:*" check-for-changes false
+zstyle ":vcs_info:*" check-for-changes true
 zstyle ":vcs_info:git:*" formats "${vcs_info_git_format}"
 zstyle ":vcs_info:git:*" actionformats "${vcs_info_git_format}"
+zstyle ":vcs_info:git:*" unstagedstr "${unstaged_icon}"
+zstyle ":vcs_info:git:*" stagedstr "${staged_icon}"
 setopt prompt_subst
 
 zstyle ':vcs_info:git*+set-message:*' hooks git-info
 
 +vi-git-info(){
-  local ginfo=$(git status --porcelain 2>&1)
-  if [[ $? -eq 0 ]]; then
-    contents=()
+  # Get multiple paths in a single git process call
+  local paths
+  paths=(${(f)"$(git rev-parse --git-path logs/refs/stash --git-path rebase-merge 2>/dev/null)"})
+  local stash_path=$paths[1]
+  local rebase_path=$paths[2]
 
-    if [[ "${ginfo}" =~ 'UU[[:space:]]' ]]; then
-      contents+="${dirty_icon}"
+  # Stash check (Fast: read log file line count directly)
+  if [[ -f "${stash_path}" ]]; then
+    local stash_count=$(wc -l < "${stash_path}")
+    # Trim whitespace
+    stash_count="${stash_count//[[:space:]]/}"
+    if [[ "${stash_count}" -gt 0 ]]; then
+      hook_com[misc]+="[${stash_icon}${stash_count}]"
     fi
+  fi
 
-    if [[ "${ginfo}" =~ '^[[:space:]]*A[[:space:]]' ]]; then
-      # shellcheck disable=2154
-      contents+="${staged_icon}"
-    fi
-
-    if [[ "${ginfo}" =~ '^[[:space:]]*(M|D)(M|D)?[[:space:]]' ]]; then
-      # shellcheck disable=2154
-      contents+="${unstaged_icon}"
-    fi
-
-    if [[ "${ginfo}" =~ '^[[:space:]]*\?\?[[:space:]]' ]]; then
-      contents+="${untracked_icon}"
-    fi
-
-    local COUNT; COUNT=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
-    if [[ "${COUNT}" -gt 0 ]]; then
-      contents+="[${stash_icon}${COUNT}]"
-    fi
-
-    if [[ "${#contents}" -gt 0 ]]; then
-      hook_com[misc]="${fg_vcs_action}"
-
-      local rebmergpath="$(git rev-parse --git-path 'rebase-merge/')"
-      if [[ $? -eq 0 ]] && [[ -e "${rebmergpath}"  ]]; then
-        local done_=$(cat "${rebmergpath}msgnum")
-        local entire=$(cat "${rebmergpath}end")
-        hook_com[misc]+="(${rebase_icon}${done_}/${entire})"
-      fi
-
-      hook_com[misc]+="${fg_vcs_status}${(j::)contents} "
+  # Rebase status check (Fast: just reading files)
+  if [[ -n "${rebase_path}" ]] && [[ -e "${rebase_path}" ]]; then
+    local done_=$(cat "${rebase_path}/msgnum" 2>/dev/null)
+    local entire=$(cat "${rebase_path}/end" 2>/dev/null)
+    if [[ -n "${done_}" ]]; then
+      hook_com[misc]+="(${rebase_icon}${done_}/${entire})"
     fi
   fi
 }
