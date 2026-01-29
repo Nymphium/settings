@@ -7,9 +7,18 @@
 [color]
   ui = auto
 
-; [core]
-;   editor = nvr --remote-wait-silent
-;
+[core]
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  true-color = always
+  navigate = true
+  side-by-side = true
+  line-numbers = true
+
 ; [diff]
 ;   tool = nvr
 
@@ -20,14 +29,8 @@
 ;   cmd = nvr -s -d $LOCAL $REMOTE
 
 [merge]
-    ; tool = nvr
-    conflictstyle = zdiff3
-; [mergetool "nvr"]
-;     cmd = nvr -s -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
-
-[merge]
   tool = vimdiff
-  conflictstyle = diff3
+  conflictstyle = zdiff3
 
 [mergetool]
   keepBackup = false
@@ -35,9 +38,9 @@
 
 [mergetool "vimdiff"]
   cmd = "nvim  -d $LOCAL $BASE -c 'wincmd J | wincmd ='"
-
-[pager]
-  diff =
+;
+; [pager]
+;   diff =
 
 [alias]
 ; abbreviate
