@@ -2,7 +2,7 @@
 # Skim (sk) Custom Plugin
 # ------------------------------------------------------------------------------
 
-if [[ ! "$(command -v sk > /dev/null 2>&1)" ]]; then
+if [[ ! (( $+commands[starship] )) ]]; then
   return
 fi
 
@@ -90,4 +90,4 @@ if [[ "$(command -v procs)" ]]; then
   }
 fi
 
-source <(sk --shell zsh)
+_evalcache sk --shell zsh

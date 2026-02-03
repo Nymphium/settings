@@ -1,11 +1,19 @@
 # Starship Theme Setup
-eval "$(starship init zsh)"
+
+if [[ ! (( $+commands[starship] )) ]]; then
+  return
+fi
+
+_evalcache starship init zsh
 export STARSHIP_CACHE=~/.starship/cache
 mkdir -p "$STARSHIP_CACHE"
 
 # Dynamic Theme Switching (macOS)
 if [[ "$(uname)" == "Darwin" ]]; then
   _update_starship_theme() {
+    # Check if feature is enabled (Default: true)
+    zstyle -T ':prompt:starship:mac' auto-mode || return
+
     local mode
     local current_mode_file="${STARSHIP_CACHE}/mode"
     local effective_config="${STARSHIP_CACHE}/effective.toml"
@@ -32,4 +40,3 @@ if [[ "$(uname)" == "Darwin" ]]; then
   autoload -Uz add-zsh-hook
   add-zsh-hook precmd _update_starship_theme
 fi
-
