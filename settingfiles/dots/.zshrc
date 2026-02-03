@@ -19,41 +19,6 @@ compinit -C
 source "${HOME}/.antidote/antidote.zsh"
 antidote load
 
-# 3. Load Theme
-eval "$(starship init zsh)"
-export STARSHIP_CACHE=~/.starship/cache
-mkdir -p "$STARSHIP_CACHE"
-
-# Dynamic Theme Switching (macOS)
-if [[ "$(uname)" == "Darwin" ]]; then
-  _update_starship_theme() {
-    local mode
-    local current_mode_file="${STARSHIP_CACHE}/mode"
-    local effective_config="${STARSHIP_CACHE}/effective.toml"
-
-    # Detect Mode
-    if defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then
-      mode="dark_mode"
-    else
-      mode="light_mode"
-    fi
-
-    # Only regenerate if mode changed or config missing
-    if [[ ! -f "$effective_config" ]] || [[ "$mode" != "$(cat "$current_mode_file" 2>/dev/null)" ]]; then
-      # Ensure config exists before trying to read it
-      if [[ -f "${HOME}/.config/starship.toml" ]]; then
-        echo "palette = \"$mode\"" > "$effective_config"
-        cat "${HOME}/.config/starship.toml" >> "$effective_config"
-        echo "$mode" > "$current_mode_file"
-      fi
-    fi
-    
-    export STARSHIP_CONFIG="$effective_config"
-  }
-  autoload -Uz add-zsh-hook
-  add-zsh-hook precmd _update_starship_theme
-fi
-
 # Load custom configurations
 RCD=$HOME/.zsh.d
 if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]]; then
@@ -81,14 +46,6 @@ setopt hist_save_no_dups
 unsetopt correct_all
 
 # --- End Interactive Settings ---
-
-if ls --color -d / >/dev/null 2>/dev/null; then
-  # ls is GNU ls
-  alias ls='ls --color'
-elif ls -G -d / >/dev/null 2>/dev/null; then
-  # ls has a -G option, assume it means to display colors like on FreeBSD
-  alias ls='ls -G'
-fi
 
 # pipe filter {{{ 
   alias -g G='| grep'

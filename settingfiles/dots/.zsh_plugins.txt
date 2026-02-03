@@ -24,7 +24,10 @@ ${HOME}/.zsh/custom/plugins/nix
 ${HOME}/.zsh/custom/plugins/nvim-nest
 ${HOME}/.zsh/custom/plugins/opam
 ${HOME}/.zsh/custom/plugins/skim
+${HOME}/.zsh/custom/plugins/starship
 ${HOME}/.zsh/custom/plugins/traildots
 
 # run towards the BOTTOM of your .zsh_plugins.txt after fpath is populated
 mattmc3/zephyr path:plugins/completion
+mattmc3/zephyr path:plugins/color
+mattmc3/zephyr path:plugins/history
