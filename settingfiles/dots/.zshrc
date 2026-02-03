@@ -1,9 +1,7 @@
 # vim:ft=zsh
 # shellcheck shell=zsh
 
-if_have() {
-  command -v "${1}" > /dev/null 2>&1
-}
+[[ -n "$ZPROF" ]] && zmodload zsh/zprof
 
 # --- Antidote & Interactive Settings ---
 
@@ -12,22 +10,11 @@ export ZSH_CACHE_DIR="${HOME}/.cache/zsh"
 [[ ! -d "$ZSH_CACHE_DIR/completions" ]] && mkdir -p "$ZSH_CACHE_DIR/completions"
 
 # Initialize completion system early to provide 'compdef' for OMZ plugins
-autoload -Uz compinit
-compinit -C
+autoload -Uz compinit && compinit -C
 
 # 2. Antidote setup
 source "${HOME}/.antidote/antidote.zsh"
 antidote load
-
-# Load custom configurations
-RCD=$HOME/.zsh.d
-if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]]; then
-	for f in "${RCD}"/*;
-    do
-    # shellcheck disable=1090
-    source "${f}"
-  done
-fi
 
 # Styles and Options
 zstyle ':completion:*' list-colors "${LS_COLORS}"
@@ -48,12 +35,6 @@ unsetopt correct_all
   alias -g G='| grep'
 # }}} 
 
-# latex/pdf {{{ 
-  alias platex='platex -kanji=utf8 -halt-on-error'
-  alias lualatex='lualatex -halt-on-error'
-  alias xelatex='xelatex -halt-on-error'
-  alias luajitlatex='luajittex --fmt=luajitlatex.fmt'
-
 # git {{{ 
   alias gs='echo you mean `git status` ?'
   alias ghostscript='=gs'
@@ -64,15 +45,7 @@ unsetopt correct_all
   alias gcom='git checkout master'
 # }}} 
 
-alias ps='ps auxfh'
-alias ag='ag --hidden -S --stats --ignore=.git'
-alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.cvs --exclude-dir=.hg'
 alias C='cat'
-
-if_have add_comp_ignores && {
-  add_comp_ignores class \
-    bcf run.xml
-}
 # }}} 
 
 # interactive shell settings {{{ 
@@ -89,6 +62,4 @@ bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}} 
 
-if_have zoxide && eval "$(zoxide init zsh --cmd cd)"
-
-unset -f if_have
+[[ -n "$ZPROF" ]] && zprof
