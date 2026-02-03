@@ -2,7 +2,7 @@
 
 add_newline = false
 
-format = "$directory$git_branch$git_status${custom.git_stash}${custom.git_end}[ ](bg:light_blue)[](fg:light_blue) "
+format = "${custom.nvim}${directory}${git_branch}${git_status}${custom.git_stash}${custom.git_end}[ ](bg:light_blue)[](fg:light_blue) "
 
 [line_break]
 disabled = true
@@ -14,6 +14,7 @@ light_blue = "#428CD4"
 blue = "#004E9A"
 pink = "#FF9CDA"
 violet = "#EA4492"
+green = "#afff5f"
 
 [palettes.light_mode]
 white = "#FFFFFF"
@@ -21,17 +22,18 @@ light_blue = "#A5CAD2"
 blue = "#758EB7"
 pink = "#FF7B89"
 violet = "#8A5082"
+green = "#5f8700"
 
 [directory]
 style = "bold fg:white bg:light_blue"
-format = "[ $path ]($style)"
+format = "[ $path]($style)"
 truncation_length = 1
 truncate_to_repo = false
 truncation_symbol = ""
 
 [git_branch]
 style = "bold fg:pink bg:blue"
-format = '[](fg:light_blue bg:blue)[ $symbol$branch ]($style)'
+format = '[ ](bg:light_blue)[](fg:light_blue bg:blue)[ $symbol$branch ]($style)'
 symbol = ""
 
 [git_status]
@@ -50,9 +52,16 @@ description = "Show stash count"
 command = "git rev-parse --git-path logs/refs/stash 2>/dev/null | xargs wc -l 2>/dev/null | awk '{print $1}'"
 when = "git rev-parse --is-inside-work-tree 2>/dev/null && [ -f $(git rev-parse --git-path logs/refs/stash) ]"
 style = "fg:violet bg:blue"
-format = '[\[$output\]]($style)'
+format = '[\[$output\] ]($style)'
 
 [custom.git_end]
 command = "echo -n"
 when = "git rev-parse --is-inside-work-tree 2>/dev/null"
 format = "[](fg:blue bg:light_blue)"
+
+[custom.nvim]
+description = "Show nvim icon when in neovim"
+command = "printf ''"
+when = "printenv NVIM"
+style = "bold fg:green bg:light_blue"
+format = "[ $output]($style)"

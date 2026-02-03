@@ -19,5 +19,3 @@ export path=(
 export EDITOR='nvim'
 export MANPAGER="/bin/sh -c \"col -b -x | ${EDITOR} -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 export LANG=${LANG:-en_US.UTF-8}
-export HISTSIZE=100000
-export SAVEHIST=100000

@@ -40,9 +40,6 @@ setopt no_hup
 setopt numeric_glob_sort
 setopt auto_param_keys
 
-setopt hist_ignore_all_dups
-setopt inc_append_history
-setopt hist_save_no_dups
 unsetopt correct_all
 
 # --- End Interactive Settings ---
@@ -92,6 +89,6 @@ bindkey '^[w' backward-word
 bindkey -r '^[l'
 # }}} 
 
-if_have zoxide && eval "$(zoxide init zsh --cmd cdv)"
+if_have zoxide && eval "$(zoxide init zsh --cmd cd)"
 
 unset -f if_have
