@@ -2,51 +2,39 @@
 # Skim (sk) Custom Plugin
 # ------------------------------------------------------------------------------
 
-if [[ ! (( $+commands[starship] )) ]]; then
+if (( ! $+commands[sk] )); then
   return
 fi
 
 # 1. デフォルトオプションの設定
-# --ansi: 色情報を維持して表示
-# --reverse: プロンプトを上に、候補を下に表示（fzfのデフォルトに近い挙動）
-# 既存の設定がある場合は上書きせず、先頭に追加します。
 ORIG_SKIM_DEFAULT_OPTIONS="$SKIM_DEFAULT_OPTIONS"
 SKIM_DEFAULT_OPTIONS="--ansi --reverse"
 
-if [[ "$(command -v bat)" ]]; then
-  SKIM_DEFAULT_OPTIONS="$SKIM_DEFAULT_OPTIONS --preview 'bat --style=numbers --color=always --line-range :500 {}'"
+if (( $+commands[bat] )); then
+  SKIM_DEFAULT_OPTIONS="$SKIM_DEFAULT_OPTIONS --preview 'bat --style='numbers,grid' --color=always --line-range :500 {}'"
 fi
 SKIM_DEFAULT_OPTIONS="$SKIM_DEFAULT_OPTIONS $ORIG_SKIM_DEFAULT_OPTIONS"
 export SKIM_DEFAULT_OPTIONS
 
-# fdを使ってファイル検索（隠しファイルも含めるが .git は除外）
-if [[ "$(command -v fd)" ]]; then
+# fdを使ってファイル検索
+if (( $+commands[fd] )); then
   export SKIM_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
 fi
 
-# Ctrl+T (ファイル検索) 用のコマンド設定
 export SKIM_CTRL_T_COMMAND="$SKIM_DEFAULT_COMMAND"
 
 # 2. グローバルエイリアスの設定
-# 'S' をパイプと skim コマンドに展開します。
-# これにより 'ls S' は 'ls | sk' と解釈されます。
-# ls だけでなく 'find . S' や 'git branch S' のように他のコマンドでも使えます。
 alias -g S='| sk'
-
-# (オプション) もし通常のエイリアスの方が好みであれば、以下のような設定も可能です
-# alias lss='ls | sk'
 
 # 1. Ctrl + R でコマンド履歴を検索・実行
 function skim-history-widget() {
   local selected num
   setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
   
-  # 履歴全体から検索 (重複排除あり)
-  selected=( $(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' | sk --tac --no-sort --query "$LBUFFER" --preview-window hidden) )
+  selected=( $(fc -rl 1 | awk '{ cmd=$0; sub(/^[ 	]*[0-9]+\*+[ 	]+/, "", cmd); if (!seen[cmd]++) print $0 }' | sk --tac --no-sort --query "$LBUFFER" --preview-window hidden) )
   
   local ret=$?
   if [ -n "$selected" ]; then
-    # 選択された行からコマンド部分のみ抽出
     num=${selected[1]}
     if [ -n "$num" ]; then
       zle vi-fetch-history -n $num
@@ -60,29 +48,100 @@ bindkey '^R' skim-history-widget
 
 # 2. Ctrl + T でファイルを検索してコマンドラインに挿入
 function skim-file-widget() {
-  local selected
-  if [ -n "$SKIM_CTRL_T_COMMAND" ]; then
-    selected=$(eval "$SKIM_CTRL_T_COMMAND" | sk)
-  else
-    selected=$(sk)
-  fi
+  local current_dir=$PWD
+  local result lines key selected full_path rel_path
   
-  if [ -n "$selected" ]; then
-    LBUFFER="${LBUFFER}${selected}"
-  fi
+  while true; do
+    result=$(
+        {
+          echo "📁${current_dir/#$HOME/~}";
+          echo "Enter: Select | Left: Up | Right: Dig";
+          echo "..";
+          builtin cd "$current_dir" \
+          && fd --max-depth 1 --hidden --follow --exclude .git \
+        } \
+        | sk --ansi \
+             --prompt "  🔎 " \
+             --bind "left:accept(up),right:accept(dig),enter:accept(accept)" \
+             --header-lines 2 \
+             --preview "if [[ -d {} ]]; then \
+                          ls --color -Fhal {}; \
+                        else \
+                          bat --style='numbers,grid' --color=always -S --line-range :500 {}; \
+                        fi 2>/dev/null" )
+
+    # Exit if skim was cancelled (Esc) or failed
+    [[ $? -ne 0 || -z "$result" ]] && break
+
+    # Split output into lines, preserving empty elements
+    lines=("${(@f)result}")
+
+    if [[ "$result" == $' '* ]]; then
+      # Enter was pressed (first line of result is a newline)
+      op=""
+      selected="${lines[2]}"
+    else
+      # A registered key (left, ctrl-g, etc.) was pressed
+      op="${lines[1]}"
+      selected="${lines[2]}"
+
+      if [[ -z "$selected" ]]; then
+        # Safety check: if key is empty, treat as Enter
+        selected="$op"
+        op=""
+      fi
+    fi
+
+    # Resolve full absolute path
+    if [[ "$selected" == ".." ]]; then
+      full_path=$(builtin cd "$current_dir/.." && pwd)
+    else
+      full_path="${current_dir%/}/$selected"
+    fi
+
+    if [[ ! -d "$full_path" ]]; then
+      op=accept
+    fi
+
+    # Logic based on op and selection
+    if [[ "$op" == "dig" ]]; then
+      current_dir="$full_path"
+      continue
+    elif [[ "$op" == "up" ]]; then
+      current_dir=$(builtin cd "$current_dir/.." && pwd)
+      continue
+    elif [[ "$op" != "accept" ]]; then
+      continue
+    fi
+
+    # Accept selection: Either a file was selected via Enter, or Alt-Enter was pressed
+    if [[ -n "$full_path" ]]; then
+      # Convert the absolute path back to a relative path from the shell's current working directory
+      if [[ "$full_path" == "$PWD" ]]; then
+        rel_path="."
+      elif [[ "$full_path" == "$PWD"/* ]]; then
+        rel_path="${full_path#$PWD/}"
+      else
+        # If outside PWD, use ~ for home-relative paths
+        rel_path="${full_path/#$HOME/~}"
+      fi
+
+      # Insert into LBUFFER with a leading space if needed
+      [[ -n "$LBUFFER" && "$LBUFFER" != *[[:space:]] ]] && LBUFFER+=" "
+      LBUFFER+="${rel_path}"
+    fi
+    break
+  done
+
   zle reset-prompt
 }
 zle -N skim-file-widget
 bindkey '^t' skim-file-widget
 
-# コマンド名: skill
-# 使い方: skill と打つとプロセス一覧が出て、EnterでKill
-if [[ "$(command -v procs)" ]]; then
+if (( $+commands[procs] )); then
   skill() {
     local pid
-    # 自分のプロセス以外を表示し、選択したらPIDを取得
     pid=$(procs | sk --header-lines=1 --query "$1" | awk '{print $1}')
-
     if [ -n "$pid" ]; then
       echo $pid | xargs kill -${1:-9}
       echo "Process $pid killed."

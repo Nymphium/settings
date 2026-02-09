@@ -5,14 +5,17 @@ wezterm.GLOBAL.is_windows = wezterm.target_triple:find("windows") ~= nil
 local config = wezterm.config_builder()
 
 if wezterm.GLOBAL.is_windows then
-  config.font_size = 11
-  config.line_height = 1.08
-  config.cell_width = 0.95
+  config.font_size = 10
+  config.line_height = 1.20
+  -- config.cell_width = 0.9
+  config.window_background_opacity = 0.999
 else
+  config.front_end = "WebGpu"
+  config.webgpu_power_preference = "HighPerformance"
   config.font_size = 13
 end
 
-config.command_palette_font_size = config.font_size * 1.2
+config.command_palette_font_size = config.font_size * 1.1
 
 config.font = wezterm.font_with_fallback({
   { family = "MonaspiceNe Nerd Font Mono" },
@@ -69,8 +72,9 @@ config.use_fancy_tab_bar = false
 config.tab_max_width = 40
 config.disable_default_key_bindings = true
 config.max_fps = 144
-config.front_end = "OpenGL"
-config.prefer_egl = true
+
+config.scrollback_lines = 1000
+config.animation_fps = 1
 
 local keys = require("./keys")
 
@@ -82,15 +86,13 @@ require("./color_scheme")
 require("./command_palette")
 require("./status")
 
-local ssh_domains = {}
-for host, config in pairs(wezterm.enumerate_ssh_hosts()) do
-  table.insert(ssh_domains, {
+config.ssh_domains = config.ssh_domains or {}
+for host, ssh_option in pairs(wezterm.enumerate_ssh_hosts()) do
+  table.insert(config.ssh_domains, {
     name = host,
-    remote_address = config.hostname,
-    ssh_option = config,
+    remote_address = ssh_option.hostname,
+    ssh_option = ssh_option,
   })
 end
-
-config.ssh_domains = ssh_domains
 
 return config

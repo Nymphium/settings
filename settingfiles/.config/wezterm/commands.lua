@@ -12,11 +12,27 @@ local preview_corners = {
   bottom = { left = '┗', right = '┛' },
 }
 
+local function pad(text, width, align)
+  local w = wezterm.column_width(text)
+  if w >= width then
+    return text
+  end
+  local padding = (' '):rep(width - w)
+  if align == 'right' then
+    return padding .. text
+  elseif align == 'center' then
+    local half = math.floor((width - w) / 2)
+    return (' '):rep(half) .. text .. (' '):rep(width - w - half)
+  else -- left
+    return text .. padding
+  end
+end
+
 local list_tab = function(window)
   local tabs = window:mux_window():tabs()
   local choices = {}
-  local max_proc_len = #proc_label
-  local max_dir_len = #dir_label
+  local max_proc_len = wezterm.column_width(proc_label)
+  local max_dir_len = wezterm.column_width(dir_label)
   local tab_info = {}
 
   for _, tab in ipairs(tabs) do
@@ -29,8 +45,8 @@ local list_tab = function(window)
 
     local process_name = process:match('([^/\\]+)$') or process
 
-    max_proc_len = math.max(max_proc_len, #process_name)
-    max_dir_len = math.max(max_dir_len, #dir_name)
+    max_proc_len = math.max(max_proc_len, wezterm.column_width(process_name))
+    max_dir_len = math.max(max_dir_len, wezterm.column_width(dir_name))
 
     table.insert(tab_info, {
       tab = tab,
@@ -43,45 +59,39 @@ local list_tab = function(window)
   end
 
   for _, info in ipairs(tab_info) do
-    local process_fmt = ('%%%ds'):format(max_proc_len):format(info.process_name)
-    local dir_fmt = ('%%-%ds'):format(max_dir_len):format(info.dir_name)
+    local process_fmt = pad(info.process_name, max_proc_len, 'right')
+    local dir_fmt = pad(info.dir_name, max_dir_len, 'left')
     local pane_fmt = ('%-2d'):format(info.pane_count)
-    local prefix = info.is_current and wezterm.format({
-          { Foreground = { AnsiColor = 'Purple' } },
-          { Text = '*' }
-        })
-        or ' '
 
-    local label = {
-      { Text = prefix },
-      { Foreground = { AnsiColor = 'Aqua' } },
-    }
+    local label = {}
+    
+    if info.is_current then
+      table.insert(label, { Foreground = { AnsiColor = 'Purple' } })
+      table.insert(label, { Text = '*' })
+    else
+      table.insert(label, { Text = ' ' })
+    end
 
+    table.insert(label, { Foreground = { AnsiColor = 'Aqua' } })
     if info.title == '' then
       table.insert(label, { Text = process_fmt })
     else
       table.insert(label, { Text = info.title })
     end
 
-    local tail = {
-      'ResetAttributes',
-      { Text = ' ' },
-      { Text = wezterm.nerdfonts.md_drag_vertical_variant },
-      { Foreground = { AnsiColor = 'Green' } },
-      { Text = ' ' },
-      { Text = dir_fmt },
-      { Text = ' ' },
-      'ResetAttributes',
-      { Text = ' ' },
-      { Text = wezterm.nerdfonts.md_drag_vertical_variant },
-      { Text = ' ' },
-      { Foreground = { AnsiColor = 'Red' } },
-      { Text = pane_fmt },
-    }
-
-    for _, t in ipairs(tail) do
-      table.insert(label, t)
-    end
+    table.insert(label, 'ResetAttributes')
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Text = wezterm.nerdfonts.md_drag_vertical_variant })
+    table.insert(label, { Foreground = { AnsiColor = 'Green' } })
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Text = dir_fmt })
+    table.insert(label, { Text = ' ' })
+    table.insert(label, 'ResetAttributes')
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Text = wezterm.nerdfonts.md_drag_vertical_variant })
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Foreground = { AnsiColor = 'Red' } })
+    table.insert(label, { Text = pane_fmt })
 
     table.insert(choices, {
       id = tostring(info.tab:tab_id()),
@@ -104,14 +114,14 @@ local list_tab = function(window)
         { Attribute = { Underline = 'Double' } },
         { Text = (' '):rep(5) },
         { Foreground = { AnsiColor = 'Aqua' } },
-        { Text = ('%%%ds'):format(max_proc_len):format(proc_label) },
+        { Text = pad(proc_label, max_proc_len, 'right') },
         'ResetAttributes',
         { Attribute = { Underline = 'Double' } },
         { Text = ' ' },
         { Text = wezterm.nerdfonts.md_drag_vertical_variant },
         { Text = ' ' },
         { Foreground = { AnsiColor = 'Green' } },
-        { Text = ('%%-%ds'):format(math.min(max_dir_len + 1, 99)):format(dir_label) },
+        { Text = pad(dir_label, math.min(max_dir_len + 1, 99), 'left') },
         'ResetAttributes',
         { Attribute = { Underline = 'Double' } },
         { Text = ' ' },
@@ -121,7 +131,7 @@ local list_tab = function(window)
         { Text = 'panes' }
       }),
       choices = choices,
-      action = wezterm.action_callback(function(_, _, id, _)
+      action = wezterm.action_callback(function(_, _, id, _) 
         if id then
           for _, tab in ipairs(tabs) do
             if tostring(tab:tab_id()) == id then
@@ -168,66 +178,60 @@ local list_window = function(window)
     })
   end
 
-  local max_process_len = #proc_label
-  local max_dir_len = #dir_label
+  local max_process_len = wezterm.column_width(proc_label)
+  local max_dir_len = wezterm.column_width(dir_label)
   local title_na = '(n/a)'
-  local max_name_len = #title_na -- #"(n/a)"
+  local max_name_len = wezterm.column_width(title_na)
+
   for _, info in ipairs(windows_info) do
-    max_process_len = math.max(max_process_len, #info.process_name)
-    max_dir_len = math.max(max_dir_len, #info.dir_name)
-    max_name_len = math.max(max_name_len, #info.title or 0)
+    max_process_len = math.max(max_process_len, wezterm.column_width(info.process_name))
+    max_dir_len = math.max(max_dir_len, wezterm.column_width(info.dir_name))
+    max_name_len = math.max(max_name_len, wezterm.column_width(info.title or ''))
   end
 
   for _, info in ipairs(windows_info) do
-    local process_fmt = ('%%%ds'):format(max_process_len):format(info.process_name)
+    local process_fmt = pad(info.process_name, max_process_len, 'right')
     local name_fmt
     local title = title_na
     if #info.title > 0 then
       title = info.title
     end
-    local title_len = #title
-    local diff = max_name_len - title_len
-    if diff <= 0 then
-      name_fmt = title
-    else
-      local mid_name_len = math.floor(diff / 2)
-      local name_len_mantissa = diff % 2
-      name_fmt = ('%s%s%s'):format((' '):rep(mid_name_len), title, (' '):rep(mid_name_len + name_len_mantissa))
-    end
-    local dir_fmt = ('%%-%ds'):format(max_dir_len):format(info.dir_name)
-    local tab_fmt = ('%-2d'):format(info.tab_count)
-    local prefix = info.is_current and wezterm.format({
-          { Foreground = { AnsiColor = 'Purple' } },
-          { Text = '*' }
-        })
-        or ' '
+    name_fmt = pad(title, max_name_len, 'center')
 
-    local label = wezterm.format({
-      { Text = prefix },
-      { Foreground = { AnsiColor = 'Aqua' } },
-      { Text = process_fmt },
-      'ResetAttributes',
-      { Text = ' ' },
-      { Text = wezterm.nerdfonts.md_drag_vertical_variant },
-      { Text = ' ' },
-      { Foreground = { AnsiColor = 'Green' } },
-      { Text = dir_fmt },
-      'ResetAttributes',
-      { Text = ' ' },
-      { Text = wezterm.nerdfonts.md_drag_vertical_variant },
-      { Text = ' ' },
-      { Foreground = { AnsiColor = 'Green' } },
-      { Text = name_fmt },
-      'ResetAttributes',
-      { Text = ' ' },
-      { Text = wezterm.nerdfonts.md_drag_vertical_variant },
-      { Text = ' ' },
-      { Foreground = { AnsiColor = 'Red' } },
-      { Text = tab_fmt },
-    })
+    local dir_fmt = pad(info.dir_name, max_dir_len, 'left')
+    local tab_fmt = ('%-2d'):format(info.tab_count)
+    
+    local label = {}
+    if info.is_current then
+      table.insert(label, { Foreground = { AnsiColor = 'Purple' } })
+      table.insert(label, { Text = '*' })
+    else
+      table.insert(label, { Text = ' ' })
+    end
+
+    table.insert(label, { Foreground = { AnsiColor = 'Aqua' } })
+    table.insert(label, { Text = process_fmt })
+    table.insert(label, 'ResetAttributes')
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Text = wezterm.nerdfonts.md_drag_vertical_variant })
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Foreground = { AnsiColor = 'Green' } })
+    table.insert(label, { Text = dir_fmt })
+    table.insert(label, 'ResetAttributes')
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Text = wezterm.nerdfonts.md_drag_vertical_variant })
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Foreground = { AnsiColor = 'Green' } })
+    table.insert(label, { Text = name_fmt })
+    table.insert(label, 'ResetAttributes')
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Text = wezterm.nerdfonts.md_drag_vertical_variant })
+    table.insert(label, { Text = ' ' })
+    table.insert(label, { Foreground = { AnsiColor = 'Red' } })
+    table.insert(label, { Text = tab_fmt })
 
     table.insert(choices, {
-      label = label,
+      label = wezterm.format(label),
       id = tostring(info.window_id),
     })
   end
@@ -241,21 +245,21 @@ local list_window = function(window)
     { Attribute = { Underline = 'Double' } },
     { Text = (' '):rep(5) },
     { Foreground = { AnsiColor = 'Aqua' } },
-    { Text = ('%%%ds'):format(max_process_len):format(proc_label) },
+    { Text = pad(proc_label, max_process_len, 'right') },
     'ResetAttributes',
     { Attribute = { Underline = 'Double' } },
     { Text = ' ' },
     { Text = wezterm.nerdfonts.md_drag_vertical_variant },
     { Text = ' ' },
     { Foreground = { AnsiColor = 'Green' } },
-    { Text = ('%%-%ds'):format(max_dir_len):format(dir_label) },
+    { Text = pad(dir_label, max_dir_len, 'left') },
     'ResetAttributes',
     { Attribute = { Underline = 'Double' } },
     { Text = ' ' },
     { Text = wezterm.nerdfonts.md_drag_vertical_variant },
     { Text = ' ' },
     { Foreground = { AnsiColor = 'Green' } },
-    { Text = ('%%%ds'):format(math.min(max_name_len, 99)):format('name') },
+    { Text = pad('name', math.min(max_name_len, 99), 'right') },
     'ResetAttributes',
     { Attribute = { Underline = 'Double' } },
     { Text = ' ' },
@@ -270,7 +274,7 @@ local list_window = function(window)
     title = title,
     description = description,
     choices = choices,
-    action = wezterm.action_callback(function(win, pane, id, _)
+    action = wezterm.action_callback(function(win, pane, id, _) 
       if not id then return end -- ignore such as error window
 
       local preview_poll_width = wezterm.column_width(preview_poll:rep(2))
@@ -357,7 +361,7 @@ local list_window = function(window)
       win:perform_action(act.PromptInputLine {
         prompt = preview,
         initial_value = '',
-        action = wezterm.action_callback(function(_, _, line)
+        action = wezterm.action_callback(function(_, _, line) 
           if not line then
             -- go back selection
             window:perform_action(action, pane)
