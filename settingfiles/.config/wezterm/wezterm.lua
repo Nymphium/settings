@@ -98,6 +98,7 @@ end
 -- just for simplified with zellij
 config.show_tabs_in_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
+config.leader = { key = 'b', mods = 'ALT' }
 config.keys = {
   {
     key = 'q',

@@ -56,7 +56,7 @@ bindkey -r '^[l'
 
 # auto-start zellij for interactive shells
 if [[ -o interactive ]] && [[ -z "$ZELLIJ" ]] && command -v zellij >/dev/null 2>&1; then
-  _evalcache "zellij setup --generate-completion zsh"
+  _evalcache zellij setup --generate-completion zsh
 
   while true; do
     local session_names
