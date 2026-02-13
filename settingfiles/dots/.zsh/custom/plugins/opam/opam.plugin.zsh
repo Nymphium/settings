@@ -1,4 +1,4 @@
-if [[ ! (($+commands[opam])) ]]; then
+if ! (($+commands[opam])); then
   return
 fi
 
