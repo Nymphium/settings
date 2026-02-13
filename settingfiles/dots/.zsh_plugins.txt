@@ -17,14 +17,15 @@ ohmyzsh/ohmyzsh path:plugins/gh
 # Local Custom Plugins (Absolute paths)
 ${HOME}/.zsh/custom/plugins/brew-coreutils
 ${HOME}/.zsh/custom/plugins/gopath
-${HOME}/.zsh/custom/plugins/ignore-completions
 ${HOME}/.zsh/custom/plugins/nix
-${HOME}/.zsh/custom/plugins/nvim-nest
+${HOME}/.zsh/custom/plugins/ignore-completions
 ${HOME}/.zsh/custom/plugins/opam
+${HOME}/.zsh/custom/plugins/nvim-nest
 ${HOME}/.zsh/custom/plugins/skim
 ${HOME}/.zsh/custom/plugins/starship
 ${HOME}/.zsh/custom/plugins/rcd
 ${HOME}/.zsh/custom/plugins/zoxide
+${HOME}/.zsh/custom/plugins/git-tools
 
 mattmc3/zephyr path:plugins/completion # run towards the bottom to cooperate with zsh-completions
 mattmc3/zephyr path:plugins/color

@@ -83,10 +83,14 @@ local keys = {
     {
       key = 'g',
       mods = 'LEADER|ALT',
-      action = wezterm.action_callback(function(win, pane)
-        win:perform_action(act.SwitchToWorkspace { spawn = { domain = 'DefaultDomain' } }, pane)
-        wezterm.time.call_after(0.1, wezterm.reload_configuration)
-      end),
+      -- TODO(Gemini): [2026-02-12] Upstream workspace redraw freeze exists; restore this
+      -- to SwitchToWorkspace once wezterm/wezterm#7438 (PR #7444) is released.
+      action = act.SpawnTab 'DefaultDomain',
+    },
+    {
+      key = 'g',
+      mods = 'LEADER|ALT|SHIFT',
+      action = act.SwitchToWorkspace { spawn = { domain = 'DefaultDomain' } },
     },
     {
       key = 'd',

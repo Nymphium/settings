@@ -63,28 +63,28 @@ config.window_padding = {
   left = -6,
   right = -6,
   top = -15,
-  bottom = -5,
+  bottom = -10,
 }
 
-config.tab_bar_at_bottom = true
-config.show_new_tab_button_in_tab_bar = false
-config.use_fancy_tab_bar = false
-config.tab_max_width = 40
+-- config.tab_bar_at_bottom = true
+-- config.show_new_tab_button_in_tab_bar = false
+-- config.use_fancy_tab_bar = false
+-- config.tab_max_width = 40
 config.disable_default_key_bindings = true
-config.max_fps = 144
+-- config.max_fps = 144
+--
+-- config.scrollback_lines = 1000
+-- config.animation_fps = 1
 
-config.scrollback_lines = 1000
-config.animation_fps = 1
-
-local keys = require("./keys")
-
-config.leader = keys.leader
-config.keys = keys.keys
-config.key_tables = keys.key_tables
+-- local keys = require("./keys")
+--
+-- config.leader = keys.leader
+-- config.keys = keys.keys
+-- config.key_tables = keys.key_tables
 
 require("./color_scheme")
-require("./command_palette")
-require("./status")
+-- require("./command_palette")
+-- require("./status")
 
 config.ssh_domains = config.ssh_domains or {}
 for host, ssh_option in pairs(wezterm.enumerate_ssh_hosts()) do
@@ -94,5 +94,16 @@ for host, ssh_option in pairs(wezterm.enumerate_ssh_hosts()) do
     ssh_option = ssh_option,
   })
 end
+
+-- just for simplified with zellij
+config.show_tabs_in_tab_bar = false
+config.hide_tab_bar_if_only_one_tab = true
+config.keys = {
+  {
+    key = 'q',
+    mods = 'CTRL',
+    action = wezterm.action.Nop,
+  },
+}
 
 return config

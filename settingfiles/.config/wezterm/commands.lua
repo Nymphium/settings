@@ -373,7 +373,6 @@ local list_window = function(window)
             if not ok then
               if type(err) == 'userdata' and tostring(err):match('is not currently associated with a gui window') then
                 mux.set_active_workspace(info.workspace)
-                wezterm.time.call_after(0.1, wezterm.reload_configuration)
               else
                 wezterm.log_info('Error activating window: ' .. tostring(err), type(err))
                 return
