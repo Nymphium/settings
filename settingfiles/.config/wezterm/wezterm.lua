@@ -104,6 +104,11 @@ config.keys = {
     mods = 'CTRL',
     action = wezterm.action.Nop,
   },
+  {
+    key = 'p',
+    mods = 'LEADER',
+    action = wezterm.action.PasteFrom('Clipboard')
+  },
 }
 
 return config
