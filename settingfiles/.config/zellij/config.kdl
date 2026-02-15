@@ -114,7 +114,7 @@ keybinds clear-defaults=true {
         bind "Alt l" { Resize "Increase right"; SwitchToMode "normal"; }
         bind "p" { SwitchToMode "normal"; }
         bind "s" { SwitchToMode "move"; }
-        bind "t" { NewTab; SwitchToMode "normal"; }
+        bind "Alt t" { NewTab; SwitchToMode "normal"; }
         bind "w" { CloseFocus; SwitchToMode "normal"; }
     }
 }
