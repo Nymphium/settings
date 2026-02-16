@@ -112,7 +112,6 @@ keybinds clear-defaults=true {
         bind "Alt k" { Resize "Increase up"; SwitchToMode "normal"; }
         bind "l" { Resize "Increase right"; SwitchToMode "normal"; }
         bind "Alt l" { Resize "Increase right"; SwitchToMode "normal"; }
-        bind "p" { SwitchToMode "normal"; }
         bind "s" { SwitchToMode "move"; }
         bind "Alt t" { NewTab; SwitchToMode "normal"; }
         bind "w" { CloseFocus; SwitchToMode "normal"; }
@@ -122,20 +121,20 @@ keybinds clear-defaults=true {
 // Plugin aliases - can be used to change the implementation of Zellij
 // changing these requires a restart to take effect
 plugins {
-    about location="zellij:about"
-    compact-bar location="zellij:compact-bar"
-    configuration location="zellij:configuration"
-    filepicker location="zellij:strider" {
-        cwd "/"
-    }
-    plugin-manager location="zellij:plugin-manager"
-    session-manager location="zellij:session-manager"
-    status-bar location="zellij:status-bar"
-    strider location="zellij:strider"
-    tab-bar location="zellij:tab-bar"
-    welcome-screen location="zellij:session-manager" {
-        welcome_screen true
-    }
+    // about location="zellij:about"
+    // compact-bar location="zellij:compact-bar"
+    // configuration location="zellij:configuration"
+    // filepicker location="zellij:strider" {
+    //     cwd "/"
+    // }
+    // plugin-manager location="zellij:plugin-manager"
+    // session-manager location="zellij:session-manager"
+    // status-bar location="zellij:status-bar"
+    // strider location="zellij:strider"
+    // tab-bar location="zellij:tab-bar"
+    // welcome-screen location="zellij:session-manager" {
+    //     welcome_screen true
+    // }
 }
 
 // Plugins to load in the background when a new session starts
@@ -148,19 +147,15 @@ web_client {
 }
 
 theme "tokyo-night"
-default_layout "bottom-tab-no-nav"
+default_layout "zjstatus"
 
 on_force_close "quit"
 
 pane_frames false
 
 scroll_buffer_size 1000
- 
+
 copy_clipboard "system"
 
-web_server true
-web_sharing "on"
-
 show_startup_tips false
- 
 show_release_notes true

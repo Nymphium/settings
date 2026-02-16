@@ -60,10 +60,10 @@ config.window_content_alignment = {
 }
 
 config.window_padding = {
-  left = -6,
-  right = -6,
-  top = -15,
-  bottom = -10,
+  left = 3,
+  right = 3,
+  top = 0,
+  bottom = 0,
 }
 
 -- config.tab_bar_at_bottom = true
@@ -109,6 +109,12 @@ config.keys = {
     mods = 'CTRL',
     action = wezterm.action.PasteFrom('Clipboard')
   },
+  {
+    key = 'v',
+    mods = 'SUPER',
+    action = wezterm.action.PasteFrom('Clipboard')
+  },
+
 }
 
 return config
