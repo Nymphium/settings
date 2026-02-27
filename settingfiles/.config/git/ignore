@@ -3,3 +3,5 @@ Session.vim
 .vimrc
 .DS_Store
 .serena
+
+**/.claude/settings.local.json

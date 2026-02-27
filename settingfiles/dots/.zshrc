@@ -36,7 +36,6 @@ unsetopt correct_all
 # }}} 
 
 alias C='cat'
-# }}} 
 
 # interactive shell settings {{{ 
 # no flow control
@@ -53,24 +52,3 @@ bindkey -r '^[l'
 # }}} 
 
 [[ -n "$ZPROF" ]] && zprof
-
-# auto-start zellij for interactive shells
-if [[ -o interactive ]] && [[ -z "$ZELLIJ" ]] && command -v zellij >/dev/null 2>&1; then
-  _evalcache zellij setup --generate-completion zsh
-
-  while true; do
-    local session_names
-    local session_output
-    session_output="$(zellij list-sessions -s 2>/dev/null)"
-    if [[ -n "$session_output" ]]; then
-      session_names=("${(@f)session_output}")
-      # Attach to the first available session
-      zellij attach "${session_names[1]}"
-    else
-      break
-    fi
-  done
-
-  # If no sessions are left to attach to, start a new one and exit the shell when it's closed
-  exec zellij
-fi

@@ -8,7 +8,6 @@ keybinds clear-defaults=true {
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Alt n" { GoToNextTab; }
         bind "Alt Shift n" { GoToPreviousTab; }
-        bind "Ctrl q" { Quit; }
         bind "Alt t" { PreviousSwapLayout; }
         bind "Alt Shift t" { NextSwapLayout; }
         bind "Alt Shift v" { NewPane "right"; }
@@ -67,8 +66,6 @@ keybinds clear-defaults=true {
     }
     entersearch {
         bind "enter" { SwitchToMode "search"; }
-    }
-    entersearch {
         bind "Ctrl c" { SwitchToMode "normal"; }
     }
     shared_among "entersearch" "move" "tmux" {
@@ -118,32 +115,8 @@ keybinds clear-defaults=true {
     }
 }
 
-// Plugin aliases - can be used to change the implementation of Zellij
-// changing these requires a restart to take effect
-plugins {
-    // about location="zellij:about"
-    // compact-bar location="zellij:compact-bar"
-    // configuration location="zellij:configuration"
-    // filepicker location="zellij:strider" {
-    //     cwd "/"
-    // }
-    // plugin-manager location="zellij:plugin-manager"
-    // session-manager location="zellij:session-manager"
-    // status-bar location="zellij:status-bar"
-    // strider location="zellij:strider"
-    // tab-bar location="zellij:tab-bar"
-    // welcome-screen location="zellij:session-manager" {
-    //     welcome_screen true
-    // }
-}
-
-// Plugins to load in the background when a new session starts
-// eg. "file:/path/to/my-plugin.wasm"
-// eg. "https://example.com/my-plugin.wasm"
-load_plugins {
-}
-web_client {
-    // font "monospace"
+env {
+    TERM "xterm-256color"
 }
 
 theme "tokyo-night"

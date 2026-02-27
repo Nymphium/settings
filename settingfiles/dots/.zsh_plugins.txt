@@ -26,6 +26,7 @@ ${HOME}/.zsh/custom/plugins/starship
 ${HOME}/.zsh/custom/plugins/rcd
 ${HOME}/.zsh/custom/plugins/zoxide
 ${HOME}/.zsh/custom/plugins/git-tools
+${HOME}/.zsh/custom/plugins/zellij
 
 mattmc3/zephyr path:plugins/completion # run towards the bottom to cooperate with zsh-completions
 mattmc3/zephyr path:plugins/color
