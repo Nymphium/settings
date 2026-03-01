@@ -6,7 +6,7 @@ local config = wezterm.config_builder()
 
 if wezterm.GLOBAL.is_windows then
   config.font_size = 10
-  config.line_height = 1.20
+  config.line_height = 1.08
   -- config.cell_width = 0.9
   config.window_background_opacity = 0.999
 else
@@ -95,15 +95,10 @@ for host, ssh_option in pairs(wezterm.enumerate_ssh_hosts()) do
   })
 end
 
--- just for simplified with zellij
-config.show_tabs_in_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = true
+-- just for simplified with tmux
+-- config.show_tabs_in_tab_bar = false
+-- config.hide_tab_bar_if_only_one_tab = true
 config.keys = {
-  {
-    key = 'q',
-    mods = 'CTRL',
-    action = wezterm.action.Nop,
-  },
   {
     key = 'v',
     mods = 'CTRL',
@@ -114,7 +109,6 @@ config.keys = {
     mods = 'SUPER',
     action = wezterm.action.PasteFrom('Clipboard')
   },
-
 }
 
 return config

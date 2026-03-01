@@ -48,11 +48,10 @@ behind = "⇣"
 diverged = "⇕"
 
 [custom.git_stash]
-description = "Show stash count"
-command = "git rev-parse --git-path logs/refs/stash 2>/dev/null | xargs wc -l 2>/dev/null | awk '{print $1}'"
+description = "Show stash indicator"
 when = "git rev-parse --is-inside-work-tree 2>/dev/null && [ -f $(git rev-parse --git-path logs/refs/stash) ]"
 style = "fg:violet bg:blue"
-format = '[\[$output\] ]($style)'
+format = '[\[\] ]($style)'
 
 [custom.git_end]
 command = "echo -n"
