@@ -2,7 +2,7 @@
 
 add_newline = false
 
-format = "${custom.nvim}${directory}${git_branch}${git_status}${custom.git_stash}${custom.git_end}[ ](bg:light_blue)[](fg:light_blue) "
+format = "${directory}${git_branch}${git_status}[ ](bg:light_blue)[](fg:light_blue) "
 
 [line_break]
 disabled = true
@@ -38,29 +38,18 @@ symbol = ""
 
 [git_status]
 style = "fg:violet bg:blue"
-format = '[$all_status$ahead_behind]($style)'
+format = '[$all_status$ahead_behind ]($style)[](fg:blue bg:light_blue)'
 staged = ""
 modified = ""
 untracked = "󰧏"
-stashed = ""
+stashed = ''
 ahead = "⇡"
 behind = "⇣"
 diverged = "⇕"
 
-[custom.git_stash]
-description = "Show stash indicator"
-when = "git rev-parse --is-inside-work-tree 2>/dev/null && [ -f $(git rev-parse --git-path logs/refs/stash) ]"
-style = "fg:violet bg:blue"
-format = '[\[\] ]($style)'
-
-[custom.git_end]
-command = "echo -n"
-when = "git rev-parse --is-inside-work-tree 2>/dev/null"
-format = "[](fg:blue bg:light_blue)"
-
-[custom.nvim]
-description = "Show nvim icon when in neovim"
-command = "printf ''"
-when = "printenv NVIM"
-style = "bold fg:green bg:light_blue"
-format = "[ $output]($style)"
+# [custom.nvim]
+# description = "Neovim icon when in neovim terminal"
+# command = "printf ''"
+# when = "printenv NVIM"
+# style = "bold fg:green bg:light_blue"
+# format = "[ $output]($style)"

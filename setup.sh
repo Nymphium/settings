@@ -269,6 +269,18 @@ setup_dotfiles() {
   fi
 }
 
+setup_tmux() {
+  log_info "Setting up Tmux Plugin Manager (tpm)..."
+  local tpm_dir="${TARGET_DIR}/.tmux/plugins/tpm"
+
+  if [[ ! -d "$tpm_dir" ]]; then
+    log_info "Cloning tpm..."
+    git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
+  else
+    log_info "tpm already installed."
+  fi
+}
+
 setup_xinitrc() {
   log_info "Setting up .xinitrc..."
   # Original script copied it.
@@ -289,6 +301,7 @@ main() {
   setup_binaries
   setup_configs
   setup_dotfiles
+  setup_tmux
   setup_xinitrc
   setup_terminfo
 

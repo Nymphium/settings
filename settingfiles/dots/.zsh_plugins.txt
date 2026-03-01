@@ -22,7 +22,7 @@ ${HOME}/.zsh/custom/plugins/ignore-completions
 ${HOME}/.zsh/custom/plugins/opam
 ${HOME}/.zsh/custom/plugins/nvim-nest
 ${HOME}/.zsh/custom/plugins/skim
-${HOME}/.zsh/custom/plugins/starship
+${HOME}/.zsh/custom/plugins/nymphium
 ${HOME}/.zsh/custom/plugins/rcd
 ${HOME}/.zsh/custom/plugins/zoxide
 ${HOME}/.zsh/custom/plugins/git-tools

@@ -5,28 +5,28 @@ zmodload zsh/datetime
 
 # --- Persistent Cache (Global) ---
 # This single global associative array stores state and rendered color strings.
-typeset -gA _nymphium_cache
-_nymphium_cache=(
+typeset -gA _theme_nymphium_cache
+_theme_nymphium_cache=(
   last_update 0
   mode ""
   is_darwin 0
 )
-[[ "$(uname)" == "Darwin" ]] && _nymphium_cache[is_darwin]=1
+[[ "$(uname)" == "Darwin" ]] && _theme_nymphium_cache[is_darwin]=1
 
 # --- Color/Style Updater ---
-_update_nymphium_colors() {
+_nyphium_update_colors() {
   local now=$EPOCHSECONDS
   local need_refresh=0
   
   # Check if we need to re-run the heavy 'defaults read'
-  if (( now - _nymphium_cache[last_update] >= 30 )) || [[ -z "$_nymphium_cache[mode]" ]]; then
+  if (( now - _theme_nymphium_cache[last_update] >= 30 )) || [[ -z "$_nymphium_cache[mode]" ]]; then
     need_refresh=1
   fi
 
   if [[ $need_refresh -eq 1 ]]; then
-    _nymphium_cache[last_update]=$now
+    _theme_nymphium_cache[last_update]=$now
     local mode="dark_mode"
-    if [[ $_nymphium_cache[is_darwin] -eq 1 ]]; then
+    if [[ $_theme_nymphium_cache[is_darwin] -eq 1 ]]; then
       if defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then
         mode="dark_mode"
       else
@@ -34,8 +34,8 @@ _update_nymphium_colors() {
       fi
     fi
 
-    if [[ "$mode" != "$_nymphium_cache[mode]" ]] || [[ -z "$_nymphium_cache[fg_normal]" ]]; then
-      _nymphium_cache[mode]="$mode"
+    if [[ "$mode" != "$_theme_nymphium_cache[mode]" ]] || [[ -z "$_nymphium_cache[fg_normal]" ]]; then
+      _theme_nymphium_cache[mode]="$mode"
       local white light_blue blue pink violet green
       if [[ "$mode" == "dark_mode" ]]; then
         white="#CCCCCC" light_blue="#428CD4" blue="#004E9A" pink="#FF9CDA" violet="#EA4492" green="#afff5f"
@@ -44,22 +44,22 @@ _update_nymphium_colors() {
       fi
 
       # Store rendered escape sequences in the global cache
-      _nymphium_cache[fg_vcs_branch]="%F{${pink}}"
-      _nymphium_cache[fg_vcs_status]="%F{${violet}}"
-      _nymphium_cache[bg_vcs]="%K{${blue}}"
-      _nymphium_cache[fg_vcs_sep]="%F{${blue}}"
-      _nymphium_cache[fg_normal]="%F{${white}}"
-      _nymphium_cache[bg_normal]="%K{${light_blue}}"
-      _nymphium_cache[fg_normal_sep]="%F{${light_blue}}"
-      _nymphium_cache[fg_vim]="%F{${green}}"
+      _theme_nymphium_cache[fg_vcs_branch]="%F{${pink}}"
+      _theme_nymphium_cache[fg_vcs_status]="%F{${violet}}"
+      _theme_nymphium_cache[bg_vcs]="%K{${blue}}"
+      _theme_nymphium_cache[fg_vcs_sep]="%F{${blue}}"
+      _theme_nymphium_cache[fg_normal]="%F{${white}}"
+      _theme_nymphium_cache[bg_normal]="%K{${light_blue}}"
+      _theme_nymphium_cache[fg_normal_sep]="%F{${light_blue}}"
+      _theme_nymphium_cache[fg_vim]="%F{${green}}"
 
       # Update vcs_info formats only when mode changes
       local sep=$icons[sep] branch=$icons[branch]
-      local fmt=" ${_nymphium_cache[bg_vcs]}${sep} "
-      fmt+="${_nymphium_cache[fg_vcs_branch]}${branch}%b "
-      fmt+="${_nymphium_cache[fg_vcs_status]}%u%c%m"
-      fmt+="${_nymphium_cache[bg_normal]}"
-      fmt+="${_nymphium_cache[fg_vcs_sep]}${sep}"
+      local fmt=" ${_theme_nymphium_cache[bg_vcs]}${sep} "
+      fmt+="${_theme_nymphium_cache[fg_vcs_branch]}${branch}%b "
+      fmt+="${_theme_nymphium_cache[fg_vcs_status]}%u%c%m"
+      fmt+="${_theme_nymphium_cache[bg_normal]}"
+      fmt+="${_theme_nymphium_cache[fg_vcs_sep]}${sep}"
 
       zstyle ":vcs_info:git:*" formats "$fmt"
       zstyle ":vcs_info:git:*" actionformats "$fmt"
@@ -68,14 +68,14 @@ _update_nymphium_colors() {
 
   # ALWAYS populate the 'colors' array in the caller's scope from our global cache
   colors=(
-    fg_vcs_branch  "$_nymphium_cache[fg_vcs_branch]"
-    fg_vcs_status  "$_nymphium_cache[fg_vcs_status]"
-    bg_vcs         "$_nymphium_cache[bg_vcs]"
-    fg_vcs_sep     "$_nymphium_cache[fg_vcs_sep]"
-    fg_normal      "$_nymphium_cache[fg_normal]"
-    bg_normal      "$_nymphium_cache[bg_normal]"
-    fg_normal_sep  "$_nymphium_cache[fg_normal_sep]"
-    fg_vim         "$_nymphium_cache[fg_vim]"
+    fg_vcs_branch  "$_theme_nymphium_cache[fg_vcs_branch]"
+    fg_vcs_status  "$_theme_nymphium_cache[fg_vcs_status]"
+    bg_vcs         "$_theme_nymphium_cache[bg_vcs]"
+    fg_vcs_sep     "$_theme_nymphium_cache[fg_vcs_sep]"
+    fg_normal      "$_theme_nymphium_cache[fg_normal]"
+    bg_normal      "$_theme_nymphium_cache[bg_normal]"
+    fg_normal_sep  "$_theme_nymphium_cache[fg_normal_sep]"
+    fg_vim         "$_theme_nymphium_cache[fg_vim]"
   )
 }
 
@@ -149,7 +149,7 @@ _my_prompt() {
   local -A colors
 
   # This will fill the 'colors' array (and update global cache if needed)
-  _update_nymphium_colors
+  _nyphium_update_colors
   
   vcs_info
 
