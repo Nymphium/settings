@@ -44,7 +44,7 @@ if [[ "$1" == "--interactive" ]]; then
     column -t -s '	' | \
     $selector --ansi \
       --header "Select AI Pane (Enter to jump)" \
-      --preview "tmux capture-pane -pt {1} | tail -n 25" \
+      --preview "tmux capture-pane -pet {1} | tail -n 25" \
       --preview-window "right:60%:wrap" | \
     awk '{print $1}')
 
