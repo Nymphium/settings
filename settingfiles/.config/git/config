@@ -116,6 +116,9 @@
 [credential]
 	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
+	credentialStore = keychain
+	guiPrompt = false
+	username = Nymphium
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [wt]
