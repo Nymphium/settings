@@ -1,0 +1,70 @@
+#!/usr/bin/env zsh
+# List and select AI-related tmux panes with bottom-up preview
+
+readonly TARGETS='codex|claude|gemini|ollama'
+
+# Internal: Get AI panes IDs and info
+_get_ai_panes() {
+  tmux list-panes -a -F '#{pane_id}	#{session_name}:#{window_index}.#{pane_index}	#{pane_pid}	#{pane_current_path}' | \
+    while read -r line; do
+      local id=$(echo "$line" | cut -f1)
+      local addr=$(echo "$line" | cut -f2)
+      local pid=$(echo "$line" | cut -f3)
+      local cur_path=$(echo "$line" | cut -f4)
+
+      local found=$(pgrep -iaP "$pid" | grep -iE "$TARGETS" | head -n 1)
+      if [[ -z "$found" ]]; then
+        local descendants=($(pgrep -iP "$pid" 2>/dev/null))
+        while [[ ${#descendants[@]} -gt 0 ]]; do
+          local dpid=$descendants[1]
+          shift descendants
+          local dcmd=$(ps -p "$dpid" -o args= 2>/dev/null)
+          if [[ -n "$dcmd" ]] && echo "$dcmd" | grep -iqE "$TARGETS"; then
+            found="$dcmd"
+            break
+          fi
+          descendants+=($(pgrep -iP "$dpid" 2>/dev/null))
+        done
+      fi
+
+      if [[ -n "$found" ]]; then
+        local tool=$(echo "$found" | grep -ioE "$TARGETS" | head -n 1)
+        # Format: ID | ADDR | TOOL | PATH
+        echo "$id	$addr	$tool	$cur_path"
+      fi
+    done
+}
+
+# Interactive mode using skim
+if [[ "$1" == "--interactive" ]]; then
+  local selector="sk"
+  (( $+commands[fzf] )) && selector="fzf"
+  
+  local selected=$(_get_ai_panes | \
+    column -t -s '	' | \
+    $selector --ansi \
+      --header "Select AI Pane (Enter to jump)" \
+      --preview "tmux capture-pane -pt {1} | tail -n 25" \
+      --preview-window "right:60%:wrap" | \
+    awk '{print $1}')
+
+  if [[ -n "$selected" ]]; then
+    tmux switch-client -t "$selected"
+    tmux select-pane -t "$selected"
+  fi
+  exit 0
+fi
+
+# Filter mode for tmux choose-tree (legacy)
+if [[ "$1" == "--filter" ]]; then
+  local ids=($(_get_ai_panes | cut -f1))
+  if [[ ${#ids[@]} -gt 0 ]]; then
+    echo "#{m/r:(${(j:|:)ids}),#{pane_id}}"
+  else
+    echo "0"
+  fi
+  exit 0
+fi
+
+# Default: List
+_get_ai_panes | column -t -s '	'
