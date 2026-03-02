@@ -170,36 +170,6 @@ setup_binaries() {
   fi
 }
 
-setup_terminfo() {
-  if ! is_macos; then return; fi
-  log_info "Setting up Terminfo (macOS)..."
-
-  if ! command -v tic &>/dev/null; then
-    log_warn "tic command not found, skipping terminfo setup."
-    return
-  fi
-
-  # Check if we need to install (naive check)
-  # This part involves network and compilation, so we might want to skip if already done.
-  # For now, I'll wrap it in a conditional or try/catch.
-  
-  # Using a subshell to avoid changing directory for main script
-  (
-    local temp_dir
-    temp_dir=$(mktemp -d)
-    cd "$temp_dir" || exit 1
-    
-    log_info "Downloading terminfo..."
-    if curl -fLO https://invisible-island.net/datafiles/current/terminfo.src.gz; then
-      gunzip terminfo.src.gz
-      log_info "Compiling terminfo for tmux-256color..."
-      /usr/bin/tic -xe tmux-256color terminfo.src || log_warn "tic compilation failed."
-    else
-      log_warn "Failed to download terminfo."
-    fi
-    rm -rf "$temp_dir"
-  ) || log_error "Terminfo setup failed."
-}
 
 setup_configs() {
   log_info "Setting up configurations in .config..."
@@ -303,7 +273,6 @@ main() {
   setup_dotfiles
   setup_tmux
   setup_xinitrc
-  setup_terminfo
 
   log_success "Setup complete!"
 }
