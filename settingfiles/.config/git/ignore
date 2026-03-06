@@ -3,6 +3,7 @@ Session.vim
 .vimrc
 .DS_Store
 .serena
-.beads
+.beads/
+.claude/
 
 **/.claude/settings.local.json
