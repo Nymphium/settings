@@ -257,6 +257,20 @@ setup_xinitrc() {
   copy_file "${SETTING_FILES}/.xinitrc" "${TARGET_DIR}/.xinitrc"
 }
 
+setup_rulesync() {
+  log_info "Setting up rulesync..."
+
+  if ! command -v rulesync &>/dev/null; then
+    log_info "Installing rulesync..."
+    curl -fsSL https://github.com/dyoshikawa/rulesync/releases/latest/download/install.sh | bash
+  else
+    log_info "rulesync already installed."
+  fi
+
+  log_info "Synchronizing AI tool configurations..."
+  (cd "${REPO_ROOT}" && rulesync generate)
+}
+
 # ------------------------------------------------------------------------------
 # Main Execution
 # ------------------------------------------------------------------------------
@@ -273,6 +287,7 @@ main() {
   setup_dotfiles
   setup_tmux
   setup_xinitrc
+  setup_rulesync
 
   log_success "Setup complete!"
 }
