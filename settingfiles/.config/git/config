@@ -121,6 +121,6 @@
 	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [wt]
-	basedir = ,worktree
+	basedir = ../{gitroot}-wt
 [credential "https://dev.azure.com"]
 	useHttpPath = true
