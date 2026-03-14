@@ -4,6 +4,7 @@
 
 export ZSH_CACHE_DIR="${HOME}/.cache/zsh"
 [[ ! -d "$ZSH_CACHE_DIR/completions" ]] && mkdir -p "$ZSH_CACHE_DIR/completions"
+fpath=("$ZSH_CACHE_DIR/completions" $fpath)
 
 autoload -Uz compinit && compinit -C
 
@@ -24,7 +25,6 @@ unsetopt correct_all
 zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*:default' menu select=1
-# override zephyr's completer: _approximate is extremely slow with many commands in PATH
 zstyle ':completion:*' completer _complete _match
 zstyle ':completion:*' rehash false
 
