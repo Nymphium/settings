@@ -1,7 +1,5 @@
 # vim:ft=sh
 
-[[ -e "${HOME}/.zshenv.local" ]] && source "${HOME}/.zshenv.local"
-
 export path=(
   "${HOME}/bin"
   "${HOME}/local/bin"
@@ -21,9 +19,7 @@ export EDITOR='nvim'
 export MANPAGER="/bin/sh -c \"col -b -x | ${EDITOR} -R -c 'set ft=man nolist nonu noma number nocursorcolumn nocursorline' -\""
 export LANG=${LANG:-en_US.UTF-8}
 
-export OP_BIOMETRIC_UNLOCK_ENABLED=true
-
-alias awk=gawk
-
 [[ -e "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]] && source "${HOME}/.nix-profile/etc/profile.d/nix.sh"
 [[ -e "${HOME}/.nix-profile/share/nix-direnv/direnvrc" ]] && source "${HOME}/.nix-profile/share/nix-direnv/direnvrc"
+
+[[ -e "${HOME}/.zshenv.local" ]] && source "${HOME}/.zshenv.local"

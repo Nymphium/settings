@@ -4,8 +4,13 @@ Session.vim
 .vimrc
 .DS_Store
 .serena
-.beads/
 .claude/
 .playwright-cli
 
 **/.claude/settings.local.json
+
+
+# beads
+.beads/
+.dolt/
+/*.db
