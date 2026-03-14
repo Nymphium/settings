@@ -10,4 +10,3 @@ ${HOME}/.zsh/custom/plugins/rcd
 ${HOME}/.zsh/custom/plugins/git-tools
 ${HOME}/.zsh/custom/plugins/tmux
 
-mattmc3/zephyr path:plugins/completion

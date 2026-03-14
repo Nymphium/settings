@@ -26,6 +26,7 @@ zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*:default' menu select=1
 # override zephyr's completer: _approximate is extremely slow with many commands in PATH
 zstyle ':completion:*' completer _complete _match
+zstyle ':completion:*' rehash false
 
 # tools (evalcache loaded via antidote)
 (( $+commands[direnv] )) && _evalcache direnv hook zsh
