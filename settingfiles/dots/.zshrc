@@ -25,6 +25,7 @@ unsetopt correct_all
 zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' completer _complete _match
 zstyle ':completion:*' rehash false
 
