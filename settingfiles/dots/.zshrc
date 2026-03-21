@@ -45,6 +45,7 @@ bindkey '^[d' kill-word
 bindkey '^[e' forward-word
 bindkey '^[w' backward-word
 bindkey -r '^[l'
+bindkey '^[[Z' reverse-menu-complete
 
 # traildots inline (.. and ... only)
 alias ..='cd ../'
