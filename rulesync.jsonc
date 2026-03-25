@@ -1,13 +1,9 @@
 {
   "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
   "targets": [
-    "copilot",
-    "cursor",
-    "claudecode",
-    "codexcli"
+    "claudecode"
   ],
   "features": [
-    "rules",
     "ignore",
     "mcp",
     "commands",
@@ -21,7 +17,7 @@
   "delete": true,
   "verbose": false,
   "silent": false,
-  "global": false,
+  "global": true,
   "simulateCommands": false,
   "simulateSubagents": false,
   "simulateSkills": false
