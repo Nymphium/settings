@@ -117,7 +117,6 @@
 [credential]
 	credentialStore = keychain
 	guiPrompt = false
-	username = Nymphium
 	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [wt]
