@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+# If staged changes include .rulesync/*, enforce branch naming convention
+if git diff --cached --name-only | rg -q '^\.rulesync/'; then
+  branch="$(git symbolic-ref --short HEAD)"
+  if [[ ! "$branch" =~ '^rulesync/' ]]; then
+    echo "ERROR: .rulesync/ changes must be committed on a rulesync/<hostname> branch (current: $branch)" >&2
+    exit 1
+  fi
+fi

@@ -1,0 +1,22 @@
+name: Rulesync Check
+on:
+  pull_request:
+    paths:
+      - '.rulesync/**'
+      - 'rulesync.jsonc'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install rulesync
+        run: npm install -g rulesync
+
+      - name: Validate rulesync generate is up to date
+        run: rulesync generate --check --global

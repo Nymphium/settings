@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+cd "${0:a:h:h}"
+
+git config core.hooksPath .githooks
+
+readonly BRANCH="rulesync/$(hostname -s)"
+
+rulesync import -g -t claudecode
+
+if git diff --quiet .rulesync/; then
+  echo "No changes to sync."
+  exit 0
+fi
+
+git checkout -B "$BRANCH"
+git add .rulesync/
+git commit -m "feat(rulesync): sync from $(hostname -s)"
+git push -u origin "$BRANCH"
