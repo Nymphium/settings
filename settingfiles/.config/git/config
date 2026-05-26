@@ -117,8 +117,14 @@
 [credential]
 	credentialStore = keychain
 	guiPrompt = false
-	helper = 
+	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
 [wt]
 	basedir = ../{gitroot}-wt
 [credential "https://dev.azure.com"]
