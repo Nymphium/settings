@@ -42,7 +42,7 @@ if [[ "$1" == "--interactive" ]]; then
   
   local selected=$(_get_ai_panes | \
     column -t -s '	' | \
-    sk --ansi \
+    sk --ansi --popup \
       --header "Select AI Pane (Enter to jump)" \
       --preview "tmux capture-pane -pet {1} | tail -n 25" \
       --preview-window "right:60%:wrap" | \

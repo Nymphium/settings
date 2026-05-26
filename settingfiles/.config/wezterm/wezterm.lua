@@ -54,11 +54,6 @@ config.window_frame = {
   border_bottom_height = "0.3cell",
 }
 
-config.window_content_alignment = {
-  horizontal = "Center",
-  vertical = "Center",
-}
-
 config.window_padding = {
   left = 3,
   right = 3,
