@@ -4,6 +4,7 @@
     "claudecode"
   ],
   "features": [
+    "rules",
     "ignore",
     "mcp",
     "commands",

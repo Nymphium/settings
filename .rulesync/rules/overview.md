@@ -31,3 +31,11 @@ globs: ["**/*"]
 ## 3. Playwright skill for browser operation
 
 - Use Firefox when using the Playwright agent-skill.
+
+## 4. Commit messages
+
+- Follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/).
+- Format: `<type>[optional scope]: <description>`
+- Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+- Use `!` after type/scope or a `BREAKING CHANGE:` footer for breaking changes.
+- Description is lowercase, imperative mood, no trailing period.
