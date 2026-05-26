@@ -9,7 +9,6 @@
 
 [core]
   pager = delta
-	excludesFile = /Users/nymphium/.config/git/ignore
 
 [interactive]
   diffFilter = delta --color-only
