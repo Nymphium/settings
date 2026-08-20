@@ -7,7 +7,7 @@ git config core.hooksPath .githooks
 
 readonly BRANCH="rulesync/$(hostname -s)"
 
-rulesync import -g -t claudecode
+"${0:a:h}/rulesync-pull"
 
 if git diff --quiet .rulesync/; then
   echo "No changes to sync."

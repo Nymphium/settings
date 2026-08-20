@@ -9,7 +9,11 @@ Personal dotfiles and configuration management for macOS/Linux environments.
   - `bin/` — user scripts
 - `setup.sh` — idempotent installer (zsh, non-interactive)
 - `setup_sudo.sh` — privileged setup
-- `rulesync.jsonc` — rulesync config (Claude Code global sync)
+- `rulesync.jsonc` — rulesync config (Claude Code / Cursor global sync)
+- `.rulesync/` — unified AI rules source (rules, MCP, commands, skills, hooks)
+- `bin/rulesync-pull` — import union from local Claude Code + Cursor into `.rulesync/`
+- `bin/rulesync-generate` — apply `.rulesync/` to both tools globally
+- `bin/rulesync-push` — pull union, commit on `rulesync/<hostname>`, push for merge PR
 
 ## Principles
 

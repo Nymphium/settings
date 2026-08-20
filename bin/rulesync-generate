@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+readonly REPO_ROOT="${0:a:h:h}"
+
+cd "${REPO_ROOT}"
+
+rulesync generate -g
+
+# rulesync does not support global mode for cursor rules
+cursor_rules_dir="$(mktemp -d)"
+trap 'rm -rf "${cursor_rules_dir}"' EXIT
+
+cp -R "${REPO_ROOT}/.rulesync" "${cursor_rules_dir}/"
+cat > "${cursor_rules_dir}/rulesync.jsonc" <<'EOF'
+{
+  "targets": ["cursor"],
+  "features": ["rules"],
+  "outputRoots": ["."],
+  "global": false
+}
+EOF
+
+(cd "${cursor_rules_dir}" && rulesync generate)
+
+if [[ -f "${cursor_rules_dir}/.cursor/rules/overview.mdc" ]]; then
+  mkdir -p "${HOME}/.cursor/rules"
+  cp "${cursor_rules_dir}/.cursor/rules/overview.mdc" "${HOME}/.cursor/rules/overview.mdc"
+  echo "Installed Cursor global rules: ${HOME}/.cursor/rules/overview.mdc"
+fi

@@ -1,0 +1,187 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+# Import global Claude Code and Cursor configs into .rulesync/ (union).
+readonly REPO_ROOT="${0:a:h:h}"
+readonly RULESYNC_DIR="${REPO_ROOT}/.rulesync"
+readonly OWNED_LIST="${RULESYNC_DIR}/.owned"
+
+typeset -ga SKIPPED_FILES=()
+
+log_info() {
+  printf '[rulesync-pull] %s\n' "$1"
+}
+
+import_tool() {
+  local tool=$1
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+
+  cat > "${tmpdir}/rulesync.jsonc" <<EOF
+{
+  "\$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
+  "targets": ["${tool}"],
+  "features": ["*"],
+  "global": true
+}
+EOF
+
+  (cd "${tmpdir}" && rulesync import -g -t "${tool}" -f '*' -s)
+  print -r -- "${tmpdir}"
+}
+
+# Only files this repository authors may be imported. Everything else in
+# ~/.claude comes from a plugin or a skill marketplace, and copying it here
+# would redistribute someone else's work from a public repo with no LICENSE —
+# see .rulesync/.owned and settingfiles/claude/plugins.tsv.
+is_owned() {
+  local rel=$1
+  [[ -f "${OWNED_LIST}" ]] || return 0
+
+  local pattern
+  while IFS= read -r pattern; do
+    [[ -z "${pattern}" || "${pattern}" == \#* ]] && continue
+    [[ "${rel}" == ${~pattern} ]] && return 0
+  done < "${OWNED_LIST}"
+  return 1
+}
+
+merge_tree() {
+  local src=$1
+  local dest=$2
+  local feature="${dest:t}"
+
+  [[ -d "${src}" ]] || return 0
+
+  local file rel target
+  for file in "${src}"/**/*(.N); do
+    rel="${feature}/${file#${src}/}"
+    if ! is_owned "${rel}"; then
+      SKIPPED_FILES+=("${rel}")
+      continue
+    fi
+    target="${RULESYNC_DIR}/${rel}"
+    mkdir -p "${target:h}"
+    cp "${file}" "${target}"
+  done
+}
+
+dedupe_flat_commands() {
+  local commands_dir=$1
+  local flat nested
+
+  [[ -d "${commands_dir}" ]] || return 0
+
+  for flat in "${commands_dir}"/*.md(N); do
+    local base="${flat:t}"
+    case "${base}" in
+      playwright-cli.md | ast-grep.md) continue ;;
+    esac
+
+    nested="$(find "${commands_dir}" -mindepth 2 -name "${base}" -print -quit 2>/dev/null || true)"
+    [[ -n "${nested}" ]] && rm -f "${flat}"
+  done
+}
+
+merge_mcp_union() {
+  local dest=$1
+  shift
+
+  if ! command -v jq &>/dev/null; then
+    log_info "jq not found; skipping MCP union merge"
+    return 0
+  fi
+
+  local -a sources=()
+  local file
+  for file in "$@"; do
+    [[ -f "${file}" ]] || continue
+    sources+=("${file}")
+  done
+  ((${#sources[@]})) || return 0
+
+  local merged
+  if [[ -f "${dest}" ]]; then
+    merged="$(jq -s '
+      {
+        "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/mcp-schema.json",
+        "mcpServers": (
+          [.[] | .mcpServers // {}] | add
+        )
+      }
+    ' "${dest}" "${sources[@]}")"
+  else
+    merged="$(jq -s '
+      {
+        "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/mcp-schema.json",
+        "mcpServers": (
+          [.[] | .mcpServers // {}] | add
+        )
+      }
+    ' "${sources[@]}")"
+  fi
+
+  mkdir -p "${dest:h}"
+  print -r -- "${merged}" > "${dest}"
+}
+
+cleanup() {
+  [[ -n "${cursor_tmp:-}" ]] && rm -rf "${cursor_tmp}"
+  [[ -n "${claude_tmp:-}" ]] && rm -rf "${claude_tmp}"
+}
+
+main() {
+  trap cleanup EXIT
+
+  cd "${REPO_ROOT}"
+  mkdir -p "${RULESYNC_DIR}"
+
+  log_info "Importing Cursor global config..."
+  cursor_tmp="$(import_tool cursor)"
+
+  log_info "Importing Claude Code global config..."
+  claude_tmp="$(import_tool claudecode)"
+
+  log_info "Merging into ${RULESYNC_DIR}..."
+  # Rules stay repo-managed in .rulesync/rules/ (global import is unreliable).
+
+  for feature in ignores commands subagents skills hooks; do
+    merge_tree "${cursor_tmp}/.rulesync/${feature}" "${RULESYNC_DIR}/${feature}"
+  done
+
+  for feature in ignores commands subagents skills hooks; do
+    merge_tree "${claude_tmp}/.rulesync/${feature}" "${RULESYNC_DIR}/${feature}"
+  done
+
+  dedupe_flat_commands "${RULESYNC_DIR}/commands"
+
+  if [[ -f "${cursor_tmp}/.rulesync/mcp.json" ]] || [[ -f "${claude_tmp}/.rulesync/mcp.json" ]]; then
+    merge_mcp_union \
+      "${RULESYNC_DIR}/mcp.json" \
+      "${HOME}/.cursor/mcp.json" \
+      "${HOME}/.claude/.claude.json" \
+      "${cursor_tmp}/.rulesync/mcp.json" \
+      "${claude_tmp}/.rulesync/mcp.json"
+  fi
+
+  for file in hooks.json .aiignore; do
+    if [[ -f "${claude_tmp}/.rulesync/${file}" ]]; then
+      cp "${claude_tmp}/.rulesync/${file}" "${RULESYNC_DIR}/${file}"
+    elif [[ -f "${cursor_tmp}/.rulesync/${file}" ]]; then
+      cp "${cursor_tmp}/.rulesync/${file}" "${RULESYNC_DIR}/${file}"
+    fi
+  done
+
+  if (( ${#SKIPPED_FILES[@]} )); then
+    log_info "Skipped ${#SKIPPED_FILES[@]} third-party file(s) (not in .rulesync/.owned):"
+    local skipped
+    for skipped in ${(u)SKIPPED_FILES}; do
+      printf '  - %s\n' "${skipped}"
+    done
+    log_info "Install these from upstream instead; declare them in settingfiles/claude/plugins.tsv"
+  fi
+
+  log_info "Done. Review changes with: git diff .rulesync/"
+}
+
+main "$@"

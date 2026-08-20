@@ -1,0 +1,18 @@
+# Allowlist for bin/rulesync-pull.
+#
+# This repository is public and has no LICENSE, so anything imported from
+# ~/.claude ends up redistributed under no grant at all. Third-party skills and
+# commands (plugin- or marketplace-installed) must therefore never be copied in;
+# they are declared in settingfiles/claude/plugins.tsv and reinstalled from
+# upstream instead.
+#
+# Paths are zsh glob patterns relative to .rulesync/.
+rules/**
+hooks.json
+mcp.json
+.aiignore
+ignores/**
+subagents/planner.md
+skills/project-context/**
+commands/review-pr.md
+commands/fix-pr-comments.md

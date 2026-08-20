@@ -1,21 +1,19 @@
 {
   "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
-  "targets": [
-    "claudecode"
-  ],
-  "features": [
-    "rules",
-    "ignore",
-    "mcp",
-    "commands",
-    "subagents",
-    "skills",
-    "hooks"
-  ],
-  "baseDirs": [
+  "targets": {
+    "claudecode": ["*"],
+    // cursor rules: global mode unsupported; applied via bin/rulesync-generate
+    "cursor": ["mcp", "commands", "subagents", "skills", "hooks"]
+  },
+  "outputRoots": [
     "."
   ],
-  "delete": true,
+  // delete:true prunes anything not in .rulesync/ from the output roots. In
+  // global mode that means ~/.claude/{commands,skills} — it deletes every
+  // plugin- or marketplace-installed skill (grill-me, japanese-tech-writing,
+  // the launchdarkly set) on each run. Third-party content is installed from
+  // upstream (settingfiles/claude/plugins.tsv) and must survive generate.
+  "delete": false,
   "verbose": false,
   "silent": false,
   "global": true,
