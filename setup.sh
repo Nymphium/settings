@@ -257,6 +257,91 @@ setup_xinitrc() {
   copy_file "${SETTING_FILES}/.xinitrc" "${TARGET_DIR}/.xinitrc"
 }
 
+setup_claude() {
+  log_info "Setting up Claude Code user config..."
+  local src="${SETTING_FILES}/claude"
+  local dst="${TARGET_DIR}/.claude"
+
+  [[ -d "$src" ]] || return
+
+  ensure_dir "${dst}/hooks"
+  ensure_dir "${dst}/feedback"
+
+  # Linked file by file, never as a directory: ~/.claude/hooks also holds
+  # scripts other tools install (herdr), and ~/.claude/feedback holds the hooks'
+  # own state files, which must not land in this repo.
+  local f
+  for f in "${src}/hooks"/*(N); do
+    link_file "$f" "${dst}/hooks/${f:t}"
+  done
+  for f in "${src}/feedback"/*(N); do
+    link_file "$f" "${dst}/feedback/${f:t}"
+  done
+
+  # The hook entries in ~/.claude/settings.json come from .rulesync/hooks.json
+  # via setup_rulesync — anything not listed there is dropped on generate.
+}
+
+setup_claude_plugins() {
+  log_info "Setting up Claude Code plugins and skills..."
+
+  local manifest="${SETTING_FILES}/claude/plugins.tsv"
+  [[ -f "$manifest" ]] || return
+
+  if ! command -v claude &>/dev/null; then
+    log_warn "claude CLI not found; skipping plugin setup"
+    return
+  fi
+
+  local settings="${TARGET_DIR}/.claude/settings.json"
+  local kind source target marketplace plugin
+
+  while IFS=$'\t' read -r kind source target; do
+    [[ -z "$kind" || "$kind" == \#* ]] && continue
+
+    case "$kind" in
+      marketplace)
+        # Resolve by repo, not by name: the same marketplace may already be
+        # registered locally under a different name.
+        marketplace=""
+        if [[ -f "$settings" ]] && command -v jq &>/dev/null; then
+          marketplace=$(jq -r --arg repo "$source" \
+            '(.extraKnownMarketplaces // {}) | to_entries[]
+             | select(.value.source.repo == $repo) | .key' "$settings" 2>/dev/null | head -1)
+        fi
+
+        if [[ -z "$marketplace" ]]; then
+          claude plugin marketplace add "$source" --scope user
+          marketplace="${target##*@}"
+        fi
+
+        plugin="${target%%@*}"
+        if [[ -f "$settings" ]] && command -v jq &>/dev/null &&
+          jq -e --arg k "${plugin}@${marketplace}" \
+            '(.enabledPlugins // {}) | has($k)' "$settings" &>/dev/null; then
+          log_info "plugin already installed: ${plugin}@${marketplace}"
+        else
+          claude plugin install "${plugin}@${marketplace}"
+        fi
+        ;;
+
+      skill)
+        if [[ -d "${TARGET_DIR}/.claude/skills/${target}" ]]; then
+          log_info "skill already installed: ${target}"
+        else
+          npx -y skills add "$source" --skill "$target" --agent claude-code --global --yes
+        fi
+        ;;
+
+      *)
+        log_warn "unknown entry kind in ${manifest}: ${kind}"
+        ;;
+    esac
+  done < "$manifest"
+
+  log_success "Claude plugins and skills ensured"
+}
+
 setup_rulesync() {
   log_info "Setting up rulesync..."
 
@@ -268,7 +353,7 @@ setup_rulesync() {
   fi
 
   log_info "Synchronizing AI tool configurations..."
-  (cd "${REPO_ROOT}" && rulesync generate)
+  "${REPO_ROOT}/bin/rulesync-generate"
 }
 
 # ------------------------------------------------------------------------------
@@ -287,6 +372,8 @@ main() {
   setup_dotfiles
   setup_tmux
   setup_xinitrc
+  setup_claude
+  setup_claude_plugins
   setup_rulesync
 
   log_success "Setup complete!"

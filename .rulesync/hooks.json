@@ -6,6 +6,32 @@
         "matcher": "Write|Edit",
         "command": ".rulesync/hooks/format.sh"
       }
+    ],
+    "sessionStart": [
+      {
+        "matcher": "*",
+        "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
+        "timeout": 10
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 \"$HOME/.claude/hooks/feedback-inject.py\"",
+        "timeout": 10
+      }
+    ],
+    "preToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit",
+        "command": "python3 \"$HOME/.claude/hooks/feedback-guard.py\"",
+        "timeout": 10
+      }
+    ],
+    "stop": [
+      {
+        "command": "python3 \"$HOME/.claude/hooks/feedback-stop-check.py\"",
+        "timeout": 15
+      }
     ]
   }
 }
