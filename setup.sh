@@ -326,10 +326,12 @@ setup_claude_plugins() {
         ;;
 
       skill)
-        if [[ -d "${TARGET_DIR}/.claude/skills/${target}" ]]; then
+        # --agent '*' installs into ~/.agents/skills and links it into every
+        # agent that reads from there, so a skill is not Claude-only.
+        if [[ -d "${TARGET_DIR}/.agents/skills/${target}" ]]; then
           log_info "skill already installed: ${target}"
         else
-          npx -y skills add "$source" --skill "$target" --agent claude-code --global --yes
+          npx -y skills add "$source" --skill "$target" --agent '*' --global --yes
         fi
         ;;
 
