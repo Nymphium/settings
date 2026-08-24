@@ -9,6 +9,7 @@ marketplace	DietrichGebert/ponytail	ponytail@ponytail
 skill	https://github.com/mattpocock/skills	grill-me
 marketplace	ast-grep/agent-skill	ast-grep@ast-grep-marketplace
 skill	https://github.com/microsoft/playwright-cli	playwright-cli
+skill	https://github.com/kotek-7/dotfiles	sanitize-artifacts
 #
 # treesitter-patterns: kept only in ~/.claude/commands on this machine.
 # Upstream is most likely Consiliency/treesitter-chunker (MIT) but the skill
