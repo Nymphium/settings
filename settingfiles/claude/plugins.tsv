@@ -9,6 +9,9 @@ marketplace	DietrichGebert/ponytail	ponytail@ponytail
 skill	https://github.com/mattpocock/skills	grill-me
 # grill-me is only an entry point; the interview itself lives in `grilling`.
 skill	https://github.com/mattpocock/skills	grilling
+# grill-with-docs is another entry point: it calls grilling and domain-modeling.
+skill	https://github.com/mattpocock/skills	grill-with-docs
+skill	https://github.com/mattpocock/skills	domain-modeling
 marketplace	ast-grep/agent-skill	ast-grep@ast-grep-marketplace
 skill	https://github.com/microsoft/playwright-cli	playwright-cli
 skill	https://github.com/kotek-7/dotfiles	sanitize-artifacts
