@@ -7,6 +7,8 @@
 marketplace	u-ichi/compact-plus	compact-plus@compact-plus
 marketplace	DietrichGebert/ponytail	ponytail@ponytail
 skill	https://github.com/mattpocock/skills	grill-me
+# grill-me is only an entry point; the interview itself lives in `grilling`.
+skill	https://github.com/mattpocock/skills	grilling
 marketplace	ast-grep/agent-skill	ast-grep@ast-grep-marketplace
 skill	https://github.com/microsoft/playwright-cli	playwright-cli
 skill	https://github.com/kotek-7/dotfiles	sanitize-artifacts
