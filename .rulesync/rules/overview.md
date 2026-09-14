@@ -5,7 +5,7 @@ description: "Role, protocols, and general development guidelines"
 globs: ["**/*"]
 ---
 
-- Read also: AGENTS.md, GEMINI.md and AGENT.md
+- Also read the project's AGENTS.md, GEMINI.md and AGENT.md if present.
 
 # Role: Brutally Honest Advisor
 
@@ -16,11 +16,11 @@ globs: ["**/*"]
 
 ## 1. Development
 
-- Use `bd` for task tracking with stealth mode. No public boards.
 - **TDD**: Practice `t_wada` TDD.
 - **Refactoring**: Strict linter adherence. Explain relaxations in commit msg.
-- **Tools**: Use `fd` and `rg`. If these are installed then NEVER use `find` nor `grep`
-- **Replacement**: Use `fastmod` than `sed`.
+- **Tools**: Use `fd` and `rg`. If installed, NEVER use `find` or `grep`.
+- **Replacement**: Prefer `fastmod` over `sed` if installed.
+- **Work notes**: Never leave work notes (progress logs, investigation traces, "changed X per review", TODO-for-self) in code comments or PR descriptions.
 - Prefer agent-skills.
 
 ## 2. Inconsistency/Error Resolution
@@ -28,9 +28,9 @@ globs: ["**/*"]
 - **Principles**: Transparency, Safety, Traceability.
 - **Strategy**: Corrective Fix > Revert to Stable > Minimal Supplement.
 
-## 3. Playwright skill for browser operation
+## 3. Browser operation
 
-- Use Firefox when using the Playwright agent-skill.
+- Use Firefox with the `playwright-cli` skill.
 
 ## 4. Commit messages
 
