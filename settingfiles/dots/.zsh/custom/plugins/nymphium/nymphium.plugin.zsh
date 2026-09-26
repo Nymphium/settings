@@ -157,7 +157,9 @@ _my_prompt() {
   local icon_nvim=${NVIM:+"${colors[fg_vim]}${colors[bg_normal]}${icons[nvim]}${reset}"}
   local prompt_start="${icon_nvim}${colors[fg_normal]}${colors[bg_normal]}"
 
-  PROMPT="${prompt_start} %c${colors[fg_normal_sep]}${vcs_info_msg_0_}${reset}${colors[bg_normal]} ${reset}${colors[fg_normal_sep]}${icons[sep]}${reset} "
+  # vcs_info_msg_0_ is referenced, not pasted: prompt_subst would otherwise
+  # run a `$(...)` in a branch name.
+  PROMPT="${prompt_start} %c${colors[fg_normal_sep]}\${vcs_info_msg_0_}${reset}${colors[bg_normal]} ${reset}${colors[fg_normal_sep]}${icons[sep]}${reset} "
 }
 
 add-zsh-hook precmd _my_prompt
