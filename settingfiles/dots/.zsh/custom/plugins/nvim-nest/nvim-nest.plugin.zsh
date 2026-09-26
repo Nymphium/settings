@@ -1,5 +1,5 @@
 function nvr() {
-  nvn="$NVIM"
+  local nvn="$NVIM"
 
   if [[ "$nvn" == "" ]]; then
     # shellcheck disable=SC2068
@@ -89,19 +89,13 @@ function nvr() {
   # 4. ファイル引数を処理
   if [[ ${#file_args[@]} -gt 0 ]]; then
     # 最初のファイルは指定された（またはデフォルトの）分割で開く
-    local first_file="${file_args[1]}"
-    if [[ "$split_cmd" == "vnew" ]]; then
-      _nvr_vnew "$first_file"
-      return $?
-    else
-      _nvr_hnew "$first_file"
-      return $?
-    fi
+    "_nvr_${split_cmd}" "${file_args[1]}" || return $?
 
     # 2つ目以降のファイルはデフォルトのvnewで開く
-    # for (( i=1; i<${#file_args[@]}; i++ )); do
-    #   vnew "${file_args[$i]}"
-    # done
+    local f
+    for f in "${file_args[@]:1}"; do
+      _nvr_vnew "$f" || return $?
+    done
   else
     # ファイル引数がなく、-- 以降の引数もなければ、nvimをフォーカス
     if [[ ${#args_after_dash[@]} -eq 0 ]]; then

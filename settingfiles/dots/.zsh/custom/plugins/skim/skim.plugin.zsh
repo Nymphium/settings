@@ -139,12 +139,12 @@ zle -N skim-file-widget
 bindkey '^t' skim-file-widget
 
 if (( $+commands[procs] )); then
+  # skill [query] [signal]
   skill() {
     local pid
     pid=$(procs | sk --header-lines=1 --query "$1" | awk '{print $1}')
     if [ -n "$pid" ]; then
-      echo $pid | xargs kill -${1:-9}
-      echo "Process $pid killed."
+      kill -${2:-9} $pid && echo "Process $pid killed."
     fi
   }
 fi

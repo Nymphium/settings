@@ -63,7 +63,7 @@ alias ...='cd ../../'
 
 # directory stack shortcuts
 alias d='dirs -v | head -20'
-for i ({1..9}) alias "$i=builtin cd -$((i-1))"; unset i
+for i ({1..9}) alias "$i=builtin cd +$i"; unset i
 
 alias l='ls -Fhal --color=auto'
 

@@ -14,12 +14,12 @@ _theme_nymphium_cache=(
 [[ "$(uname)" == "Darwin" ]] && _theme_nymphium_cache[is_darwin]=1
 
 # --- Color/Style Updater ---
-_nyphium_update_colors() {
+_nymphium_update_colors() {
   local now=$EPOCHSECONDS
   local need_refresh=0
   
   # Check if we need to re-run the heavy 'defaults read'
-  if (( now - _theme_nymphium_cache[last_update] >= 30 )) || [[ -z "$_nymphium_cache[mode]" ]]; then
+  if (( now - _theme_nymphium_cache[last_update] >= 30 )) || [[ -z "$_theme_nymphium_cache[mode]" ]]; then
     need_refresh=1
   fi
 
@@ -34,7 +34,7 @@ _nyphium_update_colors() {
       fi
     fi
 
-    if [[ "$mode" != "$_theme_nymphium_cache[mode]" ]] || [[ -z "$_nymphium_cache[fg_normal]" ]]; then
+    if [[ "$mode" != "$_theme_nymphium_cache[mode]" ]] || [[ -z "$_theme_nymphium_cache[fg_normal]" ]]; then
       _theme_nymphium_cache[mode]="$mode"
       local white light_blue blue pink violet green
       if [[ "$mode" == "dark_mode" ]]; then
@@ -108,10 +108,12 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-info
   fi
 
   if [[ -n "${git_status}" ]]; then
+    # porcelain lines are "XY path": X = index (staged), Y = worktree (unstaged)
+    local -a st=("${(@f)git_status}")
     local status_icons=""
-    [[ "${git_status}" =~ '^[[:graph:]]' ]] && status_icons+="${icons[staged]}"
-    [[ "${git_status}" =~ '^[[:space:]][[:graph:]]' ]] || [[ "${git_status}" =~ '^.[[:graph:]]' ]] && status_icons+="${icons[unstaged]}"
-    
+    [[ -n ${(M)st:#[^ ]*} ]] && status_icons+="${icons[staged]}"
+    [[ -n ${(M)st:#?[^ ]*} ]] && status_icons+="${icons[unstaged]}"
+
     if [[ -n "${status_icons}" ]]; then
        hook_com[misc]+="${colors[fg_vcs_status]}${status_icons}"
     fi
@@ -149,7 +151,7 @@ _my_prompt() {
   local -A colors
 
   # This will fill the 'colors' array (and update global cache if needed)
-  _nyphium_update_colors
+  _nymphium_update_colors
   
   vcs_info
 

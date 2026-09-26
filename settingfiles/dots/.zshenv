@@ -1,5 +1,7 @@
 # vim:ft=sh
 
+# nested shells re-run this file; keep PATH free of duplicates
+typeset -U path
 export path=(
   "${HOME}/bin"
   "${HOME}/local/bin"
