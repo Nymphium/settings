@@ -49,7 +49,7 @@ bindkey '^R' skim-history-widget
 # 2. Ctrl + T でファイルを検索してコマンドラインに挿入
 function skim-file-widget() {
   local current_dir=$PWD
-  local result lines key selected full_path rel_path
+  local result lines op selected full_path rel_path
   
   while true; do
     result=$(

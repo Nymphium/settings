@@ -1,9 +1,7 @@
 # Load custom configurations
-RCD=$HOME/.zsh.d
-if [[ -d "${RCD}" ]] && [[ -n "$(ls -A "${RCD}")" ]]; then
-	for f in "${RCD}"/*;
-    do
-    # shellcheck disable=1090
-    source "${f}"
+() {
+  local f
+  for f in $HOME/.zsh.d/*(N); do
+    source "$f"
   done
-fi
+}

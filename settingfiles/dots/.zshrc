@@ -19,8 +19,7 @@ SAVEHIST=100000
 setopt inc_append_history hist_ignore_all_dups hist_reduce_blanks extended_history
 
 # options
-setopt prompt_subst magic_equal_subst no_hup numeric_glob_sort auto_param_keys auto_cd auto_pushd pushd_ignore_dups
-unsetopt correct_all
+setopt magic_equal_subst no_hup numeric_glob_sort auto_param_keys auto_cd auto_pushd pushd_ignore_dups
 
 # completion style
 zstyle ':completion:*' list-colors "${LS_COLORS}"
@@ -28,7 +27,6 @@ zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' completer _complete _match
-zstyle ':completion:*' rehash false
 
 # tools (evalcache loaded via antidote)
 (( $+commands[direnv] )) && _evalcache direnv hook zsh

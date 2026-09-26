@@ -56,9 +56,7 @@ function nvr() {
   # 3. -- 以前の引数を getopts で処理
   local split_cmd="vnew" # デフォルト
 
-  # getoptsが引数リストを直接変更するため、
-  # -- 以前の引数リストで一時的に置き換える
-  local original_args=("$@")
+  # getoptsが引数リストを直接変更するため、-- 以前の引数リストで置き換える
   set -- "${args_before_dash[@]}"
 
   while getopts ":vh" opt; do
@@ -82,9 +80,6 @@ function nvr() {
   shift $((OPTIND-1))
   # 残った引数がファイル引数になる
   local file_args=("$@")
-
-  # 引数リストを元に戻す
-  set -- "${original_args[@]}"
 
   # 4. ファイル引数を処理
   if [[ ${#file_args[@]} -gt 0 ]]; then
