@@ -1,18 +1,15 @@
-if [[ ! (( $+commands[tmux] )) ]]; then
-  return
-fi
+(( $+commands[tmux] )) || return
 
-# auto-start tmux for interactive shells
+# auto-start tmux for interactive shells; drop to a plain shell if tmux fails
 if [[ -o interactive ]] && [[ -z "$TMUX" ]]; then
   while true; do
     local detached_session
     detached_session="$(tmux list-sessions -F '#{session_name}' -f '#{?session_attached,,1}' 2>/dev/null | head -1)"
 
     if [[ -n "$detached_session" ]]; then
-      tmux -u attach-session -t "$detached_session"
+      tmux -u attach-session -t "$detached_session" || break
     else
-      tmux -u new-session
+      tmux -u new-session || break
     fi
   done
-  exit
 fi
