@@ -6,9 +6,10 @@ export ZSH_CACHE_DIR="${HOME}/.cache/zsh"
 [[ ! -d "$ZSH_CACHE_DIR/completions" ]] && mkdir -p "$ZSH_CACHE_DIR/completions"
 fpath=("$ZSH_CACHE_DIR/completions" $fpath)
 
-autoload -Uz compinit && compinit -C
-
 source "${HOME}/.antidote/antidote.zsh"
+# compinit must see zsh-completions, yet run before plugins that call compdef
+() { local d; d=$(antidote path zsh-users/zsh-completions 2>/dev/null) && fpath=("$d/src" $fpath) }
+autoload -Uz compinit && compinit
 antidote load
 
 # history
