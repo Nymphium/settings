@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Show the server IP when the session was last attached over SSH.
 # #() jobs run with the server's global environment, so read the session's
 # copy instead: update-environment refreshes SSH_CONNECTION on every attach
