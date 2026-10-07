@@ -20,6 +20,8 @@ setopt inc_append_history hist_ignore_all_dups hist_reduce_blanks extended_histo
 
 # options
 setopt magic_equal_subst no_hup numeric_glob_sort auto_param_keys auto_cd auto_pushd pushd_ignore_dups
+# macOS's stock /etc/zshrc sets this but nix-darwin's doesn't; without it ZLE prints U+FE0F as <fe0f>
+setopt combining_chars
 
 # completion style
 zstyle ':completion:*' list-colors "${LS_COLORS}"
