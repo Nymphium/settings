@@ -67,4 +67,8 @@ for i ({1..9}) alias "$i=builtin cd +$i"; unset i
 
 alias l='ls -Fhal --color=auto'
 
+# Cursor CLI keeps MCP approvals per directory, so it would ask again in every new one
+alias agent='agent --approve-mcps'
+alias cursor-agent='cursor-agent --approve-mcps'
+
 [[ -n "$ZPROF" ]] && zprof
