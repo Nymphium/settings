@@ -191,6 +191,12 @@ setup_configs() {
       continue
     fi
 
+    # ~/.config/herdr also holds herdr's sockets, logs and session state
+    if [[ "$name" == "herdr" ]]; then
+      link_file "${config}/config.toml" "${XDG_CONFIG_HOME}/herdr/config.toml"
+      continue
+    fi
+
     # Default: Link the directory
     link_file "$config" "${XDG_CONFIG_HOME}/${name}"
   done

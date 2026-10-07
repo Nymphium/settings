@@ -1,0 +1,95 @@
+onboarding = false
+# Herdr terms: Workspace = tmux session, Tab = tmux window, Pane = tmux pane.
+# Full reference: https://herdr.dev/docs/config-reference/
+
+[theme]
+name = "tokyo-night"
+# follow the host's appearance, as ghostty's TokyoNight Day / Storm does
+auto_switch = true
+dark_name = "tokyo-night"
+light_name = "tokyo-night-day"
+
+[session]
+# the server stays up across detach and re-hooks agent panes into their
+# conversations on restart, so no snapshot save/restore is needed
+resume_agents_on_restore = true
+
+[keys]
+prefix = "alt+b"
+
+focus_pane_left = "alt+left"
+focus_pane_down = "alt+down"
+focus_pane_up = "alt+up"
+focus_pane_right = "alt+right"
+
+resize_pane_left = "prefix+h"
+resize_pane_down = "prefix+j"
+resize_pane_up = "prefix+k"
+resize_pane_right = "prefix+l"
+
+# herdr names splits by the resulting arrangement
+split_vertical = ["prefix+v", "alt+shift+v"]       # side-by-side
+split_horizontal = ["prefix+minus", "alt+shift+w"] # stacked
+
+# herdr has no key name for PageUp/PageDown, so ghostty relays ctrl(+shift)+PgUp/PgDn as F13-F16
+previous_tab = ["prefix+p", "f13"]
+next_tab = ["prefix+n", "f14"]
+move_tab_previous = "f15"
+move_tab_next = "f16"
+new_tab = ["prefix+c", "prefix+alt+t"]
+close_tab = ["prefix+shift+x", "prefix+d", "prefix+alt+d"]
+
+# prefix+W opens the goto navigator as tmux's choose-tree did; workspace_picker (prefix+w)
+# only highlights sidebar rows, invisible with the sidebar hidden
+goto = ["prefix+g", "prefix+shift+w"]
+rename_workspace = "prefix+$"
+next_workspace = "alt+n"
+previous_workspace = "alt+shift+n"
+# bound as a custom command below, since terminal.new_cwd would make it follow the focused pane
+new_workspace = []
+
+zoom = "prefix+alt+i"
+
+# copy mode already uses vi motions, v/Space to select, y/Enter to copy
+copy_mode = ["prefix+[", "prefix+/", "alt+y"]
+
+[ui]
+# hidden, not the compact rail; toggle with prefix+b
+sidebar_start_collapsed = true
+sidebar_collapsed_mode = "hidden"
+
+# tabs are named by the herdr-auto-title plugin, as tmux's automatic-rename did
+prompt_new_tab_name = false
+
+tab_bar_position = "bottom"
+tab_bar_right_separator = " │ "
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "command", command = 'pmset -g batt | awk -F"[;\t]" "/%/ {gsub(/ /, \"\", \$2); print \"BAT \" \$2}"', interval_seconds = 60, timeout_seconds = 2 },
+  { type = "command", command = 'ps -A -o %cpu= | awk -v n="$(sysctl -n hw.ncpu)" "{s += \$1} END {printf \"CPU %d%%\n\", s / n}"', interval_seconds = 5, timeout_seconds = 2 },
+  { type = "command", command = 'memory_pressure | awk "/free percentage/ {printf \"MEM %d%%\n\", 100 - \$5}"', interval_seconds = 5, timeout_seconds = 2 },
+  { type = "hostname" },
+]
+
+[experimental]
+# agent TUIs hide the real cursor and paint their own, leaving the IME candidate window behind
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_agents = ["cursor", "claude"]
+
+# tmux's command prompt, with completion
+[[keys.command]]
+key = "prefix+:"
+type = "popup"
+command = "$HOME/bin/herdr-prompt"
+description = "herdr command line"
+# room for the completion list
+height = "25%"
+
+# new workspaces start at $HOME while tabs and panes follow the focused pane;
+# terminal.new_cwd is a single policy for all three, so workspaces get their own binding.
+# tmux's new-session was prefix+alt+g
+[[keys.command]]
+key = ["prefix+shift+n", "prefix+alt+g"]
+type = "shell"
+command = 'herdr workspace create --cwd "$HOME" --focus'
+description = "new workspace at $HOME"

@@ -8,5 +8,6 @@ ${HOME}/.zsh/custom/plugins/skim
 ${HOME}/.zsh/custom/plugins/nymphium
 ${HOME}/.zsh/custom/plugins/rcd
 ${HOME}/.zsh/custom/plugins/git-tools
+${HOME}/.zsh/custom/plugins/herdr
 ${HOME}/.zsh/custom/plugins/tmux
 

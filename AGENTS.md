@@ -5,7 +5,7 @@ Personal dotfiles and configuration management for macOS/Linux environments.
 ## Structure
 
 - `settingfiles/` — config files symlinked to `$HOME` via `setup.sh`
-  - `.config/` — XDG config (tmux, git, alacritty, wezterm, karabiner, starship, awesome, fontconfig)
+  - `.config/` — XDG config (tmux, herdr, git, alacritty, wezterm, ghostty, karabiner, starship, awesome, fontconfig)
   - `bin/` — user scripts
 - `setup.sh` — idempotent installer (zsh, non-interactive)
 - `setup_sudo.sh` — privileged setup

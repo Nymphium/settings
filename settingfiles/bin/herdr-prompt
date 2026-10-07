@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+# tmux-style command prompt for herdr, run from a prefix+: popup, with herdr's zsh completion
+set -euo pipefail
+
+autoload -Uz compinit && compinit -C -d "${TMPDIR:-/tmp}/herdr-prompt.zcompdump"
+eval "$(herdr completion zsh)"
+# vared completes in the -vared- context; complete the line as herdr's arguments
+_herdr_prompt() { words=(herdr "${words[@]}"); (( CURRENT++ )); _herdr }
+compdef _herdr_prompt -vared-
+
+# Esc aborts vared and the script; a short KEYTIMEOUT keeps it from lagging.
+# Any escape sequence left unbound would fall back to this Esc binding, so bind the common ones.
+bindkey '^[' send-break
+bindkey '^[[3~' delete-char
+bindkey '^[[H' beginning-of-line '^[OH' beginning-of-line
+bindkey '^[[F' end-of-line '^[OF' end-of-line
+KEYTIMEOUT=5
+
+line=
+vared -p 'herdr> ' line
+# a bare `herdr` would attach a nested client, so an empty line just closes the popup
+[[ -n "${line//[[:space:]]/}" ]] || exit 0
+args=("${(Q@)${(z)line}}")
+
+# queries print something to read, so page them; actions only print an ack, so close right away
+case "${args[1]} ${args[2]-}" in
+  (status\ *|api\ *|*\ list|*\ get|*\ current|*\ layout|*\ process-info|*\ neighbor|*\ edges|*\ read|*\ explain|config\ check|channel\ show|integration\ status)
+    query=1 ;;
+  (*)
+    (( ${args[(I)(-h|--help|-V|--version)]} )) && query=1 || query= ;;
+esac
+
+if [[ -n $query ]]; then
+  # less treats Esc as a prefix of arrow keys, so it cannot quit on Esc; nvim tells them apart by timeout
+  herdr "${args[@]}" 2>&1 |
+    nvim --clean -R -n -c 'nnoremap <Esc> <Cmd>q!<CR>' -c 'nnoremap q <Cmd>q!<CR>' -
+else
+  # keep the popup open on failure so the error stays visible
+  herdr "${args[@]}" || read -r
+fi
