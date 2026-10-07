@@ -68,7 +68,7 @@ config.window_padding = {
 config.disable_default_key_bindings = true
 -- config.max_fps = 144
 --
--- config.scrollback_lines = 1000
+config.scrollback_lines = 1000
 -- config.animation_fps = 1
 
 -- local keys = require("./keys")
