@@ -39,3 +39,9 @@ globs: ["**/*"]
 - Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 - Use `!` after type/scope or a `BREAKING CHANGE:` footer for breaking changes.
 - Description is lowercase, imperative mood, no trailing period.
+
+## 5. Naming things in prose
+
+- Never identify something by a bare identifier the reader has no reason to memorize: ADR numbers, issue/PR numbers, ticket IDs, commit hashes, filenames, URLs, internal abbreviations. Lead with words that say what it is and demote the identifier to parentheses. Write `the ADR that makes TypeScript the standard language (magna-carta 0002)`, not `ADR-0002`.
+- A link is a way to verify, not a substitute for saying what the thing is. Link text must name the subject.
+- Self-check every line: read it on its own, without following links, without re-reading earlier lines, and without relying on later ones. If it does not say what it refers to, rewrite it.
