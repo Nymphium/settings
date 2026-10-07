@@ -48,10 +48,12 @@
                 "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
                 "^org\\.alacritty$",
-                "^com\\.github\\.wez\\.wezterm$"
+                "^com\\.github\\.wez\\.wezterm$",
+                "^com\\.mitchellh\\.ghostty$"
               ],
               "file_paths": [
-                "wezterm"
+                "wezterm",
+                "ghostty"
               ]
             }
           ],
