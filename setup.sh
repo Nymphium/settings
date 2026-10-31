@@ -353,6 +353,9 @@ setup_claude_plugins() {
 setup_rulesync() {
   log_info "Setting up rulesync..."
 
+  # the installer drops the binary here without touching PATH
+  path=("${HOME}/.rulesync/bin" $path)
+
   if ! command -v rulesync &>/dev/null; then
     log_info "Installing rulesync..."
     curl -fsSL https://github.com/dyoshikawa/rulesync/releases/latest/download/install.sh | bash
