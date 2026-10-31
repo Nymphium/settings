@@ -71,4 +71,4 @@ alias l='ls -Fhal --color=auto'
 alias agent='agent --approve-mcps'
 alias cursor-agent='cursor-agent --approve-mcps'
 
-[[ -n "$ZPROF" ]] && zprof
+if [[ -n "$ZPROF" ]]; then zprof; fi
