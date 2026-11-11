@@ -39,9 +39,11 @@ move_tab_next = "f16"
 new_tab = ["prefix+c", "prefix+alt+t"]
 close_tab = ["prefix+shift+x", "prefix+d", "prefix+alt+d"]
 
-# prefix+W opens the goto navigator as tmux's choose-tree did; workspace_picker (prefix+w)
-# only highlights sidebar rows, invisible with the sidebar hidden
+# prefix+W opens the goto navigator as tmux's choose-tree did
 goto = ["prefix+g", "prefix+shift+w"]
+# the sidebar stays hidden; nothing may bring it back
+toggle_sidebar = "prefix+b"
+workspace_picker = []
 rename_workspace = "prefix+$"
 next_workspace = "alt+n"
 previous_workspace = "alt+shift+n"
@@ -54,7 +56,7 @@ zoom = "prefix+alt+i"
 copy_mode = ["prefix+[", "prefix+/", "alt+y"]
 
 [ui]
-# hidden, not the compact rail; toggle with prefix+b
+# hidden, not the compact rail
 sidebar_start_collapsed = true
 sidebar_collapsed_mode = "hidden"
 
